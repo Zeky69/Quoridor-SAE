@@ -16,6 +16,10 @@ public class QuorStageView extends GameStageView{
         gameStageModel = (QuorStageModel)gameStageModel;
         addLook(new GridLook(4, 2, ((QuorStageModel) gameStageModel).getBoard(), -1, true));
 
+        for(int i=0;i<2;i++) {
+            addLook(new PawnLook(((QuorStageModel) gameStageModel).getPawns()[i]));
+        }
+
 
 
 
