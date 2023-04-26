@@ -78,6 +78,8 @@ public abstract class GameStageView {
         looks.add(look);
     }
 
+    protected abstract void createShape();
+
     public abstract void createLooks() throws GameException;
 
     /**
