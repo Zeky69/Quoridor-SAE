@@ -19,7 +19,7 @@ public class QuorStageFactory extends StageElementsFactory {
         Wall[][] walls = new Wall[9][9];
         for(int i=0;i<9;i++) {
             for(int j=0;j<9;j++) {
-                boolean[] wallsAround = {false, false, false, true};
+                boolean[] wallsAround = {false, false, false, false};
 
                 walls[i][j] = new Wall(wallsAround, stageModel);
             }
