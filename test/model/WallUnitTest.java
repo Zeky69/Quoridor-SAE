@@ -15,14 +15,14 @@ public class WallUnitTest {
         stageModel = (QuorStageModel) gameStageModel;
 
 
-        boolean[] wall = new boolean[4];
-        wall[0] = true;
-        wall[1] = false;
-        wall[2] = true;
-        wall[3] = false;
-        Wall wall1 = new Wall(wall,stageModel);
+        boolean[] wallTest = new boolean[4];
+        wallTest[0] = true;
+        wallTest[1] = false;
+        wallTest[2] = true;
+        wallTest[3] = false;
+        Wall wall1 = new Wall(wallTest,stageModel);
 
-        Assertions.assertEquals(wall,wall1.getWall());
+        Assertions.assertEquals(wallTest,wall1.getWall());
         Assertions.assertEquals(true,wall1.getWall(Wall.Direction.UP));
         Assertions.assertEquals(false,wall1.getWall(Wall.Direction.DOWN));
         Assertions.assertEquals(true,wall1.getWall(Wall.Direction.LEFT));
@@ -30,9 +30,9 @@ public class WallUnitTest {
         Assertions.assertEquals(false,wall1.isEmpty());
         wall1.setWall(Wall.Direction.UP,false);
         Assertions.assertEquals(false,wall1.getWall(Wall.Direction.UP));
-        wall1.setWalls(wall);
-        Assertions.assertEquals(wall,wall1.getWall());
-
+        wall1.setWalls(wallTest);
+        Assertions.assertEquals(wallTest,wall1.getWall());
+        System.out.println();
 
 
 
