@@ -4,16 +4,10 @@ package model;
 
 import boardifier.model.GameStageModel;
 import boardifier.model.Model;
-import boardifier.model.StageElementsFactory;
-import boardifier.view.View;
-import model.Pawn;
-import model.QuorBoard;
-import model.QuorStageFactory;
-import model.QuorStageModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import boardifier.control.Controller;
+
 
 public class PawnUnitTest {
 
