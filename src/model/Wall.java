@@ -3,6 +3,7 @@ package model;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Wall extends GameElement {
@@ -34,12 +35,26 @@ public class Wall extends GameElement {
     }
 
     public boolean isEmpty() {
-        return Objects.equals(this.wall, new boolean[4]);
+        return Arrays.equals(this.wall, new boolean[4]);
     }
 
     public void setWalls(boolean[] wall) {
         this.wall = wall;
     }
+
+    public static Direction intToDirection(int i){
+        if(i == 0){
+            return Direction.UP;
+        } else if(i == 1){
+            return Direction.DOWN;
+        } else if(i == 2){
+            return Direction.LEFT;
+        } else if(i == 3){
+            return Direction.RIGHT;
+        }
+        return null;
+    }
+
 
     public void setWall(Direction direction, boolean bool) {
         if(Direction.UP == direction){
@@ -51,6 +66,11 @@ public class Wall extends GameElement {
         } else if(Direction.RIGHT == direction){
             this.wall[3] = bool;
         }
+    }
+
+    public String toString(){
+        return Arrays.toString(wall);
+
     }
 
 
