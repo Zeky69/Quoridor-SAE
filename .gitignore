@@ -1,0 +1,8 @@
+# ignore ALL file in .idea/ directory
+.idea/
+
+# ignore ALL file in src/ directory
+src/
+
+# ignore .iml file in root directory
+*.iml
