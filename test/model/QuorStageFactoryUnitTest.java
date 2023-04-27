@@ -34,11 +34,11 @@ public class QuorStageFactoryUnitTest {
         {
             for(int j=0;j<9;j++)
             {
-                Assertions.assertEquals(false,walls[i][j].getWall(Wall.Direction.UP));
-                Assertions.assertEquals(false,walls[i][j].getWall(Wall.Direction.DOWN));
-                Assertions.assertEquals(false,walls[i][j].getWall(Wall.Direction.LEFT));
-                Assertions.assertEquals(false,walls[i][j].getWall(Wall.Direction.RIGHT));
-                boolean [] wallsTest = new boolean[]{false,false,false,false};
+                Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.UP));
+                Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.DOWN));
+                Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.LEFT));
+                Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.RIGHT));
+                //boolean [] wallsTest = new boolean[]{false,false,false,false};²
                 //Assertions.assertEquals(walls[i][j].getWall(),wallsTest); //TODO: bug avec wall.getWall()
             }
         }

@@ -23,18 +23,19 @@ public class WallUnitTest {
         Wall wall1 = new Wall(wallTest,stageModel);
 
         Assertions.assertEquals(wallTest,wall1.getWall());
-        Assertions.assertEquals(true,wall1.getWall(Wall.Direction.UP));
-        Assertions.assertEquals(false,wall1.getWall(Wall.Direction.DOWN));
-        Assertions.assertEquals(true,wall1.getWall(Wall.Direction.LEFT));
-        Assertions.assertEquals(false,wall1.getWall(Wall.Direction.RIGHT));
-        Assertions.assertEquals(false,wall1.isEmpty());
+        Assertions.assertTrue(wall1.getWall(Wall.Direction.UP));
+        Assertions.assertFalse(wall1.getWall(Wall.Direction.DOWN));
+        Assertions.assertTrue(wall1.getWall(Wall.Direction.LEFT));
+        Assertions.assertFalse(wall1.getWall(Wall.Direction.RIGHT));
+        Assertions.assertFalse(wall1.isEmpty());
+
         wall1.setWall(Wall.Direction.UP,false);
-        Assertions.assertEquals(false,wall1.getWall(Wall.Direction.UP));
+
+        Assertions.assertFalse(wall1.getWall(Wall.Direction.UP));
+
         wall1.setWalls(wallTest);
+
         Assertions.assertEquals(wallTest,wall1.getWall());
-        System.out.println();
-
-
 
     }
 }
