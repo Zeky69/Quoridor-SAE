@@ -10,36 +10,30 @@ import java.security.PublicKey;
 public class QuorStageFactoryUnitTest {
 
     @Test
-    public void testConstructQuorStageFactory()
-    {
+    public void testConstructQuorStageFactory() {
 
         Model model = new Model(); //création du model
-        GameStageModel gameStageModel = new QuorStageModel("jeu",model);
-        QuorStageModel stageModel;
-        stageModel = (QuorStageModel) gameStageModel;
-        QuorStageFactory quorStageFactory = new QuorStageFactory(gameStageModel);
-        //Assertions.assertEquals(quorStageFactory.getStageModel(),gameStageModel);//TODO : absence de getteur
+        QuorStageModel quorStageModel = new QuorStageModel("jeu", model);
+        //FIXME QuorStageModel dans le constucteur, est ce qu'il faudrait initialiser board et Pawn?
+        // en gros les attribut sont initialiser dans des fonctions plus tard
     }
 
     @Test
-    public void initWallsTest()
-    {
+    public void initWallsTest() {
         Model model = new Model(); //création du model
-        GameStageModel gameStageModel = new QuorStageModel("jeu",model);
-        QuorStageModel stageModel;
-        stageModel = (QuorStageModel) gameStageModel;
+        GameStageModel gameStageModel = new QuorStageModel("jeu", model);
+
         QuorStageFactory quorStageFactory = new QuorStageFactory(gameStageModel);
         Wall[][] walls = quorStageFactory.initWalls();
-        for(int i=0;i<9;i++)
-        {
-            for(int j=0;j<9;j++)
-            {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
                 Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.UP));
                 Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.DOWN));
                 Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.LEFT));
                 Assertions.assertFalse(walls[i][j].getWall(Wall.Direction.RIGHT));
-                //boolean [] wallsTest = new boolean[]{false,false,false,false};²
-                //Assertions.assertEquals(walls[i][j].getWall(),wallsTest); //TODO: bug avec wall.getWall()
+                boolean[] wallsTest = walls[i][j].getWall();
+                boolean[] wallFalse = new boolean[]{false, false, false, false};
+                Assertions.assertArrayEquals(wallsTest, wallFalse);
             }
         }
     }
