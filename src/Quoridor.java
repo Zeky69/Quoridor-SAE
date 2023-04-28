@@ -4,11 +4,8 @@ import boardifier.model.Model;
 import boardifier.view.View;
 import control.QuorController;
 
-public class Quoridor{
-
-    public static void main(String[] args){
-
-        Model model = new Model();
+public class Quoridor {
+    public static void main(String[] args) {
 
         int mode = 0;
         if (args.length == 1) {
@@ -20,9 +17,7 @@ public class Quoridor{
                 mode = 0;
             }
         }
-
-
-
+        Model model = new Model();
         if (mode == 0) {
             model.addHumanPlayer("player1");
             model.addHumanPlayer("player2");
@@ -37,11 +32,10 @@ public class Quoridor{
         }
 
         StageFactory.registerModelAndView("Quoridor", "model.QuorStageModel", "view.QuorStageView");
+
         View quorView = new View(model);
         QuorController control = new QuorController(model,quorView);
         control.setFirstStageName("Quoridor");
-
-
         try{
             control.startGame();
             control.stageLoop();

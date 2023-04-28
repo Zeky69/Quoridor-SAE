@@ -2,9 +2,14 @@ package control;
 
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
+import boardifier.model.GameElement;
 import boardifier.model.Model;
 import boardifier.model.Player;
+import boardifier.model.action.ActionList;
+import boardifier.model.action.GameAction;
+import boardifier.model.action.MoveAction;
 import boardifier.view.View;
+import model.QuorStageModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,16 +66,20 @@ public class QuorController extends Controller {
                 }
                 catch(IOException e) {}
             }
-
+            String moove;
             ok = false;
             while (!ok) {
                 try {
-                    String moove = consoleIn.readLine();
+
                     switch (choice){
                         case "P" :
-                            ok = analyseSecondStepP(moove);
+                            System.out.print("Enter the case you want to go >");
+                            moove = consoleIn.readLine();
+                            ok = analyseSecondStepP(moove); break;
                         case "W" :
-                            ok = analyseSecondStepW(moove);
+                            System.out.print("Enter the cases you want to put a wall >");
+                            moove = consoleIn.readLine();
+                            ok = analyseSecondStepW(moove); break;
                     }
 
                     if (!ok) {
@@ -97,11 +106,21 @@ public class QuorController extends Controller {
     }
 
     public boolean analyseSecondStepP(String line){
-        boolean result = true;
+        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+        GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
+        int col = (int)(line.charAt(0)-'A');
+        int row = Integer.parseInt(line.substring(1,2))-1;
 
-        // TODO conditions pour pouvoir bouger un pion
+        gameStage.getBoard().setValidCells();
+        //if (!gameStage.getBoard().canReachCell(row,col)) return false;
 
-        return result;
+        ActionList actions = new ActionList(true);
+        GameAction move = new MoveAction(model, pawn, "QuorBoard", row, col);
+        // add the action to the action list.
+        actions.addSingleAction(move);
+        ActionPlayer play = new ActionPlayer(model, this, actions);
+        play.start();
+        return true;
     }
 
     public boolean analyseSecondStepW(String line){
