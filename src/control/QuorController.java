@@ -9,6 +9,7 @@ import boardifier.model.Player;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.GameAction;
 import boardifier.model.action.MoveAction;
+import boardifier.view.ConsoleColor;
 import boardifier.view.View;
 import graph.Graph;
 import model.Pawn;
@@ -68,7 +69,7 @@ public class QuorController extends Controller {
             boolean ok = false;
             while (!ok) {
                 QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-                System.out.println(p.getName()+ " : " + gameStage.getNbWalls()[model.getIdPlayer()] + " walls left");
+                System.out.println(p.getName()+ " : "+ ConsoleColor.GREEN_BOLD + gameStage.getNbWalls()[model.getIdPlayer()] +ConsoleColor.RESET + " walls left");
                 System.out.print("Enter P to move a pawn, or W to place a wall >");
                 try {
                     choice = consoleIn.readLine();
@@ -126,18 +127,20 @@ public class QuorController extends Controller {
         }
     }
 
+
+    //TODO A tester correctement et a essayer de rendre bien moins complexe
     public List<int[]> possibleDest(int x , int y){
         List<int[]> dest = new ArrayList<>();
         Wall[][] walls = ((QuorStageModel)model.getGameStage()).getWalls();
         Pawn[] pawns = ((QuorStageModel)model.getGameStage()).getPawns();
 
         // verifie si le pion peut aller a gauche ou sinon si il peut sauter par dessus un pion
-        if (x!=0 && !walls[y][x].getWall(Wall.Direction.LEFT) && !walls[y][x-1].getWall(Wall.Direction.RIGHT)){
+        if (x!=0 && !walls[y][x].getWall(Wall.Direction.LEFT) && !walls[y][x-1].getWall(Wall.Direction.RIGHT) && !(pawns[0].getPawnX() == x-1 && pawns[0].getPawnY() == y || pawns[1].getPawnX() == x-1 && pawns[1].getPawnY() == y)){
             dest.add(new int[]{x-1,y});
         }else if (pawns[0].getPawnX() == x-1 && pawns[0].getPawnY() == y || pawns[1].getPawnX() == x-1 && pawns[1].getPawnY() == y){
             if (x - 1 > 0 && !walls[y][x - 1].getWall(Wall.Direction.LEFT)) {
                 dest.add(new int[]{x - 2, y});
-            }
+            }else {
 
             if (y != 0 && x != 0 && !walls[y][x - 1].getWall(Wall.Direction.UP)) {
                 dest.add(new int[]{x - 1, y - 1});
@@ -145,49 +148,54 @@ public class QuorController extends Controller {
             if (y != 8 && x != 0 && !walls[y][x - 1].getWall(Wall.Direction.DOWN)) {
                 dest.add(new int[]{x - 1, y + 1});
             }
+            }
         }
 
         // Verifie si le pion peut aller a droite ou sinon il doit traverser le pion adverse
-        if (x!=8 && !walls[y][x].getWall(Wall.Direction.RIGHT) && !walls[y][x+1].getWall(Wall.Direction.LEFT)){
+        if (x!=8 && !walls[y][x].getWall(Wall.Direction.RIGHT) && !walls[y][x+1].getWall(Wall.Direction.LEFT) && !(pawns[0].getPawnX() == x+1 && pawns[0].getPawnY() == y  || pawns[1].getPawnX() == x+1 && pawns[1].getPawnY() == y)){
             dest.add(new int[]{x+1,y});
         }else if (pawns[0].getPawnX() == x+1 && pawns[0].getPawnY() == y  || pawns[1].getPawnX() == x+1 && pawns[1].getPawnY() == y){
             if (x+1 < 8  && !walls[y][x + 1].getWall(Wall.Direction.RIGHT)) {
                 dest.add(new int[]{x + 2, y});
-            }
+            }else {
             if (y > 0 && x < 8 && !walls[y][x - 1].getWall(Wall.Direction.UP)) {
                 dest.add(new int[]{x + 1, y-1});
             }
             if (y < 8 && x < 8 && !walls[y][x - 1].getWall(Wall.Direction.DOWN)) {
                 dest.add(new int[]{x + 1, y + 1});
             }
+            }
         }
 
-        if (y!=0 && !walls[y][x].getWall(Wall.Direction.UP) && !walls[y-1][x].getWall(Wall.Direction.DOWN)){
+        if (y!=0 && !walls[y][x].getWall(Wall.Direction.UP) && !walls[y-1][x].getWall(Wall.Direction.DOWN) && !(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y-1)){
             dest.add(new int[]{x,y-1});
         }else if(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y-1){
             if(y-1 > 0 && !walls[y-1][x].getWall(Wall.Direction.UP)){
                 dest.add(new int[]{x,y-2});
-            }
+            }else{
             if (x != 0 && y != 0 && !walls[y-1][x].getWall(Wall.Direction.LEFT)) {
                 dest.add(new int[]{x - 1, y - 1});
             }
             if (x != 8 && y != 0 && !walls[y-1][x].getWall(Wall.Direction.RIGHT)) {
                 dest.add(new int[]{x + 1, y - 1});
             }
+            }
 
         }
 
-        if (y!=8 && !walls[y][x].getWall(Wall.Direction.DOWN) && !walls[y+1][x].getWall(Wall.Direction.UP)){
+        if (y!=8 && !walls[y][x].getWall(Wall.Direction.DOWN) && !walls[y+1][x].getWall(Wall.Direction.UP) && !(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y+1)){
             dest.add(new int[]{x,y+1});
         }else if(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y+1){
             if(y+1 < 8 && !walls[y+1][x].getWall(Wall.Direction.DOWN)){
                 dest.add(new int[]{x,y+2});
             }
+            else{
             if (x != 0 && y != 8 && !walls[y+1][x].getWall(Wall.Direction.LEFT)) {
                 dest.add(new int[]{x - 1, y + 1});
             }
             if (x != 8 && y != 8 && !walls[y+1][x].getWall(Wall.Direction.RIGHT)) {
                 dest.add(new int[]{x + 1, y + 1});
+            }
             }
         }
      return dest;
