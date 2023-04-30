@@ -8,7 +8,6 @@ import boardifier.model.Player;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.GameAction;
 import boardifier.model.action.MoveAction;
-import boardifier.view.GridLook;
 import boardifier.view.View;
 import graph.Graph;
 import model.Pawn;
@@ -18,7 +17,11 @@ import model.Wall;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import static model.Wall.isBorder;
 
 public class QuorController extends Controller {
 
@@ -44,7 +47,7 @@ public class QuorController extends Controller {
         }
         endGame();
     }
-
+    @Override
     public void nextPlayer() {
         if (!firstPlayer) {
             model.setNextPlayer();
@@ -76,16 +79,21 @@ public class QuorController extends Controller {
                 }
                 catch(IOException e) {}
             }
-
+            String moove;
             ok = false;
             while (!ok) {
                 try {
-                    String moove = consoleIn.readLine();
-                    ok = switch (choice) {
-                        case "P" -> analyseSecondStepP(moove);
-                        case "W" -> analyseSecondStepW(moove);
-                        default -> ok;
-                    };
+
+                    switch (choice){
+                        case "P" :
+                            System.out.print("Enter the case you want to go >");
+                            moove = consoleIn.readLine();
+                            ok = analyseSecondStepP(moove); break;
+                        case "W" :
+                            System.out.print("Enter the cases you want to put a wall >");
+                            moove = consoleIn.readLine();
+                            ok = analyseSecondStepW(moove); break;
+                    }
 
                     if (!ok) {
                         System.out.println("incorrect instruction. retry !");
@@ -111,12 +119,104 @@ public class QuorController extends Controller {
         }
     }
 
+    public List<int[]> possibleDest(int x , int y){
+        List<int[]> dest = new ArrayList<>();
+        Wall[][] walls = ((QuorStageModel)model.getGameStage()).getWalls();
+        Pawn[] pawns = ((QuorStageModel)model.getGameStage()).getPawns();
+
+        // verifie si le pion peut aller a gauche ou sinon si il peut sauter par dessus un pion
+        if (x!=0 && !walls[y][x].getWall(Wall.Direction.LEFT) && !walls[y][x-1].getWall(Wall.Direction.RIGHT)){
+            dest.add(new int[]{x-1,y});
+        }else if (pawns[0].getPawnX() == x-1 && pawns[0].getPawnY() == y || pawns[1].getPawnX() == x-1 && pawns[1].getPawnY() == y){
+            if (x - 1 > 0 && !walls[y][x - 1].getWall(Wall.Direction.LEFT)) {
+                dest.add(new int[]{x - 2, y});
+            }
+
+            if (y != 0 && x != 0 && !walls[y][x - 1].getWall(Wall.Direction.UP)) {
+                dest.add(new int[]{x - 1, y - 1});
+            }
+            if (y != 8 && x != 0 && !walls[y][x - 1].getWall(Wall.Direction.DOWN)) {
+                dest.add(new int[]{x - 1, y + 1});
+            }
+        }
+
+        // Verifie si le pion peut aller a droite ou sinon il doit traverser le pion adverse
+        if (x!=8 && !walls[y][x].getWall(Wall.Direction.RIGHT) && !walls[y][x+1].getWall(Wall.Direction.LEFT)){
+            dest.add(new int[]{x+1,y});
+        }else if (pawns[0].getPawnX() == x+1 && pawns[0].getPawnY() == y  || pawns[1].getPawnX() == x+1 && pawns[1].getPawnY() == y){
+            if (x+1 < 8  && !walls[y][x + 1].getWall(Wall.Direction.RIGHT)) {
+                dest.add(new int[]{x + 2, y});
+            }
+            if (y > 0 && x < 8 && !walls[y][x - 1].getWall(Wall.Direction.UP)) {
+                dest.add(new int[]{x + 1, y-1});
+            }
+            if (y < 8 && x < 8 && !walls[y][x - 1].getWall(Wall.Direction.DOWN)) {
+                dest.add(new int[]{x + 1, y + 1});
+            }
+        }
+
+        if (y!=0 && !walls[y][x].getWall(Wall.Direction.UP) && !walls[y-1][x].getWall(Wall.Direction.DOWN)){
+            dest.add(new int[]{x,y-1});
+        }else if(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y-1){
+            if(y-1 > 0 && !walls[y-1][x].getWall(Wall.Direction.UP)){
+                dest.add(new int[]{x,y-2});
+            }
+            if (x != 0 && y != 0 && !walls[y-1][x].getWall(Wall.Direction.LEFT)) {
+                dest.add(new int[]{x - 1, y - 1});
+            }
+            if (x != 8 && y != 0 && !walls[y-1][x].getWall(Wall.Direction.RIGHT)) {
+                dest.add(new int[]{x + 1, y - 1});
+            }
+
+        }
+
+        if (y!=8 && !walls[y][x].getWall(Wall.Direction.DOWN) && !walls[y+1][x].getWall(Wall.Direction.UP)){
+            dest.add(new int[]{x,y+1});
+        }else if(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y+1){
+            if(y+1 < 8 && !walls[y+1][x].getWall(Wall.Direction.DOWN)){
+                dest.add(new int[]{x,y+2});
+            }
+            if (x != 0 && y != 8 && !walls[y+1][x].getWall(Wall.Direction.LEFT)) {
+                dest.add(new int[]{x - 1, y + 1});
+            }
+            if (x != 8 && y != 8 && !walls[y+1][x].getWall(Wall.Direction.RIGHT)) {
+                dest.add(new int[]{x + 1, y + 1});
+            }
+        }
+     return dest;
+    }
+
+
+
+
+
+
+
     public boolean analyseSecondStepP(String line){
-        boolean result = true;
+        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+        GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
 
-        // TODO conditions pour pouvoir bouger un pion
+        int col = (int)(line.charAt(0)-'A');
+        int row = Integer.parseInt(line.substring(1,2))-1;
 
-        return result;
+        gameStage.getBoard().setInvalidCells();
+        List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY());
+
+        for(int[] dest : possibleDest){
+            System.out.println(Arrays.toString(dest));
+            gameStage.getBoard().setvalalidCell(dest[0],dest[1]);
+        }
+        if (!gameStage.getBoard().canReachCell(row,col)) return false;
+
+        ActionList actions = new ActionList(true);
+        GameAction move = new MoveAction(model, pawn, "QuorBoard", row, col);
+        ((Pawn)pawn).setPawnY(row);
+        ((Pawn)pawn).setPawnX(col);
+        // add the action to the action list.
+        actions.addSingleAction(move);
+        ActionPlayer play = new ActionPlayer(model, this, actions);
+        play.start();
+        return true;
     }
 
     public Wall.Direction charToDirection(char direction){
@@ -171,18 +271,10 @@ switch (direction){
         return walls;
     }
 
-    public boolean isBorder(int[] coord, Wall.Direction direction){
-        if (direction == Wall.Direction.UP && coord[1]==0){
-            return true;
-        }else if (direction == Wall.Direction.DOWN && coord[1]==8){
-            return true;
-        }else if (direction == Wall.Direction.LEFT && coord[0]==0){
-            return true;
-        }else if (direction == Wall.Direction.RIGHT && coord[0]==8){
-            return true;
-        }
-        return false;
-    }
+
+
+
+
 
     public boolean isCross(int[] coord , int[] coord2 , Wall.Direction dir){
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();

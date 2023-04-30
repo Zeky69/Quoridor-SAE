@@ -1,12 +1,9 @@
 package view;
 
 import boardifier.model.GameStageModel;
-import boardifier.model.GridElement;
-import boardifier.view.ConsoleColor;
 import boardifier.view.GameStageView;
-import boardifier.view.GridLook;
 import model.QuorStageModel;
-import model.Wall;
+
 
 public class QuorStageView extends GameStageView{
 
@@ -16,14 +13,11 @@ public class QuorStageView extends GameStageView{
         super(name, gameStageModel);
     }
 
-
-
     @Override
-    protected void createShape(){
-
-
-
+    protected void createShape() {
+            return;
     }
+
 
     @Override
     public void createLooks() {

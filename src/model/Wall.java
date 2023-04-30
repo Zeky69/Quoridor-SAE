@@ -69,6 +69,20 @@ public class Wall extends GameElement {
     }
 
 
+    public static boolean isBorder(int[] coord, Wall.Direction direction){
+        if (direction == Wall.Direction.UP && coord[1]==0){
+            return true;
+        }else if (direction == Wall.Direction.DOWN && coord[1]==8){
+            return true;
+        }else if (direction == Wall.Direction.LEFT && coord[0]==0){
+            return true;
+        }else if (direction == Wall.Direction.RIGHT && coord[0]==8){
+            return true;
+        }
+        return false;
+    }
+
+
     public void setWall(Direction direction, boolean bool) {
         if(Direction.UP == direction){
             this.wall[0] = bool;

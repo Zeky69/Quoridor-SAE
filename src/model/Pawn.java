@@ -23,6 +23,14 @@ public class Pawn extends GameElement {
         type = ElementTypes.getType("pawn");
     }
 
+    public void setPawnX(int x) {
+        this.x = x;
+    }
+
+    public void setPawnY(int y) {
+        this.y = y;
+    }
+
     public int getPawnX() {
         return this.x;
     }
