@@ -10,6 +10,8 @@ public class QuorStageModel extends GameStageModel {
     QuorBoard board;
     Pawn[] pawns ;
 
+    int[] nbWalls = {10,10};
+
      static Wall[][] walls = new Wall[9][9];
 
 
@@ -43,6 +45,10 @@ public class QuorStageModel extends GameStageModel {
 
     public GameElement[] getPawns() {
         return this.pawns;
+    }
+
+    public int[] getNbWalls() {
+        return this.nbWalls;
     }
 
     @Override

@@ -3,6 +3,7 @@ package control;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.model.GameElement;
+import boardifier.model.GameStageModel;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
@@ -10,6 +11,7 @@ import boardifier.model.action.GameAction;
 import boardifier.model.action.MoveAction;
 import boardifier.view.GridLook;
 import boardifier.view.View;
+import model.Pawn;
 import model.QuorStageModel;
 import model.Wall;
 
@@ -61,7 +63,8 @@ public class QuorController extends Controller {
             String choice="";
             boolean ok = false;
             while (!ok) {
-                System.out.println(p.getName()+ " : ");
+                QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+                System.out.println(p.getName()+ " : " + gameStage.getNbWalls()[model.getIdPlayer()] + " walls left");
                 System.out.print("Enter P to move a pawn, or W to place a wall >");
                 try {
                     choice = consoleIn.readLine();
@@ -106,8 +109,13 @@ public class QuorController extends Controller {
             return true;
         }
         else if (line.equals("W")) {
-            // TODO verifier si le joueur peut encore poser un mur
-            return true;
+            QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+            if (gameStage.getNbWalls()[model.getIdPlayer()] > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else {
             return false;
@@ -117,6 +125,7 @@ public class QuorController extends Controller {
     public boolean analyseSecondStepP(String line){
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
+
         int col = (int)(line.charAt(0)-'A');
         int row = Integer.parseInt(line.substring(1,2))-1;
 
@@ -133,7 +142,7 @@ public class QuorController extends Controller {
     }
 
     public Wall.Direction charToDirection(char direction){
-switch (direction){
+        switch (direction){
             case 'H' :
                 return Wall.Direction.UP;
             case 'B' :
@@ -260,10 +269,12 @@ switch (direction){
 
 
         wallPlay(coord,coord2,dir);
+
         System.out.println(Arrays.toString(coord) + " " + Arrays.toString(coord2) + " " );
         gameStage.getBoard().update();
 
         System.out.println("le mur a été posé");
+        gameStage.getNbWalls()[model.getIdPlayer()]--;
 
         gameStage.getGrid("QuorBoard").resetReachableCells(true);
 
