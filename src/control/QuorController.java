@@ -10,6 +10,8 @@ import boardifier.model.action.GameAction;
 import boardifier.model.action.MoveAction;
 import boardifier.view.GridLook;
 import boardifier.view.View;
+import graph.Graph;
+import model.Pawn;
 import model.QuorStageModel;
 import model.Wall;
 
@@ -74,21 +76,16 @@ public class QuorController extends Controller {
                 }
                 catch(IOException e) {}
             }
-            String moove;
+
             ok = false;
             while (!ok) {
                 try {
-
-                    switch (choice){
-                        case "P" :
-                            System.out.print("Enter the case you want to go >");
-                            moove = consoleIn.readLine();
-                            ok = analyseSecondStepP(moove); break;
-                        case "W" :
-                            System.out.print("Enter the cases you want to put a wall >");
-                            moove = consoleIn.readLine();
-                            ok = analyseSecondStepW(moove); break;
-                    }
+                    String moove = consoleIn.readLine();
+                    ok = switch (choice) {
+                        case "P" -> analyseSecondStepP(moove);
+                        case "W" -> analyseSecondStepW(moove);
+                        default -> ok;
+                    };
 
                     if (!ok) {
                         System.out.println("incorrect instruction. retry !");
@@ -115,21 +112,11 @@ public class QuorController extends Controller {
     }
 
     public boolean analyseSecondStepP(String line){
-        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-        GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
-        int col = (int)(line.charAt(0)-'A');
-        int row = Integer.parseInt(line.substring(1,2))-1;
+        boolean result = true;
 
-        gameStage.getBoard().setValidCells();
-        //if (!gameStage.getBoard().canReachCell(row,col)) return false;
+        // TODO conditions pour pouvoir bouger un pion
 
-        ActionList actions = new ActionList(true);
-        GameAction move = new MoveAction(model, pawn, "QuorBoard", row, col);
-        // add the action to the action list.
-        actions.addSingleAction(move);
-        ActionPlayer play = new ActionPlayer(model, this, actions);
-        play.start();
-        return true;
+        return result;
     }
 
     public Wall.Direction charToDirection(char direction){
@@ -198,17 +185,34 @@ switch (direction){
     }
 
     public boolean isCross(int[] coord , int[] coord2 , Wall.Direction dir){
-//        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-//        Wall[][] walls = gameStage.getWalls();
-//        orientation orien = coordsToOrientation(coord , coord2);
-//        int[] sens = new int[2] ;
-//        sens[0] = coord2[0] - coord[0];
-//        sens[1] = coord2[1] - coord[1];
-//        if (orien == orientation.HORIZONTAL){
-//            if (dir == Wall.Direction.UP && coord[1]!=0) {
-//                return walls[coord[1]+sens[1]][coord[0]].getWall() ;
-//            }
-//        }
+        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+        Wall[][] walls = gameStage.getWalls();
+        orientation orien = coordsToOrientation(coord , coord2);
+        if (orien == orientation.HORIZONTAL){
+            int wall1 = Math.min(coord[0], coord2[0]);
+            if (dir == Wall.Direction.UP){
+                    if (walls[coord[1]][wall1].getWall(Wall.Direction.RIGHT) && walls[coord[1]-1][wall1].getWall(Wall.Direction.RIGHT)){
+                        return true;
+                    }
+
+            }else if (dir == Wall.Direction.DOWN){
+                    if (walls[coord[1]][wall1].getWall(Wall.Direction.RIGHT) && walls[coord[1]+1][wall1].getWall(Wall.Direction.RIGHT)){
+                        return true;
+                    }
+            }
+        }else if (orien == orientation.VERTICAL){
+            int wall1 = Math.min(coord[1], coord2[1]);
+            if (dir == Wall.Direction.LEFT){
+                    if (walls[wall1][coord[0]].getWall(Wall.Direction.DOWN) && walls[wall1][coord[0]-1].getWall(Wall.Direction.DOWN)){
+                        return true;
+                    }
+            }else if (dir == Wall.Direction.RIGHT){
+                    if (walls[wall1][coord[0]].getWall(Wall.Direction.DOWN) && walls[wall1][coord[0]+1].getWall(Wall.Direction.DOWN)){
+                        return true;
+                    }
+            }
+        }
+
         return false;
 
     }
@@ -252,35 +256,28 @@ switch (direction){
             return false;
         }
 
-        else if ( walls[coord[0]][coord[1]].getWall(dir)|| walls[coord2[0]][coord2[1]].getWall(dir)) {
+        else if ( walls[coord[1]][coord[0]].getWall(dir)|| walls[coord2[1]][coord2[0]].getWall(dir)) {
             System.out.println("le mur n'est pas libre");
             return false;
+
         }
-        //TODO verifier si le chemin du pion n'est pas coupé
+
+        if (isCross(coord,coord2,dir)){
+            System.out.println("le mur croise un autre mur");
+            return false;
+        }
+
+        Graph graph = new Graph(walls);
+        graph.removeArete(coord,coord2,dir);
+        Pawn[] pawns = gameStage.getPawns();
+        if (!graph.isPathPossibleY(pawns[0].getPawnXY(),pawns[0].getWinY()) || !graph.isPathPossibleY(pawns[1].getPawnXY(),pawns[1].getWinY())){
+            System.out.println("le mur bloque le chemin d'un joueur");
+            return false;
+        }
 
 
         wallPlay(coord,coord2,dir);
-        System.out.println(Arrays.toString(coord) + " " + Arrays.toString(coord2) + " " );
-        gameStage.getBoard().update();
-
-        System.out.println("le mur a été posé");
-
         gameStage.getGrid("QuorBoard").resetReachableCells(true);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return true;
     }
 

@@ -21,6 +21,19 @@ public class Wall extends GameElement {
         return this.wall;
     }
 
+     public static int[] directionToInt(Direction direction){
+        if(direction == Direction.UP){
+            return new int[]{0,-1};
+        } else if(direction == Direction.DOWN){
+            return new int[]{0,1};
+        } else if(direction == Direction.LEFT){
+            return new int[]{-1,0};
+        } else if(direction == Direction.RIGHT){
+            return new int[]{1,0};
+        }
+        return new int[]{0,0};
+    }
+
     public boolean getWall(Direction direction) {
         if(Direction.UP == direction){
             return this.wall[0];
