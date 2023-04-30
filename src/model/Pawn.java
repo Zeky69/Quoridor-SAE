@@ -9,32 +9,48 @@ public class Pawn extends GameElement {
     private int x;
     private int y;
     private int player;
-    private int nbWalls;
 
-    public Pawn(int x, int y, int player , GameStageModel gameStageModel) {
+    private int winY;
+
+    public Pawn(int x, int y, int player ,int winY, GameStageModel gameStageModel) {
         super(gameStageModel);
         this.x = x;
         this.y = y;
         this.player = player;
-        this.nbWalls = 10;
+        this.winY = winY;
 
         ElementTypes.register("pawn",50);
         type = ElementTypes.getType("pawn");
+    }
+
+    public void setPawnX(int x) {
+        this.x = x;
+    }
+
+    public void setPawnY(int y) {
+        this.y = y;
     }
 
     public int getPawnX() {
         return this.x;
     }
 
+    public int getWinY(){
+        return this.winY;
+    }
+
+    public void setWinY(int winY){
+        this.winY = winY;
+    }
+
     public int getPawnY() {
         return this.y;
     }
 
+    public int[] getPawnXY(){return new int[]{x,y};}
+
     public int getPlayer() {
         return this.player;
     }
-
-    public int getNbWalls() {return this.nbWalls;}
-
 
 }

@@ -21,6 +21,19 @@ public class Wall extends GameElement {
         return this.wall;
     }
 
+     public static int[] directionToInt(Direction direction){
+        if(direction == Direction.UP){
+            return new int[]{0,-1};
+        } else if(direction == Direction.DOWN){
+            return new int[]{0,1};
+        } else if(direction == Direction.LEFT){
+            return new int[]{-1,0};
+        } else if(direction == Direction.RIGHT){
+            return new int[]{1,0};
+        }
+        return new int[]{0,0};
+    }
+
     public boolean getWall(Direction direction) {
         if(Direction.UP == direction){
             return this.wall[0];
@@ -53,6 +66,20 @@ public class Wall extends GameElement {
             return Direction.RIGHT;
         }
         return null;
+    }
+
+
+    public static boolean isBorder(int[] coord, Wall.Direction direction){
+        if (direction == Wall.Direction.UP && coord[1]==0){
+            return true;
+        }else if (direction == Wall.Direction.DOWN && coord[1]==8){
+            return true;
+        }else if (direction == Wall.Direction.LEFT && coord[0]==0){
+            return true;
+        }else if (direction == Wall.Direction.RIGHT && coord[0]==8){
+            return true;
+        }
+        return false;
     }
 
 

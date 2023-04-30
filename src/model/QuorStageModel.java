@@ -12,7 +12,7 @@ public class QuorStageModel extends GameStageModel {
 
     int[] nbWalls = {10,10};
 
-     static Wall[][] walls = new Wall[9][9];
+    Wall[][] walls = new Wall[9][9];
 
 
     public QuorStageModel(String name, Model model) {
@@ -39,11 +39,11 @@ public class QuorStageModel extends GameStageModel {
         this.walls = walls;
     }
 
-    public static Wall[][] getWalls() {
+    public Wall[][] getWalls() {
         return walls;
     }
 
-    public GameElement[] getPawns() {
+    public Pawn[] getPawns() {
         return this.pawns;
     }
 

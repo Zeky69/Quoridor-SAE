@@ -1,6 +1,7 @@
 import boardifier.control.StageFactory;
 import boardifier.model.GameException;
 import boardifier.model.Model;
+import boardifier.view.ConsoleColor;
 import boardifier.view.View;
 import control.QuorController;
 
@@ -19,16 +20,16 @@ public class Quoridor {
         }
         Model model = new Model();
         if (mode == 0) {
-            model.addHumanPlayer("player1");
-            model.addHumanPlayer("player2");
+            model.addHumanPlayer("player " + ConsoleColor.BLUE_BOLD +"1" + ConsoleColor.RESET);
+            model.addHumanPlayer("player "+ ConsoleColor.RED_BOLD +"2" + ConsoleColor.RESET);
         }
         else if (mode == 1) {
-            model.addHumanPlayer("player");
-            model.addComputerPlayer("computer");
+            model.addHumanPlayer("player "+ ConsoleColor.BLUE_BOLD +"1" + ConsoleColor.RESET);
+            model.addComputerPlayer("computer "+ ConsoleColor.RED_BOLD +"2" + ConsoleColor.RESET);
         }
         else {
-            model.addComputerPlayer("computer1");
-            model.addComputerPlayer("computer2");
+            model.addComputerPlayer("computer "+ ConsoleColor.BLUE_BOLD +"1" + ConsoleColor.RESET);
+            model.addComputerPlayer("computer "+ ConsoleColor.RED_BOLD +"2" + ConsoleColor.RESET );
         }
 
         StageFactory.registerModelAndView("Quoridor", "model.QuorStageModel", "view.QuorStageView");

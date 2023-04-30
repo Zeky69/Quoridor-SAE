@@ -23,7 +23,7 @@ public class QuorStageFactory extends StageElementsFactory {
             for(int j=0;j<9;j++) {
                 boolean[] wallsAround = {false, false, false, false};
 
-                walls[i][j] = new Wall(wallsAround, stageModel);
+                walls[i][j] = new Wall(wallsAround , stageModel);
             }
         }
         return walls;
@@ -34,8 +34,8 @@ public class QuorStageFactory extends StageElementsFactory {
         public void setup() {
         stageModel.setBoard(new QuorBoard(0, 0, stageModel));
         Pawn[] pawns = new Pawn[2];
-        Pawn pawn1 = new Pawn(4, 0, 1, stageModel);
-        Pawn pawn2 = new Pawn(4, 8, 2, stageModel);
+        Pawn pawn1 = new Pawn(4, 0, 1, 8,stageModel);
+        Pawn pawn2 = new Pawn(4, 8, 2,0, stageModel);
         pawns[0] = pawn1;
         pawns[1] = pawn2;
         stageModel.setPawns(pawns);

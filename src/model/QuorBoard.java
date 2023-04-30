@@ -18,6 +18,25 @@ public class QuorBoard extends GridElement {
             }
         }
     }
+    public void setInvalidCells() {
+        resetReachableCells(false);
+        List<Point> valid = computeValidCells();
+        if (valid != null) {
+            for(Point p : valid) {
+                reachableCells[p.y][p.x] = false;
+            }
+        }
+    }
+
+    public void setInvalalidCell(int x, int y) {
+        reachableCells[y][x] = false;
+
+    }
+
+    public void setvalalidCell(int x, int y) {
+        reachableCells[y][x] = true;
+
+    }
 
     private List<Point> computeValidCells() { //TO DO finir de voir les destinations possibles
         List<Point> lst = new ArrayList<>();
@@ -35,6 +54,7 @@ public class QuorBoard extends GridElement {
     public QuorBoard(int x , int y, GameStageModel model) {
             super("QuorBoard",x,y, 9 ,9, model);
             resetReachableCells(false);
+
         }
 
 
