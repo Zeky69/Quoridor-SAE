@@ -72,7 +72,7 @@ public class QuorController extends Controller {
                 System.out.println(p.getName()+ " : "+ ConsoleColor.GREEN_BOLD + gameStage.getNbWalls()[model.getIdPlayer()] +ConsoleColor.RESET + " walls left");
                 System.out.print("Enter P to move a pawn, or W to place a wall >");
                 try {
-                    choice = consoleIn.readLine();
+                    choice = consoleIn.readLine().toUpperCase();
                     if (choice.length() == 1) {
                         ok = analyseFirstStep(choice);
                     }
@@ -87,15 +87,15 @@ public class QuorController extends Controller {
             while (!ok) {
                 try {
 
-                    switch (choice){
-                        case "P" :
-                            System.out.print("Enter the case you want to go >");
-                            moove = consoleIn.readLine();
-                            ok = analyseSecondStepP(moove); break;
-                        case "W" :
+                    if (choice.equals("P")){
+                        System.out.print("Enter the case you want to go >");
+                        moove = consoleIn.readLine();
+                        ok = analyseSecondStepP(moove);
+                    }
+                    else if(choice.equals("W")) {
                             System.out.print("Enter the cases you want to put a wall >");
                             moove = consoleIn.readLine();
-                            ok = analyseSecondStepW(moove); break;
+                            ok = analyseSecondStepW(moove);
                     }
 
                     if (!ok) {
@@ -103,6 +103,11 @@ public class QuorController extends Controller {
                     }
                 }
                 catch(IOException e) {}
+
+                QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+                gameStage.hasWon();
+
+
 
 
             }
@@ -115,12 +120,7 @@ public class QuorController extends Controller {
         }
         else if (line.equals("W")) {
             QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-            if (gameStage.getNbWalls()[model.getIdPlayer()] > 0) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return gameStage.getNbWalls()[model.getIdPlayer()] > 0;
         }
         else {
             return false;
@@ -211,7 +211,7 @@ public class QuorController extends Controller {
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
 
-        int col = (int)(line.charAt(0)-'A');
+        int col = (line.charAt(0)-'A');
         int row = Integer.parseInt(line.substring(1,2))-1;
 
         gameStage.getBoard().setInvalidCells();
@@ -262,10 +262,8 @@ public class QuorController extends Controller {
                  return orientation.VERTICAL;
             }
         }
-        else if (coord1[1] == coord2[1]){
-            if (coord1[0] == coord2[0] + 1 || coord1[0] == coord2[0] - 1){
-                return orientation.HORIZONTAL;
-            }
+        else if (coord1[1] == coord2[1] && (coord1[0] == coord2[0] + 1 || coord1[0] == coord2[0] - 1)){
+            return orientation.HORIZONTAL;
         }
         return null;
     }
@@ -298,25 +296,17 @@ public class QuorController extends Controller {
         if (orien == orientation.HORIZONTAL){
             int wall1 = Math.min(coord[0], coord2[0]);
             if (dir == Wall.Direction.UP){
-                    if (walls[coord[1]][wall1].getWall(Wall.Direction.RIGHT) && walls[coord[1]-1][wall1].getWall(Wall.Direction.RIGHT)){
-                        return true;
-                    }
+                return walls[coord[1]][wall1].getWall(Wall.Direction.RIGHT) && walls[coord[1] - 1][wall1].getWall(Wall.Direction.RIGHT);
 
             }else if (dir == Wall.Direction.DOWN){
-                    if (walls[coord[1]][wall1].getWall(Wall.Direction.RIGHT) && walls[coord[1]+1][wall1].getWall(Wall.Direction.RIGHT)){
-                        return true;
-                    }
+                return walls[coord[1]][wall1].getWall(Wall.Direction.RIGHT) && walls[coord[1] + 1][wall1].getWall(Wall.Direction.RIGHT);
             }
         }else if (orien == orientation.VERTICAL){
             int wall1 = Math.min(coord[1], coord2[1]);
             if (dir == Wall.Direction.LEFT){
-                    if (walls[wall1][coord[0]].getWall(Wall.Direction.DOWN) && walls[wall1][coord[0]-1].getWall(Wall.Direction.DOWN)){
-                        return true;
-                    }
+                return walls[wall1][coord[0]].getWall(Wall.Direction.DOWN) && walls[wall1][coord[0] - 1].getWall(Wall.Direction.DOWN);
             }else if (dir == Wall.Direction.RIGHT){
-                    if (walls[wall1][coord[0]].getWall(Wall.Direction.DOWN) && walls[wall1][coord[0]+1].getWall(Wall.Direction.DOWN)){
-                        return true;
-                    }
+                return walls[wall1][coord[0]].getWall(Wall.Direction.DOWN) && walls[wall1][coord[0] + 1].getWall(Wall.Direction.DOWN);
             }
         }
 

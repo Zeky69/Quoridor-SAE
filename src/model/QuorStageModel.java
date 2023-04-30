@@ -51,6 +51,16 @@ public class QuorStageModel extends GameStageModel {
         return this.nbWalls;
     }
 
+    public void hasWon() {
+        for(int i=0;i<pawns.length;i++){
+            if(pawns[i].getWinY() == pawns[i].getPawnY()){
+                model.setIdWinner(i);
+                model.stopStage();
+            }
+        }
+
+    }
+
     @Override
     public StageElementsFactory getDefaultElementFactory() {
         return new QuorStageFactory(this);

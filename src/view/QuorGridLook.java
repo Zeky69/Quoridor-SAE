@@ -4,7 +4,6 @@ import boardifier.model.GameStageModel;
 import boardifier.model.GridElement;
 import boardifier.view.ConsoleColor;
 import boardifier.view.GridLook;
-import model.QuorBoard;
 import model.QuorStageModel;
 import model.Wall;
 
@@ -76,7 +75,7 @@ public class QuorGridLook extends GridLook {
         }
     }
 
-
+    @Override
     protected void createShape() {
         GridElement gridElement = (GridElement) element;
         int nbRows = gridElement.getNbRows();

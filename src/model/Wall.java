@@ -4,7 +4,6 @@ import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class Wall extends GameElement {
 
@@ -70,16 +69,10 @@ public class Wall extends GameElement {
 
 
     public static boolean isBorder(int[] coord, Wall.Direction direction){
-        if (direction == Wall.Direction.UP && coord[1]==0){
-            return true;
-        }else if (direction == Wall.Direction.DOWN && coord[1]==8){
-            return true;
-        }else if (direction == Wall.Direction.LEFT && coord[0]==0){
-            return true;
-        }else if (direction == Wall.Direction.RIGHT && coord[0]==8){
-            return true;
-        }
-        return false;
+        return direction == Direction.UP && coord[1] == 0
+                || direction == Direction.DOWN && coord[1] == 8
+                || direction == Direction.LEFT && coord[0] == 0
+                || direction == Direction.RIGHT && coord[0] == 8;
     }
 
 

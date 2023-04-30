@@ -7,6 +7,8 @@ import control.QuorController;
 
 public class Quoridor {
     public static void main(String[] args) {
+        String computerName = "computer";
+        String playerName = "player";
 
         int mode = 0;
         if (args.length == 1) {
@@ -20,16 +22,16 @@ public class Quoridor {
         }
         Model model = new Model();
         if (mode == 0) {
-            model.addHumanPlayer("player " + ConsoleColor.BLUE_BOLD +"1" + ConsoleColor.RESET);
-            model.addHumanPlayer("player "+ ConsoleColor.RED_BOLD +"2" + ConsoleColor.RESET);
+            model.addHumanPlayer(playerName + ConsoleColor.BLUE_BOLD +" 1" + ConsoleColor.RESET);
+            model.addHumanPlayer(playerName+ ConsoleColor.RED_BOLD +" 2" + ConsoleColor.RESET);
         }
         else if (mode == 1) {
-            model.addHumanPlayer("player "+ ConsoleColor.BLUE_BOLD +"1" + ConsoleColor.RESET);
-            model.addComputerPlayer("computer "+ ConsoleColor.RED_BOLD +"2" + ConsoleColor.RESET);
+            model.addHumanPlayer(playerName + ConsoleColor.BLUE_BOLD +" 1" + ConsoleColor.RESET);
+            model.addComputerPlayer(computerName + ConsoleColor.RED_BOLD +" 2" + ConsoleColor.RESET);
         }
         else {
-            model.addComputerPlayer("computer "+ ConsoleColor.BLUE_BOLD +"1" + ConsoleColor.RESET);
-            model.addComputerPlayer("computer "+ ConsoleColor.RED_BOLD +"2" + ConsoleColor.RESET );
+            model.addComputerPlayer(computerName+ ConsoleColor.BLUE_BOLD +" 1" + ConsoleColor.RESET);
+            model.addComputerPlayer(computerName+ ConsoleColor.RED_BOLD +" 2" + ConsoleColor.RESET );
         }
 
         StageFactory.registerModelAndView("Quoridor", "model.QuorStageModel", "view.QuorStageView");
@@ -39,9 +41,10 @@ public class Quoridor {
         control.setFirstStageName("Quoridor");
         try{
             control.startGame();
+
             control.stageLoop();
         } catch (GameException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
 
 
