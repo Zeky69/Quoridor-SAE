@@ -167,7 +167,7 @@ public class QuorController extends Controller {
             }
         }
 
-        if (y!=0 && !walls[y][x].getWall(Wall.Direction.UP) && !walls[y-1][x].getWall(Wall.Direction.DOWN) && !(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y-1)){
+        if (y!=0 && !walls[y][x].getWall(Wall.Direction.UP) && !walls[y-1][x].getWall(Wall.Direction.DOWN) && !((pawns[0].getPawnX() == x && pawns[0].getPawnY() == y-1 || pawns[1].getPawnX() == x && pawns[1].getPawnY() == y-1))){
             dest.add(new int[]{x,y-1});
         }else if(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y-1){
             if(y-1 > 0 && !walls[y-1][x].getWall(Wall.Direction.UP)){
@@ -183,7 +183,7 @@ public class QuorController extends Controller {
 
         }
 
-        if (y!=8 && !walls[y][x].getWall(Wall.Direction.DOWN) && !walls[y+1][x].getWall(Wall.Direction.UP) && !(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y+1)){
+        if (y!=8 && !walls[y][x].getWall(Wall.Direction.DOWN) && !walls[y+1][x].getWall(Wall.Direction.UP) && !((pawns[0].getPawnX() == x && pawns[0].getPawnY() == y+1) || pawns[1].getPawnX() == x && pawns[1].getPawnY() == y+1)){
             dest.add(new int[]{x,y+1});
         }else if(pawns[0].getPawnX() == x && pawns[0].getPawnY() == y+1){
             if(y+1 < 8 && !walls[y+1][x].getWall(Wall.Direction.DOWN)){
