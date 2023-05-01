@@ -39,7 +39,7 @@ public class QuorController extends Controller {
         firstPlayer = true;
     }
 
-    public void stageLoop() {
+    public void stageLoop() {// TODO ZEKY pareil sortie bool
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
         while (!model.isEndStage()) {
@@ -49,7 +49,7 @@ public class QuorController extends Controller {
         endGame();
     }
     @Override
-    public void nextPlayer() {
+    public void nextPlayer() { // TODO ZEKY : Il me faut une sortie booléenne pour savoir si le joueur a bien joué ou pas
         if (!firstPlayer) {
             model.setNextPlayer();
         }
