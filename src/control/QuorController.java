@@ -89,7 +89,7 @@ public class QuorController extends Controller {
 
                     if (choice.equals("P")){
                         System.out.print("Enter the case you want to go >");
-                        moove = consoleIn.readLine();
+                        moove = consoleIn.readLine().toUpperCase();
                         ok = analyseSecondStepP(moove);
                     }
                     else if(choice.equals("W")) {
@@ -213,6 +213,7 @@ public class QuorController extends Controller {
 
         int col = (line.charAt(0)-'A');
         int row = Integer.parseInt(line.substring(1,2))-1;
+        if(row < 0 || row > 8 || col < 0 || col > 8) return false;
 
         gameStage.getBoard().setInvalidCells();
         List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY());
