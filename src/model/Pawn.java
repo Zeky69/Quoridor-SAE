@@ -12,6 +12,8 @@ public class Pawn extends GameElement {
 
     private int winY;
 
+    private int wallCount = 10;
+
     public Pawn(int x, int y, int player ,int winY, GameStageModel gameStageModel) {
         super(gameStageModel);
         this.x = x;
@@ -29,6 +31,18 @@ public class Pawn extends GameElement {
 
     public void setPawnY(int y) {
         this.y = y;
+    }
+
+    public void setWallCount(int wallCount){
+        this.wallCount = wallCount;
+    }
+
+    public int getWallCount(){
+        return this.wallCount;
+    }
+
+    public void decrementWallCount(){
+        this.wallCount--;
     }
 
     public int getPawnX() {

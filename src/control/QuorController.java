@@ -39,7 +39,7 @@ public class QuorController extends Controller {
         firstPlayer = true;
     }
 
-    public void stageLoop() {// TODO ZEKY pareil sortie bool
+    public void stageLoop() {// TODO pareil
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
         while (!model.isEndStage()) {
@@ -49,7 +49,7 @@ public class QuorController extends Controller {
         endGame();
     }
     @Override
-    public void nextPlayer() { // TODO ZEKY : Il me faut une sortie booléenne pour savoir si le joueur a bien joué ou pas
+    public void nextPlayer() { // TODO TITOU : Desole ce n'est pas possbile car on override la methode dpnc on ne peut pas changer la signature
         if (!firstPlayer) {
             model.setNextPlayer();
         }
@@ -380,6 +380,7 @@ public class QuorController extends Controller {
 
         System.out.println("le mur a été posé");
         gameStage.getNbWalls()[model.getIdPlayer()]--;
+        pawns[model.getIdPlayer()].decrementWallCount();
 
         gameStage.getGrid("QuorBoard").resetReachableCells(true);
         return true;

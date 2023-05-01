@@ -14,7 +14,11 @@ public class QuorStageFactory extends StageElementsFactory {
         this.stageModel = (QuorStageModel) model;
 
     }
-    //FIXME : faire un getteur pour le QuorStageModel stageModel ?
+
+    public QuorStageModel getStageModel() {
+        return this.stageModel;
+    }
+    //FIXME : faire un getteur pour le QuorStageModel stageModel ? ok
     // Voir QuorStageFactoryUnitTest.java
 
     Wall[][] initWalls() {
