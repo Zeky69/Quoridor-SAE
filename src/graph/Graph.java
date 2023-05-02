@@ -78,6 +78,8 @@ public class Graph {
         }
 
         if (!node1.hasArete(node2) || !node2.hasArete(node1)) {
+            System.out.println(node1 + " " + node2);
+
             System.out.println("Ces deux nœuds ne sont pas connectés");
             return;
         }
@@ -87,26 +89,27 @@ public class Graph {
     }
 
     public void removeArete(int[] pos1, int[] pos2, Wall.Direction direction) {
-
-
-
-
         if (pos1 == null || pos2 == null || direction == null) {
             System.out.println("Une valeur est nulle");
            return;
         }
-
-
         int[] dirInt = Wall.directionToInt(direction);
-
         int[] pos1bis = new int[]{pos1[0]+dirInt[0], pos1[1]+dirInt[1]};
         int[] pos2bis = new int[]{pos2[0]+dirInt[0], pos2[1]+dirInt[1]};
         removeArete(pos1, pos1bis);
         removeArete(pos2, pos2bis);
+    }
 
-
-
-
+    public void addArete(int[] pos1, int[] pos2, Wall.Direction direction) {
+        if (pos1 == null || pos2 == null || direction == null) {
+            System.out.println("Une valeur est nulle");
+            return;
+        }
+        int[] dirInt = Wall.directionToInt(direction);
+        int[] pos1bis = new int[]{pos1[0]+dirInt[0], pos1[1]+dirInt[1]};
+        int[] pos2bis = new int[]{pos2[0]+dirInt[0], pos2[1]+dirInt[1]};
+        addArete2(pos1, pos1bis);
+        addArete2(pos2, pos2bis);
 
     }
 
@@ -267,6 +270,25 @@ public class Graph {
 
     }
 
+
+    public void addArete2(int[] positionNoeud , int[] positionArete){
+        int posNoeud = noeuds.indexOf(new Noeud(positionNoeud ));
+
+        Noeud noeud = null;
+        Noeud arete = null;
+        if(posNoeud == -1){
+            return;
+        }
+        int posArete = noeuds.indexOf(new Noeud(positionArete ));
+        if(posArete == -1){
+            return;
+        }
+        noeud = noeuds.get(posNoeud);
+        arete = noeuds.get(posArete);
+        noeud.addArete(arete);
+        arete.addArete(noeud);
+
+    }
 
 
     public void addArete(int[] positionNoeud , int[] positionArete){

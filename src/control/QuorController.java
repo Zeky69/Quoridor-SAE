@@ -40,10 +40,12 @@ public class QuorController extends Controller {
     }
 
     public void stageLoop() {// TODO pareil
+        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
         while (!model.isEndStage()) {
             nextPlayer();
+            gameStage.getBoard().resetReachableCells(false);
             update();
         }
         endGame();
@@ -62,6 +64,8 @@ public class QuorController extends Controller {
             QuorDecider decider = new QuorDecider(model,this);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
+
+
         }
         else {
             String choice="";
@@ -127,11 +131,42 @@ public class QuorController extends Controller {
     }
 
 
+    public List<int[]> possibleWall(Wall[][] walls , Pawn[] pawns){
+        List<int[]> possibleWall = new ArrayList<>();
+        Graph graph = new Graph(walls);
+        for (int i = 0 ; i < 9 ; i++){
+            for (int j = 0 ; j < 8 ; j++){
+                if ( i!= 0 && !walls[i][j].getWall(Wall.Direction.UP)&& !walls[i][j+1].getWall(Wall.Direction.UP) && !isCross(new int[]{j,i}, new int[]{j+1,i} , Wall.Direction.UP ,walls) ){
+                    graph.removeArete(new int[]{j,i}, new int[]{j+1,i} , Wall.Direction.UP);
+                    if(graph.isPathPossibleY(pawns[0].getPawnXY(), pawns[0].getWinY()) && graph.isPathPossibleY(pawns[1].getPawnXY(), pawns[1].getWinY())){
+                        possibleWall.add(new int[]{j,i,j+1,i,0});
+                    }
+                    graph.addArete(new int[]{j,i}, new int[]{j+1,i} , Wall.Direction.UP);
+                }
+            }
+        }
+
+        for (int i = 0 ; i < 8 ; i++){
+            for (int j = 0 ; j < 9 ; j++){
+                if ( j!= 0 && !walls[i][j].getWall(Wall.Direction.LEFT)&& !walls[i+1][j].getWall(Wall.Direction.LEFT)&& !isCross(new int[]{j,i}, new int[]{j,i+1} , Wall.Direction.UP ,walls) ){
+                    graph.removeArete(new int[]{j,i}, new int[]{j,i+1} , Wall.Direction.LEFT);
+                    if(graph.isPathPossibleY(pawns[0].getPawnXY(), pawns[0].getWinY()) && graph.isPathPossibleY(pawns[1].getPawnXY(), pawns[1].getWinY())){
+                        possibleWall.add(new int[]{j,i,j,i+1,2});
+                    }
+                    graph.addArete(new int[]{j,i}, new int[]{j,i+1} , Wall.Direction.LEFT);
+                }
+            }
+        }
+
+
+        return possibleWall;
+
+    }
+
+
     //TODO A tester correctement et a essayer de rendre bien moins complexe
-    public List<int[]> possibleDest(int x , int y){
+    public List<int[]> possibleDest(int x , int y , Wall[][] walls , Pawn[] pawns){
         List<int[]> dest = new ArrayList<>();
-        Wall[][] walls = ((QuorStageModel)model.getGameStage()).getWalls();
-        Pawn[] pawns = ((QuorStageModel)model.getGameStage()).getPawns();
 
         // verifie si le pion peut aller a gauche ou sinon si il peut sauter par dessus un pion
         if (x!=0 && !walls[y][x].getWall(Wall.Direction.LEFT) && !walls[y][x-1].getWall(Wall.Direction.RIGHT) && !(pawns[0].getPawnX() == x-1 && pawns[0].getPawnY() == y || pawns[1].getPawnX() == x-1 && pawns[1].getPawnY() == y)){
@@ -215,7 +250,7 @@ public class QuorController extends Controller {
         if(row < 0 || row > 8 || col < 0 || col > 8) return false;
 
         gameStage.getBoard().setInvalidCells();
-        List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY());
+        List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY() , gameStage.getWalls(), gameStage.getPawns());
 
         for(int[] dest : possibleDest){
             System.out.println(Arrays.toString(dest));
@@ -289,9 +324,8 @@ public class QuorController extends Controller {
 
 
 
-    public boolean isCross(int[] coord , int[] coord2 , Wall.Direction dir){
+    public boolean isCross(int[] coord , int[] coord2 , Wall.Direction dir , Wall[][] walls ){
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-        Wall[][] walls = gameStage.getWalls();
         orientation orien = coordsToOrientation(coord , coord2);
         if (orien == orientation.HORIZONTAL){
             int wall1 = Math.min(coord[0], coord2[0]);
@@ -359,7 +393,7 @@ public class QuorController extends Controller {
 
         }
 
-        if (isCross(coord,coord2,dir)){
+        if (isCross(coord,coord2,dir,walls)){
             System.out.println("le mur croise un autre mur");
             return false;
         }

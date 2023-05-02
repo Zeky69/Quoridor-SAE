@@ -11,8 +11,11 @@ public class Wall extends GameElement {
 
     private boolean[] wall;
 
+    private GameStageModel gameStageModel;
+
     public Wall(boolean[] wall, GameStageModel gameStageModel) {
         super(gameStageModel);
+        this.gameStageModel = gameStageModel;
         this.wall = wall;
     }
 
@@ -86,6 +89,16 @@ public class Wall extends GameElement {
         } else if(Direction.RIGHT == direction){
             this.wall[3] = bool;
         }
+    }
+
+    public GameStageModel getGameStageModel(){
+        return this.gameStageModel;
+    }
+
+    public Wall copy(){
+        boolean[] wallBool = this.getWall().clone();
+        return new Wall(wallBool, this.getGameStageModel());
+
     }
 
     public String toString(){

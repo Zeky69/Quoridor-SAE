@@ -25,6 +25,18 @@ public class Pawn extends GameElement {
         type = ElementTypes.getType("pawn");
     }
 
+    public Pawn(int x, int y,int wallCount, int player ,int winY, GameStageModel gameStageModel) {
+        super(gameStageModel);
+        this.x = x;
+        this.y = y;
+        this.player = player;
+        this.winY = winY;
+        this.wallCount = wallCount;
+
+        ElementTypes.register("pawn",50);
+        type = ElementTypes.getType("pawn");
+    }
+
     public void setPawnX(int x) {
         this.x = x;
     }
@@ -63,8 +75,18 @@ public class Pawn extends GameElement {
 
     public int[] getPawnXY(){return new int[]{x,y};}
 
+    public void setPawnXY(int[] coord){
+        this.x = coord[0];
+        this.y = coord[1];
+
+    }
+
     public int getPlayer() {
         return this.player;
+    }
+
+    public Pawn copy(){
+        return new Pawn(this.x , this.y ,this.wallCount, this.player , this.winY , this.gameStageModel);
     }
 
 }
