@@ -14,6 +14,7 @@ import model.QuorBoard;
 import model.QuorStageModel;
 import model.Wall;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class QuorDecider extends Decider {
@@ -49,16 +50,15 @@ public class QuorDecider extends Decider {
     public int evaluteState(Pawn pawn1 , Pawn pawn2 , Wall[][] walls){
 
         if(pawn1.getWinY() == pawn1.getPawnY()){
-            return 1000;
+            return 100000;
         }
         Graph graph = new Graph(walls);
         int distancePawn1 =  graph.shortestPath(pawn1.getPawnXY() , pawn1.getWinY());
         int distancePawn2 = graph.shortestPath(pawn2.getPawnXY() , pawn2.getWinY());
         int wallPawn1 = pawn1.getWallCount();
         int wallPawn2 = pawn2.getWallCount();
-        int wallDifference = wallPawn1 - wallPawn2;
-        int distanceDifference = distancePawn1 - distancePawn2;
-        return 1000 - (distanceDifference * 8 + wallDifference*10);
+        double distanceDifference = distancePawn2*0.5 - distancePawn1;
+        return ((int)distanceDifference*18 +wallPawn1*20 );
     }
 
     public int[] scoreAI(){
@@ -69,7 +69,7 @@ public class QuorDecider extends Decider {
         Pawn pawnCurrent = pawns[model.getIdPlayer()];
         Pawn pawnOther = pawns[(model.getIdPlayer()+1)%2];
         List<int[]> possibleMoves = ((QuorController)control).possibleDest(pawnCurrent.getPawnX() , pawnCurrent.getPawnY() ,walls, pawns);
-        List<int[]> possibleWalls = ((QuorController)control).possibleWall(walls , pawns);
+
         int[] bestMove = null;
         int bestScore = Integer.MIN_VALUE;
         int score ;
@@ -81,18 +81,22 @@ public class QuorDecider extends Decider {
                 bestMove = move;
             }
         }
-
-        for(int[] moveWall : possibleWalls){
-            wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),true);
-            wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),true);
-            score = evaluteState(pawnCurrent,pawnOther,wallsCopy);
-            wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),false);
-            wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),false);
-            if(score>bestScore){
-                bestScore = score;
-                bestMove =  moveWall;
+        if(pawnCurrent.getWallCount()>0){
+            List<int[]> possibleWalls = ((QuorController)control).possibleWall(walls , pawns);
+            for(int[] moveWall : possibleWalls){
+                wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),true);
+                wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),true);
+                score = evaluteState(pawnCurrent,pawnOther,wallsCopy);
+                wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),false);
+                wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),false);
+                if(score>bestScore){
+                    bestScore = score;
+                    bestMove =  moveWall;
+                }
             }
         }
+
+        System.out.println(Arrays.toString(bestMove) + " " + bestScore);
 
 
 
@@ -111,14 +115,16 @@ public class QuorDecider extends Decider {
         ActionList actions = new ActionList(true);
         if(moveIA.length == 2){
             pawn.setPawnXY(moveIA);
-            GameAction move = new MoveAction(model, pawn, "Quorboard", moveIA[1] , moveIA[0]);
+            GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1] , moveIA[0]);
             actions.addSingleAction(move);
         }else{
             Wall[][] walls = stage.getWalls();
             ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , Wall.intToDirection(moveIA[4]),walls);
             ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , Wall.intToDirection(moveIA[4]),walls);
+            pawn.setWallCount(pawn.getWallCount()-1);
 
         }
+
         return actions;
 
 

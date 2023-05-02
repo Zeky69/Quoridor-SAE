@@ -46,6 +46,7 @@ public class QuorController extends Controller {
         while (!model.isEndStage()) {
             nextPlayer();
             gameStage.getBoard().resetReachableCells(false);
+            gameStage.hasWon();
             update();
         }
         endGame();
@@ -107,8 +108,6 @@ public class QuorController extends Controller {
                 }
                 catch(IOException e) {}
 
-                QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-                gameStage.hasWon();
 
 
 
