@@ -126,74 +126,49 @@ public class Graph {
 
 
 
-    public int shortestPath(int[] positionInit, int[] positionFinal) {
-        Map<Noeud, Integer> distances = new HashMap<>();
-        for (Noeud noeud : this.noeuds) {
-            distances.put(noeud, Integer.MAX_VALUE);
-        }
-        List<Noeud> nonVisites = new ArrayList<>(this.noeuds);
-        distances.put(getNoeud(positionInit), 0);
-
-        while (!nonVisites.isEmpty()) {
-            Noeud current = null;
-            int minDistance = Integer.MAX_VALUE;
-            for (Noeud noeud : nonVisites) {
-                if (distances.get(noeud) < minDistance) {
-                    current = noeud;
-                    minDistance = distances.get(noeud);
-                }
-            }
-            if (current == null) {
-                break;
-            }
-            for (Noeud voisin : current.getArete()) {
-                int distance = distances.get(current) + 1;
-                if (distance < distances.get(voisin)) {
-                    distances.put(voisin, distance);
-                }
-            }
-            nonVisites.remove(current);
-        }
-        return distances.get(this.getNoeud(positionFinal));
-    }
     public int shortestPath(int[] positionInit, int y) {
         Map<Noeud, Integer> distances = new HashMap<>();
+        Set<Noeud> nonVisites = new HashSet<>(this.noeuds);
+
         for (Noeud noeud : this.noeuds) {
             distances.put(noeud, Integer.MAX_VALUE);
         }
-        List<Noeud> nonVisites = new ArrayList<>(this.noeuds);
-        distances.put(getNoeud(positionInit), 0);
 
-        while (!nonVisites.isEmpty()) {
-            Noeud current = null;
-            int minDistance = Integer.MAX_VALUE;
-            for (Noeud noeud : nonVisites) {
-                if (distances.get(noeud) < minDistance) {
-                    current = noeud;
-                    minDistance = distances.get(noeud);
-                }
+        Noeud start = getNoeud(positionInit);
+        distances.put(start, 0);
+
+        PriorityQueue<Noeud> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            Noeud current = queue.poll();
+
+            if (!nonVisites.contains(current)) {
+                continue;
             }
-            if (current == null) {
-                break;
-            }
+
             for (Noeud voisin : current.getArete()) {
                 int distance = distances.get(current) + 1;
                 if (distance < distances.get(voisin)) {
                     distances.put(voisin, distance);
+                    queue.remove(voisin);
+                    queue.add(voisin);
                 }
             }
+
             nonVisites.remove(current);
         }
+
         int minDistance = Integer.MAX_VALUE;
-        for ( Noeud noeud : distances.keySet()) {
-            if (noeud.getPosition()[1] == y) {
-                if (distances.get(noeud) < minDistance) {
-                    minDistance = distances.get(noeud);
-                }
+        for (Noeud noeud : distances.keySet()) {
+            if (noeud.getPosition()[1] == y && distances.get(noeud) < minDistance) {
+                minDistance = distances.get(noeud);
             }
         }
+
         return minDistance;
     }
+
 
 
 
@@ -292,32 +267,36 @@ public class Graph {
 
 
     public void addArete(int[] positionNoeud , int[] positionArete){
-        int posNoeud = noeuds.indexOf(new Noeud(positionNoeud ));
+        int posNoeud = findNoeudIndex(positionNoeud);
         Noeud noeud = null;
         Noeud arete = null;
 
         if(posNoeud == -1){
-            noeud = new Noeud(positionNoeud );
+            noeud = new Noeud(positionNoeud);
             noeuds.add(noeud);
         }else{
             noeud = noeuds.get(posNoeud);
         }
 
-        int posArete = noeuds.indexOf(new Noeud(positionArete ));
+        int posArete = findNoeudIndex(positionArete);
         if(posArete == -1){
             arete = new Noeud(positionArete);
             noeuds.add(arete);
         }else{
             arete = noeuds.get(posArete);
         }
+
         noeud.addArete(arete);
+    }
 
-
-
-
-
-
-
+    private int findNoeudIndex(int[] position){
+        for(int i = 0; i < noeuds.size(); i++){
+            Noeud noeud = noeuds.get(i);
+            if(Arrays.equals(noeud.getPosition(), position)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public String toString(){

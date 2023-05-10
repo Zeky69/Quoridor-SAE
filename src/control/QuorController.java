@@ -147,7 +147,7 @@ public class QuorController extends Controller {
 
         for (int i = 0 ; i < 8 ; i++){
             for (int j = 0 ; j < 9 ; j++){
-                if ( j!= 0 && !walls[i][j].getWall(Wall.Direction.LEFT)&& !walls[i+1][j].getWall(Wall.Direction.LEFT)&& !isCross(new int[]{j,i}, new int[]{j,i+1} , Wall.Direction.UP ,walls) ){
+                if ( j!= 0 && !walls[i][j].getWall(Wall.Direction.LEFT)&& !walls[i+1][j].getWall(Wall.Direction.LEFT)&& !isCross(new int[]{j,i}, new int[]{j,i+1} , Wall.Direction.LEFT ,walls) ){
                     graph.removeArete(new int[]{j,i}, new int[]{j,i+1} , Wall.Direction.LEFT);
                     if(graph.isPathPossibleY(pawns[0].getPawnXY(), pawns[0].getWinY()) && graph.isPathPossibleY(pawns[1].getPawnXY(), pawns[1].getWinY())){
                         possibleWall.add(new int[]{j,i,j,i+1,2});
@@ -245,7 +245,7 @@ public class QuorController extends Controller {
         GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
         if(line.length() !=2)return false;
         int col = (line.charAt(0)-'A');
-        int row = Integer.parseInt(line.substring(1,2))-1;
+        int row = (line.charAt(1)-'1');
         if(row < 0 || row > 8 || col < 0 || col > 8) return false;
 
         gameStage.getBoard().setInvalidCells();

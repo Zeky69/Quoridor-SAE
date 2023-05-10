@@ -48,7 +48,6 @@ public class QuorDecider extends Decider {
 
 
     public int evaluteState(Pawn pawn1 , Pawn pawn2 , Wall[][] walls){
-
         if(pawn1.getWinY() == pawn1.getPawnY()){
             return 100000;
         }
@@ -56,33 +55,32 @@ public class QuorDecider extends Decider {
         int distancePawn1 =  graph.shortestPath(pawn1.getPawnXY() , pawn1.getWinY());
         int distancePawn2 = graph.shortestPath(pawn2.getPawnXY() , pawn2.getWinY());
         int wallPawn1 = pawn1.getWallCount();
-        int wallPawn2 = pawn2.getWallCount();
-        double distanceDifference = distancePawn2*0.5 - distancePawn1;
-        return ((int)distanceDifference*18 +wallPawn1*20 );
+        return  ((-distancePawn1 +distancePawn2*2) * 20 + wallPawn1 * 40);
     }
+
 
     public int[] scoreAI(){
 
+
         Pawn[] pawns = copyPawns(((QuorStageModel)(model.getGameStage())).getPawns());
-        Wall[][] walls = copyWalls(((QuorStageModel)(model.getGameStage())).getWalls());
-        Wall[][] wallsCopy = copyWalls(walls);
+        Wall[][] wallsCopy = copyWalls(((QuorStageModel)(model.getGameStage())).getWalls());
         Pawn pawnCurrent = pawns[model.getIdPlayer()];
         Pawn pawnOther = pawns[(model.getIdPlayer()+1)%2];
-        List<int[]> possibleMoves = ((QuorController)control).possibleDest(pawnCurrent.getPawnX() , pawnCurrent.getPawnY() ,walls, pawns);
+        List<int[]> possibleMoves = ((QuorController)control).possibleDest(pawnCurrent.getPawnX() , pawnCurrent.getPawnY() ,wallsCopy, pawns);
 
         int[] bestMove = null;
         int bestScore = Integer.MIN_VALUE;
         int score ;
         for(int[] move : possibleMoves){
             pawnCurrent.setPawnXY(move);
-            score = evaluteState(pawnCurrent ,pawnOther , walls);
+            score = evaluteState(pawnCurrent,pawnOther,wallsCopy);
             if(score > bestScore){
                 bestScore = score;
                 bestMove = move;
             }
         }
         if(pawnCurrent.getWallCount()>0){
-            List<int[]> possibleWalls = ((QuorController)control).possibleWall(walls , pawns);
+            List<int[]> possibleWalls = ((QuorController)control).possibleWall(wallsCopy , pawns);
             for(int[] moveWall : possibleWalls){
                 wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),true);
                 wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),true);
