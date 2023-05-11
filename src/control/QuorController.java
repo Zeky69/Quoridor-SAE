@@ -408,12 +408,8 @@ public class QuorController extends Controller {
 
 
         wallPlay(coord,coord2,dir);
-
-        System.out.println(Arrays.toString(coord) + " " + Arrays.toString(coord2) + " " );
-
         gameStage.getBoard().update();
 
-        System.out.println("le mur a été posé");
         gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();
 

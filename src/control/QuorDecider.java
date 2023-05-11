@@ -94,7 +94,6 @@ public class QuorDecider extends Decider {
             }
         }
 
-        System.out.println(Arrays.toString(bestMove) + " " + bestScore);
 
 
 
