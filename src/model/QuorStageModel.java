@@ -14,6 +14,11 @@ public class QuorStageModel extends GameStageModel {
 
     Wall[][] walls = new Wall[9][9];
 
+    Wall[][] wallsShow;
+
+    WallPot wallPot1;
+    WallPot wallPot2 ;
+
 
     public QuorStageModel(String name, Model model) {
         super(name , model);
@@ -21,6 +26,25 @@ public class QuorStageModel extends GameStageModel {
 
     public QuorBoard getBoard() {
         return this.board;
+    }
+
+    public WallPot getWallPot1() {
+        return this.wallPot1;
+    }
+
+    public Wall[][] getWallsShow() {
+        return this.wallsShow;
+    }
+
+
+
+    public void setWallsShow(Wall[][] wallsShow) {
+        this.wallsShow = wallsShow;
+    }
+
+
+    public WallPot getWallPot2() {
+        return this.wallPot2;
     }
 
     public void setBoard(QuorBoard board) {
@@ -38,7 +62,12 @@ public class QuorStageModel extends GameStageModel {
     public void setWalls(Wall[][] walls) {
         this.walls = walls;
     }
-
+    public void setWallPot2(WallPot wallPot2) {
+        this.wallPot2 = wallPot2;
+    }
+    public  void setWallPot1(WallPot wallPot1) {
+        this.wallPot1 = wallPot1;
+    }
     public Wall[][] getWalls() {
         return walls;
     }
@@ -65,6 +94,8 @@ public class QuorStageModel extends GameStageModel {
     public StageElementsFactory getDefaultElementFactory() {
         return new QuorStageFactory(this);
     }
+
+
 
 }
 

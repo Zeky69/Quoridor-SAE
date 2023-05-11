@@ -117,9 +117,12 @@ public class QuorDecider extends Decider {
             actions.addSingleAction(move);
         }else{
             Wall[][] walls = stage.getWalls();
+            Wall[][] wallsShow = stage.getWallsShow();
             ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , Wall.intToDirection(moveIA[4]),walls);
             ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , Wall.intToDirection(moveIA[4]),walls);
             pawn.setWallCount(pawn.getWallCount()-1);
+            stage.removeElement(wallsShow[model.getIdPlayer()][9-pawn.getWallCount()]);
+
 
         }
 

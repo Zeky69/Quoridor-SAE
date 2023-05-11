@@ -3,6 +3,7 @@ package control;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.model.GameElement;
+import boardifier.model.GameStageModel;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
@@ -409,11 +410,17 @@ public class QuorController extends Controller {
         wallPlay(coord,coord2,dir);
 
         System.out.println(Arrays.toString(coord) + " " + Arrays.toString(coord2) + " " );
+
         gameStage.getBoard().update();
 
         System.out.println("le mur a été posé");
         gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();
+
+        Wall[][] wallsShow = gameStage.getWallsShow();
+        gameStage.removeElement(wallsShow[model.getIdPlayer()][9-pawns[model.getIdPlayer()].getWallCount()]);
+
+
 
         gameStage.getGrid("QuorBoard").resetReachableCells(true);
         return true;

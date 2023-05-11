@@ -13,6 +13,11 @@ public class Wall extends GameElement {
 
     private GameStageModel gameStageModel;
 
+    public Wall(GameStageModel gameStageModel) {
+        super(gameStageModel);
+        this.gameStageModel = gameStageModel;
+    }
+
     public Wall(boolean[] wall, GameStageModel gameStageModel) {
         super(gameStageModel);
         this.gameStageModel = gameStageModel;
