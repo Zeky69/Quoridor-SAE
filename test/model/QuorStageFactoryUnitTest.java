@@ -14,8 +14,7 @@ public class QuorStageFactoryUnitTest {
 
         Model model = new Model(); //création du model
         QuorStageModel quorStageModel = new QuorStageModel("jeu", model);
-        //FIXME QuorStageModel dans le constucteur, est ce qu'il faudrait initialiser board et Pawn?
-        // en gros les attribut sont initialiser dans des fonctions plus tard
+
     }
 
     @Test
