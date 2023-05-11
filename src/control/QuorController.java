@@ -63,7 +63,7 @@ public class QuorController extends Controller {
         Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
-            QuorDecider decider = new QuorDecider(model,this);
+            QuorDecider decider = new QuorDecider(model,this, model.getIdPlayer());
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
 
