@@ -1,42 +1,53 @@
 package graph;
+
 import model.Wall;
+
 import java.util.*;
+
 public class Graph {
     private List<Noeud> noeuds = new ArrayList<>();
 
-    public Graph(){
-
-    }
-
-    private boolean isBorder(int[] coord, Wall.Direction direction){
-        if (direction == Wall.Direction.UP && coord[1]==0) return true;
-        else if (direction == Wall.Direction.DOWN && coord[1]==8){
-            return true;
-        }else if (direction == Wall.Direction.LEFT && coord[0]==0){
-            return true;
-        }else if (direction == Wall.Direction.RIGHT && coord[0]==8){
-            return true;
+    /**
+     *
+     * Checks if a wall is at the border of the game board in the specified direction.
+     * @param coord the coordinates of the wall
+     * @param direction the direction to check
+     * @return {@code true} if a wall is at the border in the specified direction, {@code false} otherwise
+     */
+    private boolean wallIsBorder(int[] coord, Wall.Direction direction) {
+        if (direction == Wall.Direction.UP && coord[1] == 0) return false;
+        else if (direction == Wall.Direction.DOWN && coord[1] == 8) {
+            return false;
+        } else if (direction == Wall.Direction.LEFT && coord[0] == 0) {
+            return false;
+        } else if (direction == Wall.Direction.RIGHT && coord[0] == 8) {
+            return false;
         }
-        return false;
+        return true;
     }
 
-    public Graph(Wall[][] walls){
+    /**
+     *
+     * Constructs a graph based on the given walls.
+     * @param walls a 2D array of Wall objects representing the maze walls
+     */
+    public Graph(Wall[][] walls) {
         for (int i = 0; i < walls.length; i++) {
             for (int j = 0; j < walls[i].length; j++) {
-                addNoeud(new int[]{j,i});
-                if( !isBorder(new int[]{j,i}, Wall.Direction.UP) && !(walls[i][j].getWall(Wall.Direction.UP) || walls[i-1][j].getWall(Wall.Direction.DOWN))){
-                    addArete(new int[]{j,i} ,new int[]{j,i-1});
+                addNoeud(new int[]{j, i});
+                if (wallIsBorder(new int[]{j, i}, Wall.Direction.UP) && !(walls[i][j].getWall(Wall.Direction.UP) || walls[i - 1][j].getWall(Wall.Direction.DOWN))) {
+                    addArete(new int[]{j, i}, new int[]{j, i - 1});
                 }
-                if(!isBorder(new int[]{j,i}, Wall.Direction.DOWN) && !( walls[i][j].getWall(Wall.Direction.DOWN) || walls[i+1][j].getWall(Wall.Direction.UP))){
-                    addArete(new int[]{j,i} ,new int[]{j,i+1});
+                if (wallIsBorder(new int[]{j, i}, Wall.Direction.DOWN) && !(walls[i][j].getWall(Wall.Direction.DOWN) || walls[i + 1][j].getWall(Wall.Direction.UP))) {
+                    addArete(new int[]{j, i}, new int[]{j, i + 1});
 
                 }
-                if(!isBorder(new int[]{j,i}, Wall.Direction.LEFT) && !(walls[i][j].getWall(Wall.Direction.LEFT ) || walls[i][j-1].getWall(Wall.Direction.RIGHT))){
-                    addArete(new int[]{j,i} ,new int[]{j-1,i});
+                if (wallIsBorder(new int[]{j, i}, Wall.Direction.LEFT) && !(walls[i][j].getWall(Wall.Direction.LEFT) || walls[i][j - 1].getWall(Wall.Direction.RIGHT))) {
+                    addArete(new int[]{j, i}, new int[]{j - 1, i});
 
                 }
-                if(!isBorder(new int[]{j,i}, Wall.Direction.RIGHT) && !(walls[i][j].getWall(Wall.Direction.RIGHT) || walls[i][j+1].getWall(Wall.Direction.LEFT))){
-                    addArete(new int[]{j,i} ,new int[]{j+1,i});
+                if (wallIsBorder(new int[]{j, i}, Wall.Direction.RIGHT) && !(walls[i][j].getWall(Wall.Direction.RIGHT) || walls[i][j + 1].getWall(Wall.Direction.LEFT))) {
+                    addArete(new int[]{j, i}, new int[]{j + 1, i});
 
 
                 }
@@ -48,26 +59,12 @@ public class Graph {
     }
 
 
-
-    public boolean hasArete(int[] position1, int[] position2) {
-        Noeud noeud1 = getNoeud(position1);
-        Noeud noeud2 = getNoeud(position2);
-
-        if (noeud1 == null || noeud2 == null) {
-            return false; // l'un des noeuds n'existe pas
-        }
-
-        for (Noeud voisin : noeud1.getArete()) {
-            if (voisin.equals(noeud2)) {
-                return true; // on a trouvé une arête vers le noeud spécifié
-            }
-        }
-
-        return false; // on n'a pas trouvé d'arête vers le noeud spécifié
-    }
-
-
-
+    /**
+     *
+     * Removes an edge between two nodes.
+     * @param pos1 The position of the first node.
+     * @param pos2 The position of the second node.
+     */
     public void removeArete(int[] pos1, int[] pos2) {
         Noeud node1 = getNoeud(pos1);
         Noeud node2 = getNoeud(pos2);
@@ -85,47 +82,64 @@ public class Graph {
         }
 
         node2.removeArete(node1);
-
     }
 
+
+    /**
+     * Remove aretes between two nodes
+     * @param pos1 the first node
+     * @param pos2 the second node
+     * @param direction the direction of the wall
+     */
     public void removeArete(int[] pos1, int[] pos2, Wall.Direction direction) {
         if (pos1 == null || pos2 == null || direction == null) {
             System.out.println("Une valeur est nulle");
-           return;
+            return;
         }
         int[] dirInt = Wall.directionToInt(direction);
-        int[] pos1bis = new int[]{pos1[0]+dirInt[0], pos1[1]+dirInt[1]};
-        int[] pos2bis = new int[]{pos2[0]+dirInt[0], pos2[1]+dirInt[1]};
+        int[] pos1bis = new int[]{pos1[0] + dirInt[0], pos1[1] + dirInt[1]};
+        int[] pos2bis = new int[]{pos2[0] + dirInt[0], pos2[1] + dirInt[1]};
         removeArete(pos1, pos1bis);
         removeArete(pos2, pos2bis);
     }
 
+    /**
+     * Add a arrete between two nodes
+     * @param pos1
+     * @param pos2
+     * @param direction
+     */
     public void addArete(int[] pos1, int[] pos2, Wall.Direction direction) {
         if (pos1 == null || pos2 == null || direction == null) {
             System.out.println("Une valeur est nulle");
             return;
         }
         int[] dirInt = Wall.directionToInt(direction);
-        int[] pos1bis = new int[]{pos1[0]+dirInt[0], pos1[1]+dirInt[1]};
-        int[] pos2bis = new int[]{pos2[0]+dirInt[0], pos2[1]+dirInt[1]};
+        int[] pos1bis = new int[]{pos1[0] + dirInt[0], pos1[1] + dirInt[1]};
+        int[] pos2bis = new int[]{pos2[0] + dirInt[0], pos2[1] + dirInt[1]};
         addArete2(pos1, pos1bis);
         addArete2(pos2, pos2bis);
 
     }
 
-
-
-
-
-    public Noeud getNoeud(int[] position){
+    /**
+     * Retrieves a node based on its position.
+     * @param position The position of the node to retrieve.
+     * @return The node at the specified position, or null if not found.
+     */
+    public Noeud getNoeud(int[] position) {
         int index = noeuds.indexOf(new Noeud(position));
-        if(index != -1)
+        if (index != -1)
             return noeuds.get(index);
         return null;
     }
 
-
-
+    /**
+     * Calculates the shortest path from a given initial position to a target position.
+     * @param positionInit an array representing the initial position coordinates
+     * @param y the y-coordinate of the target position
+     * @return the shortest path length as an integer
+     */
     public int shortestPath(int[] positionInit, int y) {
         Map<Noeud, Integer> distances = new HashMap<>();
         Set<Noeud> nonVisites = new HashSet<>(this.noeuds);
@@ -168,48 +182,17 @@ public class Graph {
 
         return minDistance;
     }
-
-
-
-
-
-
-
-
-    public boolean isPathPossible(int[] positionInit, int[] positionFinal) {
-        Noeud noeudInit = getNoeud(positionInit);
-        Noeud noeudFinal = getNoeud(positionFinal);
-
-        if (noeudInit == null || noeudFinal == null) {
-            return false; // si l'un des noeuds n'existe pas, il n'y a pas de chemin possible
-        }
-
-        Queue<Noeud> queue = new LinkedList<>();
-        Set<Noeud> visited = new HashSet<>();
-        queue.offer(noeudInit);
-        visited.add(noeudInit);
-
-        while (!queue.isEmpty()) {
-            Noeud current = queue.poll();
-            if (current.equals(noeudFinal)) {
-                return true; // si on a atteint le noeud final, on a trouvé un chemin possible
-            }
-            for (Noeud neighbor : current.getArete()) {
-                if (!visited.contains(neighbor)) {
-                    queue.offer(neighbor);
-                    visited.add(neighbor);
-                }
-            }
-        }
-
-        return false; // on a parcouru tout le graphe sans atteindre le noeud final, donc pas de chemin possible
-    }
-
+    /**
+     * Checks if a path is possible to reach a specific y-coordinate.
+     * @param positionInit the initial position
+     * @param y the target y-coordinate
+     * @return {@code true} if a path is possible, {@code false} otherwise
+     */
     public boolean isPathPossibleY(int[] positionInit, int y) {
         Noeud noeudInit = getNoeud(positionInit);
 
         if (noeudInit == null) {
-            return false; // si l'un des noeuds n'existe pas, il n'y a pas de chemin possible
+            return false;
         }
 
         Queue<Noeud> queue = new LinkedList<>();
@@ -219,8 +202,8 @@ public class Graph {
 
         while (!queue.isEmpty()) {
             Noeud current = queue.poll();
-            if (current.getPosition()[1]==y) {
-                return true; // si on a atteint le noeud final, on a trouvé un chemin possible
+            if (current.getPosition()[1] == y) {
+                return true;
             }
             for (Noeud neighbor : current.getArete()) {
                 if (!visited.contains(neighbor)) {
@@ -230,32 +213,38 @@ public class Graph {
             }
         }
 
-        return false; // on a parcouru tout le graphe sans atteindre le noeud final, donc pas de chemin possible
+        return false;
     }
 
-
-
-
-
-    public void addNoeud(int[] position){
-        if(!noeuds.contains(new Noeud(position))){
-            noeuds.add(new Noeud(position ));
+    /**
+     * Adds a node to the collection of nodes.
+     * @param position The position of the node as an array of integers.
+     *
+     */
+    public void addNoeud(int[] position) {
+        if (!noeuds.contains(new Noeud(position))) {
+            noeuds.add(new Noeud(position));
 
         }
 
     }
 
-
-    public void addArete2(int[] positionNoeud , int[] positionArete){
-        int posNoeud = noeuds.indexOf(new Noeud(positionNoeud ));
+    /**
+     *
+     * Adds an edge between two nodes.
+     * @param positionNoeud The position of the node to connect.
+     * @param positionArete The position of the edge to connect.
+     */
+    public void addArete2(int[] positionNoeud, int[] positionArete) {
+        int posNoeud = noeuds.indexOf(new Noeud(positionNoeud));
 
         Noeud noeud = null;
         Noeud arete = null;
-        if(posNoeud == -1){
+        if (posNoeud == -1) {
             return;
         }
-        int posArete = noeuds.indexOf(new Noeud(positionArete ));
-        if(posArete == -1){
+        int posArete = noeuds.indexOf(new Noeud(positionArete));
+        if (posArete == -1) {
             return;
         }
         noeud = noeuds.get(posNoeud);
@@ -265,48 +254,59 @@ public class Graph {
 
     }
 
-
-    public void addArete(int[] positionNoeud , int[] positionArete){
+    /**
+     *
+     *  Adds an edge between two nodes identified by their positions.
+     * @param positionNoeud The position of the source node.
+     * @param positionArete The position of the target node.
+     */
+    public void addArete(int[] positionNoeud, int[] positionArete) {
         int posNoeud = findNoeudIndex(positionNoeud);
         Noeud noeud = null;
         Noeud arete = null;
 
-        if(posNoeud == -1){
+        if (posNoeud == -1) {
             noeud = new Noeud(positionNoeud);
             noeuds.add(noeud);
-        }else{
+        } else {
             noeud = noeuds.get(posNoeud);
         }
 
         int posArete = findNoeudIndex(positionArete);
-        if(posArete == -1){
+        if (posArete == -1) {
             arete = new Noeud(positionArete);
             noeuds.add(arete);
-        }else{
+        } else {
             arete = noeuds.get(posArete);
         }
 
         noeud.addArete(arete);
     }
 
-    private int findNoeudIndex(int[] position){
-        for(int i = 0; i < noeuds.size(); i++){
+
+    /**
+     * Finds the index of a node with a given position in the list of nodes.
+     * @param position The position array to compare with the nodes' positions.
+     * @return The index of the found node, or -1 if no node with the given position is found.
+     */
+    private int findNoeudIndex(int[] position) {
+        for (int i = 0; i < noeuds.size(); i++) {
             Noeud noeud = noeuds.get(i);
-            if(Arrays.equals(noeud.getPosition(), position)){
+            if (Arrays.equals(noeud.getPosition(), position)) {
                 return i;
             }
         }
         return -1;
     }
 
-    public String toString(){
+    @Override
+    public String toString() {
         StringBuilder str = new StringBuilder();
-        for(Noeud noeud : noeuds){
-            str.append(noeud.toString()+"\n");
+        for (Noeud noeud : noeuds) {
+            str.append(noeud.toString() + "\n");
         }
         return str.toString();
     }
 
 
-
-   }
+}
