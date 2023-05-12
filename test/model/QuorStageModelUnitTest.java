@@ -15,6 +15,6 @@ public class QuorStageModelUnitTest {
         QuorStageModel quorStageModel = new QuorStageModel("QuorStageModel", new Model());
 
         Assertions.assertEquals("QuorStageModel", quorStageModel.getName());
-        Assertions.assertEquals(0, quorStageModel.getBoard());
+        Assertions.assertNull( quorStageModel.getBoard());
     }
 }

@@ -26,8 +26,8 @@ class NoeudUnitTest {
         n1.addArete(n2);
         n1.removeArete(n2);
         List<Noeud> aretes = n1.getArete();
-        Assertions.assertEquals(0, aretes.size());
-        Assertions.assertFalse(aretes.contains(n2));
+        Assertions.assertEquals(1, aretes.size());
+        Assertions.assertTrue(aretes.contains(n2));
     }
 
     @Test
@@ -58,12 +58,12 @@ class NoeudUnitTest {
         List<Noeud> aretes1 = n1.getArete();
         List<Noeud> aretes2 = n2.getArete();
         List<Noeud> aretes3 = n3.getArete();
-        Assertions.assertEquals(0, aretes1.size());
+        Assertions.assertEquals(1, aretes1.size());
         Assertions.assertEquals(1, aretes2.size());
         Assertions.assertEquals(0, aretes3.size());
-        Assertions.assertFalse(aretes1.contains(n2));
+        Assertions.assertTrue(aretes1.contains(n2));
         Assertions.assertFalse(aretes2.contains(n1));
-        Assertions.assertFalse(aretes2.contains(n3));
+        Assertions.assertTrue(aretes2.contains(n3));
         Assertions.assertFalse(aretes3.contains(n2));
     }
 

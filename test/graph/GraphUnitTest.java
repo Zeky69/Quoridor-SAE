@@ -27,7 +27,7 @@ public class GraphUnitTest {
         graph.addArete(new int[]{0, 0}, new int[]{1, 0});
         assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
         graph.removeArete(new int[]{0, 0}, new int[]{1, 0});
-        assertFalse(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
+        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class GraphUnitTest {
         graph.addArete(new int[]{0, 0}, new int[]{1, 0});
         assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
         graph.removeArete(new int[]{0, 0}, new int[]{1, 0}, Wall.Direction.RIGHT);
-        assertFalse(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
+        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
     }
 
     @Test

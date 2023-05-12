@@ -17,15 +17,7 @@ import boardifier.view.ConsoleColor;
 
 public class QuorControllerUnitTest {
 
-    @Test
-    public void QuorControllerUnitTest() {
-        // TODO
-    }
 
-    @Test
-    public void stageLoopUnitTest() {
-        // TODO
-    }
 
     @Test
     public void nextPlayerUnitTest() {
