@@ -253,7 +253,7 @@ public class QuorController extends Controller {
         List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY() , gameStage.getWalls(), gameStage.getPawns());
 
         for(int[] dest : possibleDest){
-            System.out.println(Arrays.toString(dest));
+
             gameStage.getBoard().setvalalidCell(dest[0],dest[1]);
         }
         if (!gameStage.getBoard().canReachCell(row,col)) return false;
@@ -329,6 +329,9 @@ public class QuorController extends Controller {
         orientation orien = coordsToOrientation(coord , coord2);
         if (orien == orientation.HORIZONTAL){
             int wall1 = Math.min(coord[0], coord2[0]);
+            if (isBorder( coord , dir) || isBorder(coord2 , dir)){
+                return true;
+            }
             if (dir == Wall.Direction.UP){
                 return walls[coord[1]][wall1].getWall(Wall.Direction.RIGHT) && walls[coord[1] - 1][wall1].getWall(Wall.Direction.RIGHT);
 
@@ -337,6 +340,9 @@ public class QuorController extends Controller {
             }
         }else if (orien == orientation.VERTICAL){
             int wall1 = Math.min(coord[1], coord2[1]);
+            if (isBorder( coord , dir) || isBorder(coord2 , dir)){
+                return true;
+            }
             if (dir == Wall.Direction.LEFT){
                 return walls[wall1][coord[0]].getWall(Wall.Direction.DOWN) && walls[wall1][coord[0] - 1].getWall(Wall.Direction.DOWN);
             }else if (dir == Wall.Direction.RIGHT){

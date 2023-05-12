@@ -16,6 +16,7 @@ import model.Wall;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static model.Wall.intToDirection;
 
@@ -57,23 +58,47 @@ public class QuorDecider extends Decider {
         return newPawns;
     }
 
-    public int evaluteState(Pawn pawn1 , Pawn pawn2 , Wall[][] walls){
+    public int wallCount(int x , int y , Wall[][] walls,int size){
+        int count = 0;
+        for (int dx = -size; dx <= size; dx++) {
+            for (int dy = -size; dy <= size; dy++) {
+                int row = x + dx;
+                int col = y + dy;
+                if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+                    for(boolean wall : walls[row][col].getWall()){
+                        if(wall){
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int evaluateState(Pawn pawn1 , Pawn pawn2 , Wall[][] walls){
         if(pawn1.getWinY() == pawn1.getPawnY()){
             return 100000;
         }
         Graph graph = new Graph(walls);
         int distancePawn1 =  graph.shortestPath(pawn1.getPawnXY() , pawn1.getWinY());
         int distancePawn2 = graph.shortestPath(pawn2.getPawnXY() , pawn2.getWinY());
+        int diffDistance = distancePawn2*3 - distancePawn1 ;
         int wallPawn1 = pawn1.getWallCount();
-        return  ((-distancePawn1 +distancePawn2*2) * 20 + wallPawn1 * 40);
+        int wallPawn2 = pawn2.getWallCount();
+        int diffWall = wallPawn1 - wallPawn2;
+        int pawnMouvPossible = ((QuorController)control).possibleDest(pawn2.getPawnX() , pawn2.getPawnY() ,walls , copyPawns(((QuorStageModel)(model.getGameStage())).getPawns())).size();
+        return  diffDistance + diffWall - pawnMouvPossible;
     }
+
+
 
 
     public int[] scoreAI(){
         Pawn[] pawns = copyPawns(((QuorStageModel)(model.getGameStage())).getPawns());
         Wall[][] wallsCopy = copyWalls(((QuorStageModel)(model.getGameStage())).getWalls());
         Pawn pawnCurrent = pawns[model.getIdPlayer()];
-        Pawn pawnOther = pawns[(model.getIdPlayer()+1)%2];
+        Pawn pawnOther = pawns[1-model.getIdPlayer()];
         List<int[]> possibleMoves = ((QuorController)control).possibleDest(pawnCurrent.getPawnX() , pawnCurrent.getPawnY() ,wallsCopy, pawns);
 
         int[] bestMove = null;
@@ -81,7 +106,7 @@ public class QuorDecider extends Decider {
         int score ;
         for(int[] move : possibleMoves){
             pawnCurrent.setPawnXY(move);
-            score = evaluteState(pawnCurrent,pawnOther,wallsCopy);
+            score = evaluateState(pawnCurrent,pawnOther,wallsCopy);
             if(score > bestScore){
                 bestScore = score;
                 bestMove = move;
@@ -92,7 +117,9 @@ public class QuorDecider extends Decider {
             for(int[] moveWall : possibleWalls){
                 wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),true);
                 wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),true);
-                score = evaluteState(pawnCurrent,pawnOther,wallsCopy);
+                pawnCurrent.decrementWallCount();
+                score = evaluateState(pawnCurrent,pawnOther,wallsCopy);
+                pawnCurrent.incrementWallCount();
                 wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),false);
                 wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),false);
                 if(score>bestScore){
@@ -212,10 +239,13 @@ public class QuorDecider extends Decider {
             actions.addSingleAction(move);
         }else{
             Wall[][] walls = stage.getWalls();
+            Wall[][] wallsShow = stage.getWallsShow();
+
             ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , intToDirection(moveIA[4]),walls);
             ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , intToDirection(moveIA[4]),walls);
             pawn.setWallCount(pawn.getWallCount()-1);
-            System.out.println(stage.getNbWalls()[model.getIdPlayer()]);
+            stage.removeElement(wallsShow[model.getIdPlayer()][9-pawn.getWallCount()]);
+
 
         }
         return actions;

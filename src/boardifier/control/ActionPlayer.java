@@ -3,6 +3,9 @@ package boardifier.control;
 import boardifier.model.*;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.GameAction;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -13,6 +16,7 @@ public class ActionPlayer {
     protected Decider decider;
     protected ActionList actions;
     protected ActionList preActions;
+
 
     public ActionPlayer(Model model, Controller control, Decider decider, ActionList preActions) {
         this.model = model;
@@ -40,7 +44,9 @@ public class ActionPlayer {
         // if there is a decider, decide what to do
         if (decider != null) {
             actions = decider.decide();
+
         }
+
 
         playActions(actions);
 

@@ -56,6 +56,9 @@ public class Pawn extends GameElement {
     public void decrementWallCount(){
         this.wallCount--;
     }
+    public void incrementWallCount(){
+        this.wallCount++;
+    }
 
     public int getPawnX() {
         return this.x;
