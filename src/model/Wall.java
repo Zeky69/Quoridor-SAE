@@ -6,24 +6,34 @@ import boardifier.model.GameStageModel;
 import java.util.Arrays;
 
 public class Wall extends GameElement {
-
     public enum Direction {UP, DOWN, LEFT, RIGHT}
-
     private boolean[] wall;
-
     private GameStageModel gameStageModel;
 
+    /**
+     * Constructor
+     * @param gameStageModel
+     */
     public Wall(GameStageModel gameStageModel) {
         super(gameStageModel);
         this.gameStageModel = gameStageModel;
     }
 
+    /**
+     * Copy constructor
+     * @param wall
+     * @param gameStageModel
+     */
     public Wall(boolean[] wall, GameStageModel gameStageModel) {
         super(gameStageModel);
         this.gameStageModel = gameStageModel;
         this.wall = wall;
     }
 
+    /**
+     * Get boolean array of wall representing the presence of a wall in each direction
+     * @return
+     */
     public boolean[] getWall() {
         return this.wall;
     }
@@ -41,6 +51,11 @@ public class Wall extends GameElement {
         return new int[]{0,0};
     }
 
+    /**
+     * Get the presence of a wall in a direction
+     * @param direction
+     * @return
+     */
     public boolean getWall(Direction direction) {
         if(Direction.UP == direction){
             return this.wall[0];
@@ -54,14 +69,19 @@ public class Wall extends GameElement {
         return false;
     }
 
+    /**
+     * Check if the wall's neighbors are false (no wall)
+     * @return
+     */
     public boolean isEmpty() {
         return Arrays.equals(this.wall, new boolean[4]);
     }
 
-    public void setWalls(boolean[] wall) {
-        this.wall = wall;
-    }
-
+    /**
+     * Convert an int to a direction
+     * @param i
+     * @return
+     */
     public static Direction intToDirection(int i){
         if(i == 0){
             return Direction.UP;
@@ -75,7 +95,12 @@ public class Wall extends GameElement {
         return null;
     }
 
-
+    /**
+     * Check if the wall is on the border of the board
+     * @param coord
+     * @param direction
+     * @return
+     */
     public static boolean isBorder(int[] coord, Wall.Direction direction){
         return direction == Direction.UP && coord[1] == 0
                 || direction == Direction.DOWN && coord[1] == 8
@@ -84,6 +109,11 @@ public class Wall extends GameElement {
     }
 
 
+    /**
+     * Set the presence of a wall in a direction
+     * @param direction
+     * @param bool
+     */
     public void setWall(Direction direction, boolean bool) {
         if(Direction.UP == direction){
             this.wall[0] = bool;
@@ -96,20 +126,23 @@ public class Wall extends GameElement {
         }
     }
 
+    /**
+     * @return the gameStageModel
+     */
     public GameStageModel getGameStageModel(){
         return this.gameStageModel;
     }
 
+    /**
+     * Copy the wall
+     * @return
+     */
     public Wall copy(){
         boolean[] wallBool = this.getWall().clone();
         return new Wall(wallBool, this.getGameStageModel());
-
     }
 
     public String toString(){
         return Arrays.toString(wall);
-
     }
-
-
 }

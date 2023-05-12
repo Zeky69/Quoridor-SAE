@@ -4,34 +4,44 @@ import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
 
 public class QuorStageFactory extends StageElementsFactory {
-
     private QuorStageModel stageModel;
 
-
-
+    /**
+     * Constructor
+     * @param model
+     */
     public QuorStageFactory(GameStageModel model) {
         super(model);
         this.stageModel = (QuorStageModel) model;
 
     }
 
+    /**
+     * @return the stageModel
+     */
     public QuorStageModel getStageModel() {
         return this.stageModel;
     }
 
+    /**
+     * Create a grid of walls
+     * The variable wallsAround is an array of boolean that tells if there are walls to the (north, south, west, est) of the wall
+     * @return
+     */
     public Wall[][] initWalls() {
         Wall[][] walls = new Wall[9][9];
         for(int i=0;i<9;i++) {
             for(int j=0;j<9;j++) {
                 boolean[] wallsAround = {false, false, false, false};
-
                 walls[i][j] = new Wall(wallsAround , stageModel);
             }
         }
         return walls;
     }
 
-
+    /**
+     * Set up the stage with all the elements needed for the game
+     */
     @Override
         public void setup() {
         stageModel.setBoard(new QuorBoard(0, 1, stageModel));

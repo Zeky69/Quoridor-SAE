@@ -7,19 +7,23 @@ import model.Wall;
 
 
 public class QuorStageView extends GameStageView{
-
     GameStageModel gameStageModel1;
-
     public QuorStageView(String name, GameStageModel gameStageModel) {
         super(name, gameStageModel);
     }
 
+    /**
+     * Create the shape of the stage
+     */
     @Override
     protected void createShape() {
             return;
     }
 
 
+    /**
+     * Create the looks of the stage
+     */
     @Override
     public void createLooks() {
 
@@ -36,14 +40,7 @@ public class QuorStageView extends GameStageView{
         for(int i=0;i<10;i++) {
             addLook(new WallLook(0,wallsShow[0][i]));
             addLook(new WallLook(1,wallsShow[1][i]));
-
         }
-
-
-
-
-
-
     }
 }
 

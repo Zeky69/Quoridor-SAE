@@ -8,17 +8,24 @@ import model.QuorStageModel;
 import model.Wall;
 
 public class QuorGridLook extends GridLook {
-
     Wall[][] walls ;
 
-
+    /**
+     * Constructor
+     * @param cellWidth
+     * @param cellHeight
+     * @param gameStageModel
+     * @param depth
+     * @param showCoords
+     */
     public QuorGridLook(int cellWidth, int cellHeight, GameStageModel gameStageModel, int depth, boolean showCoords) {
         super(cellWidth, cellHeight, ((QuorStageModel)gameStageModel).getBoard(), depth, showCoords);
         walls = ((QuorStageModel) gameStageModel).getWalls();
-
-
     }
 
+    /**
+     * Create the shape of the grid without the walls
+     */
     protected void createShapeNotWall() {
         // draw cells
         GridElement gridElement = (GridElement) element;
@@ -75,6 +82,9 @@ public class QuorGridLook extends GridLook {
         }
     }
 
+    /**
+     * Create the shape of the grid with the walls
+     */
     @Override
     protected void createShape() {
         GridElement gridElement = (GridElement) element;

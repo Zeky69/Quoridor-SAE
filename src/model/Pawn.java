@@ -14,6 +14,14 @@ public class Pawn extends GameElement {
 
     private int wallCount = 10;
 
+    /**
+     * Constructor for the first initialization of the pawn
+     * @param x
+     * @param y
+     * @param player
+     * @param winY
+     * @param gameStageModel
+     */
     public Pawn(int x, int y, int player ,int winY, GameStageModel gameStageModel) {
         super(gameStageModel);
         this.x = x;
@@ -25,6 +33,15 @@ public class Pawn extends GameElement {
         type = ElementTypes.getType("pawn");
     }
 
+    /**
+     * Constructor for the copy of the pawn
+     * @param x
+     * @param y
+     * @param wallCount
+     * @param player
+     * @param winY
+     * @param gameStageModel
+     */
     public Pawn(int x, int y,int wallCount, int player ,int winY, GameStageModel gameStageModel) {
         super(gameStageModel);
         this.x = x;
@@ -37,22 +54,41 @@ public class Pawn extends GameElement {
         type = ElementTypes.getType("pawn");
     }
 
+    /**
+     * Set the x position of the pawn
+     * @param x
+     */
     public void setPawnX(int x) {
         this.x = x;
     }
 
+    /**
+     * Set the y position of the pawn
+     * @param y
+     */
     public void setPawnY(int y) {
         this.y = y;
     }
 
+    /**
+     * Set the number of wall of the pawn
+     * @param wallCount
+     */
     public void setWallCount(int wallCount){
         this.wallCount = wallCount;
     }
 
+    /**
+     * Get the number of wall of the pawn
+     * @return
+     */
     public int getWallCount(){
         return this.wallCount;
     }
 
+    /**
+     * Decrement the number of wall of the pawn
+     */
     public void decrementWallCount(){
         this.wallCount--;
     }
@@ -60,34 +96,66 @@ public class Pawn extends GameElement {
         this.wallCount++;
     }
 
+    /**
+     * Get the x position of the pawn
+     * @return
+     */
     public int getPawnX() {
         return this.x;
     }
 
+    /**
+     * Get the y position of the winning position of the pawn
+     * @return
+     */
     public int getWinY(){
         return this.winY;
     }
 
+    /**
+     * Set the y position for a pawn to win
+     * @param winY
+     */
     public void setWinY(int winY){
         this.winY = winY;
     }
 
+    /**
+     * Get the y position of the pawn
+     * @return
+     */
     public int getPawnY() {
         return this.y;
     }
 
+    /**
+     * Get the x and y position of the pawn
+     * @return
+     */
     public int[] getPawnXY(){return new int[]{x,y};}
 
+    /**
+     * Set the x and y position of the pawn
+     * @param coord
+     */
     public void setPawnXY(int[] coord){
         this.x = coord[0];
         this.y = coord[1];
 
     }
 
+    /**
+     * Get the player linked to the pawn
+     * @return
+     */
     public int getPlayer() {
         return this.player;
     }
 
+    /**
+     * Copy the current pawn
+     * @return
+     */
     public Pawn copy(){
         return new Pawn(this.x , this.y ,this.wallCount, this.player , this.winY , this.gameStageModel);
     }

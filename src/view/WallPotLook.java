@@ -4,12 +4,21 @@ import boardifier.model.GridElement;
 import boardifier.view.GridLook;
 public class WallPotLook extends GridLook {
 
-        public WallPotLook(int cellWidth, int cellHeight, GridElement gridElement) {
+    /**
+     * Constructor
+     * @param cellWidth
+     * @param cellHeight
+     * @param gridElement
+     */
+    public WallPotLook(int cellWidth, int cellHeight, GridElement gridElement) {
 
-            super(cellWidth, cellHeight, gridElement, -1, false);
-        }
+        super(cellWidth, cellHeight, gridElement, -1, false);
+    }
 
-        protected void createShape() {
+    /**
+     * Create the shape of the wallpot
+     */
+    protected void createShape() {
             // draw cells
             GridElement gridElement = (GridElement) element;
             int nbRows = gridElement.getNbRows();

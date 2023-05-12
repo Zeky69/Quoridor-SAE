@@ -35,12 +35,21 @@ public class QuorController extends Controller {
         VERTICAL
     }
 
+    /**
+     * Constructor
+     * @param model
+     * @param view
+     */
     public QuorController(Model model , View view) {
         super(model, view);
         firstPlayer = true;
     }
 
-    public void stageLoop() {// TODO pareil
+    /**
+     * Loop of the game
+     * Manage the turns of the players
+     */
+    public void stageLoop() {
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
@@ -52,8 +61,14 @@ public class QuorController extends Controller {
         }
         endGame();
     }
+
+    /**
+     * Change the current player to the next one
+     * If the current player is a computer, it plays
+     * If the current player is a human, it asks him to play
+     */
     @Override
-    public void nextPlayer() { // TODO TITOU : Desole ce n'est pas possbile car on override la methode dpnc on ne peut pas changer la signature
+    public void nextPlayer() {
         if (!firstPlayer) {
             model.setNextPlayer();
         }
@@ -66,9 +81,8 @@ public class QuorController extends Controller {
             QuorDecider decider = new QuorDecider(model,this, model.getIdPlayer());
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
-
-
         }
+
         else {
             String choice="";
             boolean ok = false;
@@ -108,15 +122,15 @@ public class QuorController extends Controller {
                     }
                 }
                 catch(IOException e) {}
-
-
-
-
-
             }
         }
     }
 
+    /**
+     * Analyse the first input of the player
+     * @param line
+     * @return
+     */
     public boolean analyseFirstStep(String line) {
         if (line.equals("P")) {
             return true;
@@ -130,7 +144,12 @@ public class QuorController extends Controller {
         }
     }
 
-
+    /**
+     * Find the coordinates of every places a wall could be placed
+     * @param walls
+     * @param pawns
+     * @return List of coordinates
+     */
     public List<int[]> possibleWall(Wall[][] walls , Pawn[] pawns){
         List<int[]> possibleWall = new ArrayList<>();
         Graph graph = new Graph(walls);
@@ -164,7 +183,14 @@ public class QuorController extends Controller {
     }
 
 
-    //TODO A tester correctement et a essayer de rendre bien moins complexe
+    /**
+     * Find the coordinates of every places a pawn could go
+     * @param x
+     * @param y
+     * @param walls
+     * @param pawns
+     * @return
+     */
     public List<int[]> possibleDest(int x , int y , Wall[][] walls , Pawn[] pawns){
         List<int[]> dest = new ArrayList<>();
 
@@ -235,12 +261,11 @@ public class QuorController extends Controller {
      return dest;
     }
 
-
-
-
-
-
-
+    /**
+     * Analyse the second input of the player for the move of a pawn
+     * @param line
+     * @return
+     */
     public boolean analyseSecondStepP(String line){
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
@@ -254,7 +279,7 @@ public class QuorController extends Controller {
 
         for(int[] dest : possibleDest){
 
-            gameStage.getBoard().setvalalidCell(dest[0],dest[1]);
+            gameStage.getBoard().setvalidCell(dest[0],dest[1]);
         }
         if (!gameStage.getBoard().canReachCell(row,col)) return false;
 
@@ -269,6 +294,11 @@ public class QuorController extends Controller {
         return true;
     }
 
+    /**
+     * Convert the given char to a direction
+     * @param direction
+     * @return
+     */
     public Wall.Direction charToDirection(char direction){
         switch (direction){
             case 'H' :
@@ -284,6 +314,12 @@ public class QuorController extends Controller {
         }
     }
 
+    /**
+     * Convert the given char to a coord
+     * @param x
+     * @param y
+     * @return
+     */
     public int[] charToCoord(char x, char y){
         int[] coord = new int[2];
         coord[0] = x - 'A';
@@ -291,6 +327,12 @@ public class QuorController extends Controller {
         return coord;
     }
 
+    /**
+     * Convert the given coord to an orientation (for the walls)
+     * @param coord1
+     * @param coord2
+     * @return
+     */
     public orientation coordsToOrientation(int[] coord1, int[] coord2){
         if (coord1[0] == coord2[0]){
             if (coord1[1] == coord2[1] + 1 || coord1[1] == coord2[1] - 1){
@@ -304,6 +346,13 @@ public class QuorController extends Controller {
     }
 
 
+    /**
+     * set the coord of the wall
+     * @param coord
+     * @param direction
+     * @param walls
+     * @return
+     */
     public Wall[][] setWallcoord(int[] coord , Wall.Direction direction , Wall[][] walls){
         walls[coord[1]][coord[0]].setWall(direction ,true);
         if (direction == Wall.Direction.UP && coord[1]!=0){
@@ -319,13 +368,15 @@ public class QuorController extends Controller {
         return walls;
     }
 
-
-
-
-
-
+    /**
+     * Check if the wall cross another wall
+     * @param coord
+     * @param coord2
+     * @param dir
+     * @param walls
+     * @return
+     */
     public boolean isCross(int[] coord , int[] coord2 , Wall.Direction dir , Wall[][] walls ){
-        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         orientation orien = coordsToOrientation(coord , coord2);
         if (orien == orientation.HORIZONTAL){
             int wall1 = Math.min(coord[0], coord2[0]);
@@ -354,18 +405,11 @@ public class QuorController extends Controller {
 
     }
 
-
-
-    public void wallPlay(int[] coord,int[] coord2,Wall.Direction direction){
-        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-        Wall[][] walls = gameStage.getWalls();
-        walls = setWallcoord(coord , direction , walls);
-        walls = setWallcoord(coord2 , direction , walls);
-        gameStage.setWalls(walls);
-        model.setGameStage(gameStage);
-    }
-
-
+    /**
+     * Analyse the second input of the player for the wall placement
+     * @param line
+     * @return
+     */
     public boolean analyseSecondStepW(String line){
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         if (line.length() != 5) {return false;}
@@ -413,7 +457,8 @@ public class QuorController extends Controller {
         }
 
 
-        wallPlay(coord,coord2,dir);
+        setWallcoord(coord,dir, walls);
+        setWallcoord(coord2,dir, walls);
         gameStage.getBoard().update();
 
         gameStage.getNbWalls()[model.getIdPlayer()]--;

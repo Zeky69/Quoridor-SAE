@@ -22,11 +22,22 @@ import static model.Wall.intToDirection;
 
 public class QuorDecider extends Decider {
     int idPlayer;
+
+    /**
+     * Constructor
+     * @param model
+     * @param control
+     * @param idPlayer
+     */
     public QuorDecider(Model model, Controller control, int idPlayer) {
         super(model, control);
         this.idPlayer = idPlayer;
     }
 
+    /**
+     * Make the AI decide for the player (each player has its own AI)
+     * @return
+     */
     @Override
     public ActionList decide(){
         if (this.idPlayer == 0){
@@ -37,6 +48,11 @@ public class QuorDecider extends Decider {
 
     }
 
+    /**
+     * Copy the walls
+     * @param walls wall list
+     * @return
+     */
     public Wall[][] copyWalls(Wall[][] walls){
         Wall[][] newWalls = new Wall[9][9];
         for(int i = 0 ; i < 9 ; i++){
@@ -47,10 +63,20 @@ public class QuorDecider extends Decider {
         return newWalls;
     }
 
+    /**
+     * Copy a pawn
+     * @param pawn
+     * @return
+     */
     public Pawn copyPawn(Pawn pawn){
         return pawn.copy();
     }
 
+    /**
+     * Copy the pawns
+     * @param pawns pawn list
+     * @return
+     */
     public Pawn[] copyPawns(Pawn[] pawns){
         Pawn[] newPawns = new Pawn[2];
         newPawns[0] = copyPawn(pawns[0]);
@@ -58,24 +84,13 @@ public class QuorDecider extends Decider {
         return newPawns;
     }
 
-    public int wallCount(int x , int y , Wall[][] walls,int size){
-        int count = 0;
-        for (int dx = -size; dx <= size; dx++) {
-            for (int dy = -size; dy <= size; dy++) {
-                int row = x + dx;
-                int col = y + dy;
-                if (row >= 0 && row < 8 && col >= 0 && col < 8) {
-                    for(boolean wall : walls[row][col].getWall()){
-                        if(wall){
-                            count++;
-                        }
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
+    /**
+     *  //TO DO
+     * @param pawn1
+     * @param pawn2
+     * @param walls
+     * @return
+     */
     public int evaluateState(Pawn pawn1 , Pawn pawn2 , Wall[][] walls){
         if(pawn1.getWinY() == pawn1.getPawnY()){
             return 100000;
@@ -91,9 +106,10 @@ public class QuorDecider extends Decider {
         return  diffDistance + diffWall - pawnMouvPossible;
     }
 
-
-
-
+    /**
+     * Caclulate the best move for the player
+     * @return the best move
+     */
     public int[] scoreAI(){
         Pawn[] pawns = copyPawns(((QuorStageModel)(model.getGameStage())).getPawns());
         Wall[][] wallsCopy = copyWalls(((QuorStageModel)(model.getGameStage())).getWalls());
@@ -131,6 +147,10 @@ public class QuorDecider extends Decider {
         return bestMove;
     }
 
+    /**
+     * Find the best wall to place
+     * @return coordinates of the wall
+     */
     public int[] placeWall(){
         Pawn[] pawns = ((QuorStageModel)(model.getGameStage())).getPawns();
         Pawn self = pawns[model.getIdPlayer()];
@@ -179,6 +199,17 @@ public class QuorDecider extends Decider {
         }
     }
 
+    /**
+     * Test if a wall can be placed in the given positions and direction
+     * @param direction
+     * @param decalage
+     * @param walls
+     * @param adversaire
+     * @param self
+     * @param graph
+     * @param shortestPath
+     * @return
+     */
     public boolean goodWall(int direction, int[] decalage, Wall[][] walls, Pawn adversaire, Pawn self, Graph graph, int shortestPath){
         int posAY = adversaire.getPawnY();
         int posAX = adversaire.getPawnX();
@@ -193,6 +224,10 @@ public class QuorDecider extends Decider {
         return false;
     }
 
+    /**
+     * Move the pawn to the nearest win position (using Dijsktra algorithm)
+     * @return
+     */
     public int[] makeMoove(){
         QuorStageModel stage = (QuorStageModel) model.getGameStage();
         Pawn[] pawns = stage.getPawns();
@@ -213,6 +248,10 @@ public class QuorDecider extends Decider {
         return bestMovePossible;
     }
 
+    /**
+     * Choose to place a wall or move the pawn
+     * @return coordinates of the wall or the pawn
+     */
     public int[] choiceAI(){
         QuorStageModel stage = (QuorStageModel) model.getGameStage();
         Wall[][] walls = stage.getWalls();
@@ -228,6 +267,11 @@ public class QuorDecider extends Decider {
         return makeMoove();
     }
 
+    /**
+     * Main method of the second AI :
+     * make a move or place a wall depending on the given coordinates
+     * @return
+     */
     private ActionList decidePlayer2() {
         int[] moveIA  = choiceAI();
         QuorStageModel stage = (QuorStageModel) model.getGameStage();
@@ -251,6 +295,11 @@ public class QuorDecider extends Decider {
         return actions;
     }
 
+    /**
+     * Main method of the first AI :
+     * make a move or place a wall depending on the given coordinates
+     * @return
+     */
     private ActionList decidePlayer1() {
         int[] moveIA  = scoreAI();
         QuorStageModel stage = (QuorStageModel) model.getGameStage();
