@@ -112,6 +112,9 @@ public class QuorController extends Controller {
                         ok = analyseSecondStepP(moove);
                     }
                     else if(choice.equals("W")) {
+                            System.out.println("Enter the coordinates of the wall as follow : case1OrientationCase2");
+                            System.out.println("Orientation : D for right, G for left, H for up, B for down");
+                            System.out.println("Example : E1DE2");
                             System.out.print("Enter the cases you want to put a wall >");
                             moove = consoleIn.readLine();
                             ok = analyseSecondStepW(moove);
