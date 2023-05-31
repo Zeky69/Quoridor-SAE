@@ -12,22 +12,14 @@ public class QuorStageView extends GameStageView{
         super(name, gameStageModel);
     }
 
-    /**
-     * Create the shape of the stage
-     */
-    @Override
-    protected void createShape() {
-            return;
-    }
-
 
     /**
      * Create the looks of the stage
      */
     @Override
     public void createLooks() {
-
-        addLook(new QuorGridLook(4, 2, gameStageModel, -1, true));
+        QuorStageModel model = (QuorStageModel)gameStageModel;
+        addLook(new QuorGridLook(4, 2, model.getBoard()));
         addLook(new WallPotLook(4, 2 , ((QuorStageModel) gameStageModel).getWallPot1()));
         addLook(new WallPotLook(4, 2 , ((QuorStageModel) gameStageModel).getWallPot2()));
 
