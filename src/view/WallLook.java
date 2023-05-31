@@ -2,11 +2,13 @@
 package view;
 
 import boardifier.model.GameElement;
-import boardifier.view.ConsoleColor;
 import boardifier.view.ElementLook;
+import javafx.scene.shape.Rectangle;
 import model.Pawn;
 
 public class WallLook extends ElementLook {
+
+    Rectangle rectangle;
 
     /**
      * Constructor
@@ -14,13 +16,22 @@ public class WallLook extends ElementLook {
      * @param element
      */
     public WallLook(int player, GameElement element) {
-        super(element, 1, 1);
+        super(element);
+        rectangle = new Rectangle();
         if(player == 0){
-            shape[0][0] = ConsoleColor.BLUE_BOLD +"┃"+ ConsoleColor.RESET;
+            rectangle.setFill(javafx.scene.paint.Color.valueOf("0x000000"));
         }
-        else{
-            shape[0][0] = ConsoleColor.RED_BOLD +"┃"+ ConsoleColor.RESET;
+        else if(player == 1){
+            rectangle.setFill(javafx.scene.paint.Color.valueOf("0x0000FF"));
         }
+        else if(player == 2){
+            rectangle.setFill(javafx.scene.paint.Color.valueOf("0xFF0000"));
+        }
+
+        rectangle.setX(0);
+        rectangle.setY(0);
+        addShape(rectangle);
+
 
     }
 
@@ -28,7 +39,7 @@ public class WallLook extends ElementLook {
      * Change the look of the wall (do nothing since a wall never change of aspect)
      */
     @Override
-    public void onLookChange() {
+    public void onChange() {
         // do nothing since a wall never change of aspect
     }
 

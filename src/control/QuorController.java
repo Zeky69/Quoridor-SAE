@@ -9,7 +9,6 @@ import boardifier.model.Player;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.GameAction;
 import boardifier.model.action.MoveAction;
-import boardifier.view.ConsoleColor;
 import boardifier.view.View;
 import graph.Graph;
 import model.Pawn;
@@ -42,6 +41,8 @@ public class QuorController extends Controller {
      */
     public QuorController(Model model , View view) {
         super(model, view);
+        setControlAction (new QuorControllerAction(model, view, this));
+
         firstPlayer = true;
     }
 
@@ -88,8 +89,6 @@ public class QuorController extends Controller {
             boolean ok = false;
             while (!ok) {
                 QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-                System.out.println(p.getName()+ " : "+ ConsoleColor.GREEN_BOLD + gameStage.getNbWalls()[model.getIdPlayer()] +ConsoleColor.RESET + " walls left");
-                System.out.print("Enter P to move a pawn, or W to place a wall >");
                 try {
                     choice = consoleIn.readLine().toUpperCase();
                     if (choice.length() == 1) {
@@ -284,11 +283,11 @@ public class QuorController extends Controller {
         if (!gameStage.getBoard().canReachCell(row,col)) return false;
 
         ActionList actions = new ActionList(true);
-        GameAction move = new MoveAction(model, pawn, "QuorBoard", row, col);
+//        GameAction move = new MoveAction(model, pawn, "QuorBoard", row, col);
         ((Pawn)pawn).setPawnY(row);
         ((Pawn)pawn).setPawnX(col);
         // add the action to the action list.
-        actions.addSingleAction(move);
+//        actions.addSingleAction(move);
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
         return true;
@@ -459,7 +458,7 @@ public class QuorController extends Controller {
 
         setWallcoord(coord,dir, walls);
         setWallcoord(coord2,dir, walls);
-        gameStage.getBoard().update();
+//        gameStage.getBoard().update();
 
         gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();

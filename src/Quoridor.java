@@ -1,52 +1,61 @@
 import boardifier.control.StageFactory;
 import boardifier.model.GameException;
 import boardifier.model.Model;
-import boardifier.view.ConsoleColor;
+import boardifier.view.RootPane;
 import boardifier.view.View;
 import control.QuorController;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import view.QuorRootPane;
+import view.QuorView;
 
-public class Quoridor {
+import static javafx.application.Application.launch;
+
+public class Quoridor extends Application {
+    private static int mode;
     public static void main(String[] args) {
-        String computerName = "computer";
-        String playerName = "player";
 
-        int mode = 0;
+        Quoridor.mode = 0;
         if (args.length == 1) {
             try {
-                mode = Integer.parseInt(args[0]);
-                if ((mode <0) || (mode>2)) mode = 0;
+                Quoridor.mode = Integer.parseInt(args[0]);
+                if ((Quoridor.mode <0) || (Quoridor.mode>2)) Quoridor.mode = 0;
             }
             catch(NumberFormatException e) {
-                mode = 0;
+                Quoridor.mode = 0;
             }
         }
+        launch(args);
+
+
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception{
+        String computerName = "computer";
+        String playerName = "player";
         Model model = new Model();
         if (mode == 0) {
-            model.addHumanPlayer(playerName + ConsoleColor.BLUE_BOLD +" 1" + ConsoleColor.RESET);
-            model.addHumanPlayer(playerName+ ConsoleColor.RED_BOLD +" 2" + ConsoleColor.RESET);
+            model.addHumanPlayer(playerName +"1");
+            model.addHumanPlayer(playerName+" 2"  );
         }
         else if (mode == 1) {
-            model.addHumanPlayer(playerName + ConsoleColor.BLUE_BOLD +" 1" + ConsoleColor.RESET);
-            model.addComputerPlayer(computerName + ConsoleColor.RED_BOLD +" 2" + ConsoleColor.RESET);
+            model.addHumanPlayer(playerName +" 1" );
+            model.addComputerPlayer(computerName +" 2" );
         }
         else {
-            model.addComputerPlayer(computerName+ ConsoleColor.BLUE_BOLD +" 1" + ConsoleColor.RESET);
-            model.addComputerPlayer(computerName+ ConsoleColor.RED_BOLD +" 2" + ConsoleColor.RESET );
+            model.addComputerPlayer(computerName+" 1" );
+            model.addComputerPlayer(computerName+" 2" );
         }
 
         StageFactory.registerModelAndView("Quoridor", "model.QuorStageModel", "view.QuorStageView");
+        QuorRootPane rootPane = new QuorRootPane();
+        QuorView view = new QuorView(model, stage, rootPane);
 
-        View quorView = new View(model);
-        QuorController control = new QuorController(model,quorView);
+
+        QuorController control = new QuorController(model,view);
         control.setFirstStageName("Quoridor");
-        try{
-            control.startGame();
-
-            control.stageLoop();
-        } catch (GameException e) {
-            System.out.println(e.getMessage());
-        }
-
-
+        stage.setTitle("Quoridor");
+        stage.show();
     }
 }

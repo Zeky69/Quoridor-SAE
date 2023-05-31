@@ -279,8 +279,8 @@ public class QuorDecider extends Decider {
         ActionList actions = new ActionList(true);
         if(moveIA.length == 2){
             pawn.setPawnXY(moveIA);
-            GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1] , moveIA[0]);
-            actions.addSingleAction(move);
+//            GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1] , moveIA[0]);
+//            actions.addSingleAction(move);
         }else{
             Wall[][] walls = stage.getWalls();
             Wall[][] wallsShow = stage.getWallsShow();
@@ -307,8 +307,8 @@ public class QuorDecider extends Decider {
         ActionList actions = new ActionList(true);
         if(moveIA.length == 2){
             pawn.setPawnXY(moveIA);
-            GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1] , moveIA[0]);
-            actions.addSingleAction(move);
+//            GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1] , moveIA[0]);
+//            actions.addSingleAction(move);
         }else{
             Wall[][] walls = stage.getWalls();
             Wall[][] wallsShow = stage.getWallsShow();
