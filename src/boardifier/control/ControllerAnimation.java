@@ -1,12 +1,8 @@
 package boardifier.control;
 
-import boardifier.model.GameElement;
 import boardifier.model.Model;
 import boardifier.view.View;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
-
-import java.util.List;
 
 public class ControllerAnimation {
 

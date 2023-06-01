@@ -1,17 +1,16 @@
 package boardifier.view;
 
+import boardifier.model.Coord2D;
 import boardifier.model.GameElement;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.*;
 
 public abstract class ElementLook {
     /**
@@ -136,7 +135,7 @@ public abstract class ElementLook {
      * @param point a point in the scene coordinate space.
      * @return <code>true</code> if it is within, otherwise <code>false</code>.
      */
-    public boolean isPointWithin(Point2D point) {
+    public boolean isPointWithin(Coord2D point) {
         for(Node node : group.getChildren()) {
             Bounds b = node.localToScene(node.getBoundsInParent());
             if ( (point.getX() >= b.getMinX()) &&  (point.getX() <= b.getMaxX()) && (point.getY() >= b.getMinY()) && (point.getY() <= b.getMaxY()) ) return true;

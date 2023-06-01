@@ -1,10 +1,12 @@
 package boardifier.control;
 
 import boardifier.model.*;
-import boardifier.view.*;
+import boardifier.view.ElementLook;
+import boardifier.view.GameStageView;
+import boardifier.view.GridLook;
+import boardifier.view.View;
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.StageStyle;
@@ -66,7 +68,7 @@ public abstract class Controller {
      * @throws GameException
      */
     protected void startStage(String stageName) throws GameException {
-        if (model.isStarted()) stopGame();
+        if (model.isStageStarted()) stopGame();
         System.out.println("START STAGE "+stageName);
         // create the model of the stage by using the StageFactory
         GameStageModel gameStageModel = StageFactory.createStageModel(stageName, model);
@@ -258,7 +260,7 @@ public abstract class Controller {
         int[] coords = element.getGrid().getElementCell(element); // RECALL: grid is the current grid this element is within
         GridLook gridLook = getElementGridLook(element);
         // get the center of the current cell because we can at least reach this center if Me is not already on it.
-        Point2D center = gridLook.getRootPaneLocationForCellCenter(coords[0], coords[1]);
+        Coord2D center = gridLook.getRootPaneLocationForCellCenter(coords[0], coords[1]);
         element.setLocation(center.getX(), center.getY());
     }
 
@@ -267,7 +269,7 @@ public abstract class Controller {
      * @param point the coordinate of a point
      * @return A list of game element
      */
-    public List<GameElement> elementsAt(Point2D point) {
+    public List<GameElement> elementsAt(Coord2D point) {
         List<GameElement> list = new ArrayList<>();
         for(GameElement element : model.getElements()) {
             if ((element.isVisible()) && (element.isClickable())) {

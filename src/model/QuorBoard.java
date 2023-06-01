@@ -9,6 +9,7 @@ import java.util.List;
 
 public class QuorBoard extends GridElement {
 
+
     /**
      * Crée un tableau de booléens indiquant si une case est inatteignable ou non
      */

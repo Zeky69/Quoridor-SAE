@@ -1,6 +1,9 @@
 package boardifier.model.action;
 
-import boardifier.model.*;
+import boardifier.model.DiceElement;
+import boardifier.model.ElementTypes;
+import boardifier.model.GameElement;
+import boardifier.model.Model;
 import boardifier.model.animation.AnimationTypes;
 import boardifier.model.animation.CyclicFaceAnimation;
 

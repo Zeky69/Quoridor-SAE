@@ -1,6 +1,8 @@
 package boardifier.view;
 
-import boardifier.model.*;
+import boardifier.model.GameElement;
+import boardifier.model.GameException;
+import boardifier.model.GameStageModel;
 
 import java.util.ArrayList;
 import java.util.List;

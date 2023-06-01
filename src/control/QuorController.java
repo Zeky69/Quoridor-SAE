@@ -42,6 +42,8 @@ public class QuorController extends Controller {
     public QuorController(Model model , View view) {
         super(model, view);
         setControlAction (new QuorControllerAction(model, view, this));
+        setControlMouse(new QuorControllerMouse(model, view, this));
+
 
         firstPlayer = true;
     }
@@ -70,13 +72,13 @@ public class QuorController extends Controller {
      */
     @Override
     public void nextPlayer() {
-        if (!firstPlayer) {
-            model.setNextPlayer();
-        }
-        else {
-            firstPlayer = false;
-        }
+
+        model.setNextPlayer();
+        // get the new player
         Player p = model.getCurrentPlayer();
+        // change the text of the TextElement
+        QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
+//        stageModel.getPlayerName().setText(p.getName());
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
             QuorDecider decider = new QuorDecider(model,this, model.getIdPlayer());
@@ -84,45 +86,61 @@ public class QuorController extends Controller {
             play.start();
         }
 
-        else {
-            String choice="";
-            boolean ok = false;
-            while (!ok) {
-                QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-                try {
-                    choice = consoleIn.readLine().toUpperCase();
-                    if (choice.length() == 1) {
-                        ok = analyseFirstStep(choice);
-                    }
-                    if (!ok) {
-                        System.out.println("incorrect instruction. retry !");
-                    }
-                }
-                catch(IOException e) {}
-            }
-            String moove;
-            ok = false;
-            while (!ok) {
-                try {
 
-                    if (choice.equals("P")){
-                        System.out.print("Enter the case you want to go >");
-                        moove = consoleIn.readLine().toUpperCase();
-                        ok = analyseSecondStepP(moove);
-                    }
-                    else if(choice.equals("W")) {
-                            System.out.print("Enter the cases you want to put a wall >");
-                            moove = consoleIn.readLine();
-                            ok = analyseSecondStepW(moove);
-                    }
-
-                    if (!ok) {
-                        System.out.println("incorrect instruction. retry !");
-                    }
-                }
-                catch(IOException e) {}
-            }
-        }
+//
+//        if (!firstPlayer) {
+//            model.setNextPlayer();
+//        }
+//        else {
+//            firstPlayer = false;
+//        }
+//        Player p = model.getCurrentPlayer();
+//        if (p.getType() == Player.COMPUTER) {
+//            System.out.println("COMPUTER PLAYS");
+//            QuorDecider decider = new QuorDecider(model,this, model.getIdPlayer());
+//            ActionPlayer play = new ActionPlayer(model, this, decider, null);
+//            play.start();
+//        }
+//
+//        else {
+//            String choice="";
+//            boolean ok = false;
+//            while (!ok) {
+//                QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+//                try {
+//                    choice = consoleIn.readLine().toUpperCase();
+//                    if (choice.length() == 1) {
+//                        ok = analyseFirstStep(choice);
+//                    }
+//                    if (!ok) {
+//                        System.out.println("incorrect instruction. retry !");
+//                    }
+//                }
+//                catch(IOException e) {}
+//            }
+//            String moove;
+//            ok = false;
+//            while (!ok) {
+//                try {
+//
+//                    if (choice.equals("P")){
+//                        System.out.print("Enter the case you want to go >");
+//                        moove = consoleIn.readLine().toUpperCase();
+//                        ok = analyseSecondStepP(moove);
+//                    }
+//                    else if(choice.equals("W")) {
+//                            System.out.print("Enter the cases you want to put a wall >");
+//                            moove = consoleIn.readLine();
+//                            ok = analyseSecondStepW(moove);
+//                    }
+//
+//                    if (!ok) {
+//                        System.out.println("incorrect instruction. retry !");
+//                    }
+//                }
+//                catch(IOException e) {}
+//            }
+//        }
     }
 
     /**
@@ -262,34 +280,18 @@ public class QuorController extends Controller {
 
     /**
      * Analyse the second input of the player for the move of a pawn
-     * @param line
      * @return
      */
-    public boolean analyseSecondStepP(String line){
+    public boolean analyseSecondStepP(){
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
-        if(line.length() !=2)return false;
-        int col = (line.charAt(0)-'A');
-        int row = (line.charAt(1)-'1');
-        if(row < 0 || row > 8 || col < 0 || col > 8) return false;
-
         gameStage.getBoard().setInvalidCells();
         List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY() , gameStage.getWalls(), gameStage.getPawns());
 
         for(int[] dest : possibleDest){
-
+            System.out.println("dest : " + dest[0] + " " + dest[1]);
             gameStage.getBoard().setvalidCell(dest[0],dest[1]);
         }
-        if (!gameStage.getBoard().canReachCell(row,col)) return false;
-
-        ActionList actions = new ActionList(true);
-//        GameAction move = new MoveAction(model, pawn, "QuorBoard", row, col);
-        ((Pawn)pawn).setPawnY(row);
-        ((Pawn)pawn).setPawnX(col);
-        // add the action to the action list.
-//        actions.addSingleAction(move);
-        ActionPlayer play = new ActionPlayer(model, this, actions);
-        play.start();
         return true;
     }
 

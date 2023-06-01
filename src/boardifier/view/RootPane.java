@@ -2,12 +2,9 @@ package boardifier.view;
 
 import boardifier.model.GameElement;
 import javafx.scene.Group;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 import java.util.Collections;
 

@@ -1,7 +1,5 @@
 package boardifier.model.action;
 
-import boardifier.model.GameElement;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -3,9 +3,6 @@ package boardifier.model;
 import boardifier.model.animation.Animation;
 import boardifier.view.GridGeometry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * abstract class that describes an element of the game, in the largest sense.
