@@ -37,8 +37,8 @@ public class PawnLook extends ElementLook {
 
         circle.setCenterX(radius);
         circle.setCenterY(radius);
-        onSelectionChange();
         addShape(circle);
+
 
     }
     @Override

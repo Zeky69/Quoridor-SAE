@@ -43,7 +43,8 @@ public class AnimationState {
             try {
                 wait();
             }
-            catch(InterruptedException e) {}
+            catch(InterruptedException e) {
+            }
         }
     }
 }

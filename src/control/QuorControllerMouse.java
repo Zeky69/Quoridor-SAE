@@ -38,6 +38,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
 
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
+        System.out.println("Mouse clicked at " + event.getSceneX() + " " + event.getSceneY());
         List<GameElement> list = control.elementsAt(clic);
 
         if (stageModel.getState() == QuorStageModel.STATE_SELECTPAWN) {
@@ -47,6 +48,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                     Pawn pawn = (Pawn)element;
                     // check if color of the pawn corresponds to the current player id
                     if (pawn.getPlayer()-1 == model.getIdPlayer()) {
+                        ((QuorController)control).analyseSecondStepP();
                         System.out.println("ouuuu");
                         element.toggleSelected();
                         stageModel.setState(QuorStageModel.STATE_SELECTDEST);
@@ -64,13 +66,40 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                 }
             }
 
+
+
             QuorBoard board = stageModel.getBoard();
 
             // thirdly, get the clicked cell in the 3x3 board
             GridLook lookBoard = (GridLook) control.getElementLook(board);
             int[] dest = lookBoard.getCellFromSceneLocation(clic);
 
+
             System.out.println(Arrays.toString(dest));
+
+
+            if (dest!= null && stageModel.getBoard().canReachCell(dest[0],dest[1])){
+                GameElement pawn = stageModel.getPawns()[model.getIdPlayer()];
+                System.out.println("can reach");
+                ActionList actions = new ActionList(true);
+//                GameAction move = new MoveAction(model, pawn, "QuorBoard", dest[0], dest[1]);
+                stageModel.unselectAll();
+                Coord2D center = lookBoard.getRootPaneLocationForCellCenter(dest[0], dest[1]);
+
+                ((Pawn)pawn).setPawnY(dest[0]);
+                ((Pawn)pawn).setPawnX(dest[1]);
+                GameAction move = new MoveAction(model, pawn, "QuorBoard", dest[0], dest[1] , AnimationTypes.MOVE_LINEARPROP, center.getX(), center.getY(),10 );
+
+                actions.addSingleAction(move);
+                stageModel.setState(QuorStageModel.STATE_SELECTPAWN);
+                ActionPlayer play = new ActionPlayer(model, control, actions);
+                play.start();
+
+            }
+            else{
+                System.out.println("can't reach");
+            }
+
         }
 
 
@@ -89,7 +118,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
 //
 //
 //
-//        GameElement pawn = stageModel.getPawns()[model.getIdPlayer()];
 
 
 
@@ -103,21 +131,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
 //
 //
 //
-//        ((QuorController)control).analyseSecondStepP();
-//        if (stageModel.getBoard().canReachCell(coordCase[1],coordCase[0])){
-//            System.out.println("can reach");
-//            ActionList actions = new ActionList(true);
-//            GameAction move = new MoveAction(model, pawn, "QuorBoard", coordCase[1], coordCase[0]);
-//            ((Pawn)pawn).setPawnY(coordCase[1]);
-//            ((Pawn)pawn).setPawnX(coordCase[0]);
-//            actions.addSingleAction(move);
-//            ActionPlayer play = new ActionPlayer(model, control, actions);
-//            play.start();
-//
-//        }
-//        else{
-//            System.out.println("can't reach");
-//        }
 
 
 

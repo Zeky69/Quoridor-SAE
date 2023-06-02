@@ -3,6 +3,8 @@ package model;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
+import boardifier.model.animation.AnimationStep;
+import boardifier.view.GridGeometry;
 
 public class Pawn extends GameElement {
 
@@ -158,6 +160,19 @@ public class Pawn extends GameElement {
      */
     public Pawn copy(){
         return new Pawn(this.x , this.y ,this.wallCount, this.player , this.winY , this.gameStageModel);
+    }
+
+    public void update(double width, double height, GridGeometry gridGeometry) {
+        // if must be animated, move the pawn
+        if (animation != null) {
+            AnimationStep step = animation.next();
+            if (step != null) {
+                setLocation(step.getInt(0), step.getInt(1));
+            }
+            else {
+                animation = null;
+            }
+        }
     }
 
 }
