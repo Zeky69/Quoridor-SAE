@@ -35,30 +35,89 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     public void handle(MouseEvent event) {
         // if mouse event capture is disabled in the model, just return
         if (!model.isCaptureMouseEvent()) return;
-        Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
-//        List<GameElement> list = control.elementsAt(clic);
-        System.out.println("click in "+event.getSceneX()+","+event.getSceneY());
-        int[] coordCase = new int[]{(int)event.getSceneX()/80, (int)event.getSceneY()/80};
-        System.out.println("case:" + coordCase[0] + "," + coordCase[1]);
-
         QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
-        GameElement pawn = stageModel.getPawns()[model.getIdPlayer()];
 
-        ((QuorController)control).analyseSecondStepP();
-        if (stageModel.getBoard().canReachCell(coordCase[1],coordCase[0])){
-            System.out.println("can reach");
-            ActionList actions = new ActionList(true);
-            GameAction move = new MoveAction(model, pawn, "QuorBoard", coordCase[1], coordCase[0]);
-            ((Pawn)pawn).setPawnY(coordCase[0]);
-            ((Pawn)pawn).setPawnX(coordCase[1]);
-            actions.addSingleAction(move);
-            ActionPlayer play = new ActionPlayer(model, control, actions);
-            play.start();
+        Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
+        List<GameElement> list = control.elementsAt(clic);
 
+        if (stageModel.getState() == QuorStageModel.STATE_SELECTPAWN) {
+            for (GameElement element : list) {
+                if (element.getType() == ElementTypes.getType("pawn")) {
+
+                    Pawn pawn = (Pawn)element;
+                    // check if color of the pawn corresponds to the current player id
+                    if (pawn.getPlayer()-1 == model.getIdPlayer()) {
+                        System.out.println("ouuuu");
+                        element.toggleSelected();
+                        stageModel.setState(QuorStageModel.STATE_SELECTDEST);
+                        return; // do not allow another element to be selected
+                    }
+                }
+            }
+        }else if (stageModel.getState() == QuorStageModel.STATE_SELECTDEST) {
+            // first check if the click is on the current selected pawn. In this case, unselect it
+            for (GameElement element : list) {
+                if (element.isSelected()) {
+                    element.toggleSelected();
+                    stageModel.setState(QuorStageModel.STATE_SELECTPAWN);
+                    return;
+                }
+            }
+
+            QuorBoard board = stageModel.getBoard();
+
+            // thirdly, get the clicked cell in the 3x3 board
+            GridLook lookBoard = (GridLook) control.getElementLook(board);
+            int[] dest = lookBoard.getCellFromSceneLocation(clic);
+
+            System.out.println(Arrays.toString(dest));
         }
-        else{
-            System.out.println("can't reach");
-        }
+
+
+
+
+
+
+//
+//
+//
+//        System.out.println(Arrays.toString(list.toArray()));
+//        System.out.println("click in "+event.getSceneX()+","+event.getSceneY());
+//        int[] coordCase = new int[]{(int)event.getSceneX()/70, (int)event.getSceneY()/70};
+//        System.out.println("case:" + coordCase[0] + "," + coordCase[1]);
+//
+//
+//
+//
+//        GameElement pawn = stageModel.getPawns()[model.getIdPlayer()];
+
+
+
+
+
+
+
+//
+//
+//
+//
+//
+//
+//        ((QuorController)control).analyseSecondStepP();
+//        if (stageModel.getBoard().canReachCell(coordCase[1],coordCase[0])){
+//            System.out.println("can reach");
+//            ActionList actions = new ActionList(true);
+//            GameAction move = new MoveAction(model, pawn, "QuorBoard", coordCase[1], coordCase[0]);
+//            ((Pawn)pawn).setPawnY(coordCase[1]);
+//            ((Pawn)pawn).setPawnX(coordCase[0]);
+//            actions.addSingleAction(move);
+//            ActionPlayer play = new ActionPlayer(model, control, actions);
+//            play.start();
+//
+//        }
+//        else{
+//            System.out.println("can't reach");
+//        }
 
 
 

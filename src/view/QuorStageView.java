@@ -30,7 +30,7 @@ public class QuorStageView extends GameStageView{
 
 
         for(int i=0;i<2;i++) {
-            addLook(new PawnLook(((QuorStageModel) gameStageModel).getPawns()[i],28));
+            addLook(new PawnLook(((QuorStageModel) gameStageModel).getPawns()[i],24));
 
         }
         Wall[][] wallsShow = ((QuorStageModel) gameStageModel).getWallsShow();

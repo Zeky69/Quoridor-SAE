@@ -6,6 +6,9 @@ import boardifier.model.Model;
 import boardifier.model.StageElementsFactory;
 
 public class QuorStageModel extends GameStageModel {
+
+    public final static int STATE_SELECTPAWN = 1;
+    public final static int STATE_SELECTDEST = 2;
     QuorBoard board;
     Pawn[] pawns ;
     int[] nbWalls = {10,10};
@@ -21,6 +24,8 @@ public class QuorStageModel extends GameStageModel {
      */
     public QuorStageModel(String name, Model model) {
         super(name , model);
+        state = STATE_SELECTPAWN;
+
     }
 
     /**
