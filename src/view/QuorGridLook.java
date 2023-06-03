@@ -5,12 +5,16 @@ import boardifier.model.GameStageModel;
 import boardifier.model.GridElement;
 import boardifier.view.GridLook;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
+import model.Pawn;
 import model.QuorBoard;
 import model.QuorStageModel;
 import model.Wall;
 
-import java.awt.*;
+import java.util.List;
+
 
 public class QuorGridLook extends GridLook {
     Wall[][] walls ;
@@ -45,7 +49,7 @@ public class QuorGridLook extends GridLook {
         // NB: To have more liberty in the design, GridLook does not compute the cell size from the dimension of the element parameter.
         // If we create the 3x3 board by adding a border of 10 pixels, with cells occupying all the available surface,
         // then, cells have a size of (size-20)/3
-        super(size, size, (size-20)/9, (size-20)/9, 10, "0X000000", element);
+        super(size, size, (size)/9, (size)/9, 1, "0X000000", element);
         cells = new Rectangle[9][9];
         // create the rectangles.
         for (int i=0;i<9;i++) {
@@ -70,7 +74,36 @@ public class QuorGridLook extends GridLook {
     }
 
     @Override
-    public void onChange() {}
-}
+    public void onChange() {
+        // in a pawn is selected, reachableCells changes. Thus, the look of the board must also changes.
+        QuorBoard board = (QuorBoard)element;
+        boolean[][] reach = board.getReachableCells();
+        List<GameElement> selectedElement = board.getGameStage().getSelected();
+        boolean selected = !selectedElement.isEmpty();
+        for(int i=0;i<9;i++) {
+            for(int j=0;j<9;j++) {
+                if (reach[i][j] && selected) {
+//                    cells[i][j].setStrokeWidth(3);
+//                    cells[i][j].setStrokeMiterLimit(10);
+//                    cells[i][j].setStrokeType(StrokeType.CENTERED);
+//                    cells[i][j].setStroke(Color.valueOf("0xFF3333"));
+                    Circle c = new Circle(10, Color.valueOf("0xFF3333"));
+                    c.setCenterX(cells[i][j].getX()+cellWidth/2);
+                    c.setCenterY(cells[i][j].getY()+cellHeight/2);
+                    addShape(c);
 
+
+                } else {
+                    cells[i][j] = new Rectangle(cellWidth, cellHeight);
+                    cells[i][j].setFill(javafx.scene.paint.Color.valueOf("0xFFFFFF"));
+                    cells[i][j].setX(j*cellWidth+borderWidth);
+                    cells[i][j].setY(i*cellHeight+borderWidth);
+                    cells[i][j].setStyle("-fx-stroke: black; -fx-stroke-width: 10;");
+
+                    addShape(cells[i][j]);
+                }
+            }
+        }
+    }
+}
 

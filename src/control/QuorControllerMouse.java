@@ -40,6 +40,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
         System.out.println("Mouse clicked at " + event.getSceneX() + " " + event.getSceneY());
         List<GameElement> list = control.elementsAt(clic);
+        QuorBoard board = stageModel.getBoard();
 
         if (stageModel.getState() == QuorStageModel.STATE_SELECTPAWN) {
             for (GameElement element : list) {
@@ -49,7 +50,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                     // check if color of the pawn corresponds to the current player id
                     if (pawn.getPlayer()-1 == model.getIdPlayer()) {
                         ((QuorController)control).analyseSecondStepP();
-                        System.out.println("ouuuu");
                         element.toggleSelected();
                         stageModel.setState(QuorStageModel.STATE_SELECTDEST);
                         return; // do not allow another element to be selected
@@ -61,6 +61,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
             for (GameElement element : list) {
                 if (element.isSelected()) {
                     element.toggleSelected();
+                     board.setLookChanged(true);
                     stageModel.setState(QuorStageModel.STATE_SELECTPAWN);
                     return;
                 }
@@ -68,7 +69,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
 
 
 
-            QuorBoard board = stageModel.getBoard();
 
             // thirdly, get the clicked cell in the 3x3 board
             GridLook lookBoard = (GridLook) control.getElementLook(board);
@@ -94,6 +94,8 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                 stageModel.setState(QuorStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
                 play.start();
+                stageModel.getBoard().setInvalidCells();
+
 
             }
             else{

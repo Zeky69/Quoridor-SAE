@@ -286,6 +286,7 @@ public class QuorController extends Controller {
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
         gameStage.getBoard().setInvalidCells();
+
         List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY() , gameStage.getWalls(), gameStage.getPawns());
 
         for(int[] dest : possibleDest){

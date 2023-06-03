@@ -21,6 +21,8 @@ public class QuorBoard extends GridElement {
                 reachableCells[p.y][p.x] = false;
             }
         }
+        lookChanged = true;
+
     }
 
     /**
@@ -30,7 +32,14 @@ public class QuorBoard extends GridElement {
      */
     public void setvalidCell(int x, int y) {
         reachableCells[y][x] = true;
+        lookChanged = true;
 
+
+    }
+
+
+    public void setLookChanged(boolean lookChanged) {
+        this.lookChanged = lookChanged;
     }
 
     /**
