@@ -27,12 +27,35 @@ import java.util.List;
  * It gets the elements of the scene that are at the clicked position and prints them.
  */
 public class QuorControllerMouse extends ControllerMouse implements EventHandler<MouseEvent> {
-
+    int tailleGrid = 630;
+    int tailleCase = (tailleGrid/9);
+    int tailleMur = 5;
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
+        view.getRootPane().setOnMouseMoved(event -> { //adding the mouse moved event not present in the original ControllerMouse class
+            if (detectWall(event)) {
+                System.out.println("Wall");
+            } else {
+                System.out.println("Not wall");
+            }
+        });
+    }
+
+    /**
+     * Detect if the click is on a wall position
+     * @param event
+     * @return
+     */
+    public boolean detectWall(MouseEvent event) {
+        Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
+        return ((clic.getX()%tailleCase>tailleCase-tailleMur || clic.getX()%tailleCase<tailleMur) != ((clic.getY()-25)%tailleCase>tailleCase-tailleMur || (clic.getY()-25)%tailleCase<tailleMur));
     }
 
     public void handle(MouseEvent event) {
+        if (detectWall(event)) {
+            System.out.println("Wall");
+            return;
+        }
         // if mouse event capture is disabled in the model, just return
         if (!model.isCaptureMouseEvent()) return;
         QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
@@ -40,9 +63,10 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
         System.out.println("Mouse clicked at " + event.getSceneX() + " " + event.getSceneY());
         List<GameElement> list = control.elementsAt(clic);
-        if ((clic.getX()%70>65 || clic.getX()%70<5) != ((clic.getY())%70>65 || (clic.getY())%70<5)) {
-            System.out.println("Mur");
-        }
+
+
+
+
         QuorBoard board = stageModel.getBoard();
 
         if (stageModel.getState() == QuorStageModel.STATE_SELECTPAWN) {
@@ -85,7 +109,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                 GameElement pawn = stageModel.getPawns()[model.getIdPlayer()];
                 System.out.println("can reach");
                 ActionList actions = new ActionList(true);
-//                GameAction move = new MoveAction(model, pawn, "QuorBoard", dest[0], dest[1]);
+                //GameAction move = new MoveAction(model, pawn, "QuorBoard", dest[0], dest[1]);
                 stageModel.unselectAll();
                 Coord2D center = lookBoard.getRootPaneLocationForCellCenter(dest[0], dest[1]);
 
