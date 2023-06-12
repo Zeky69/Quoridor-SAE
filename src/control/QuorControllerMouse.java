@@ -33,7 +33,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
         view.getRootPane().setOnMouseMoved(event -> { //adding the mouse moved event not present in the original ControllerMouse class
-            if (detectWall(event)) {
+            if (detectWall(event)!=null) {
                 System.out.println("Wall");
             } else {
                 System.out.println("Not wall");
@@ -46,13 +46,21 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
      * @param event
      * @return
      */
-    public boolean detectWall(MouseEvent event) {
+    public boolean[] detectWall(MouseEvent event) {
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
-        return ((clic.getX()%tailleCase>tailleCase-tailleMur || clic.getX()%tailleCase<tailleMur) != ((clic.getY()-25)%tailleCase>tailleCase-tailleMur || (clic.getY()-25)%tailleCase<tailleMur));
+        boolean[] direction = new boolean[4]; //0 = bas, 1 = haut, 2 = droite, 3 = gauche (normalement)
+        direction[0] = clic.getX()%tailleCase>tailleCase-tailleMur;
+        direction[1] = clic.getX()%tailleCase<tailleMur;
+        direction[2] = (clic.getY()-25)%tailleCase>tailleCase-tailleMur;
+        direction[3] = (clic.getY()-25)%tailleCase<tailleMur;
+        if ((direction[0] || direction[1]) != (direction[2] || direction[3])){
+            return direction;
+        }
+        return null;
     }
 
     public void handle(MouseEvent event) {
-        if (detectWall(event)) {
+        if (detectWall(event)!=null) {
             System.out.println("Wall");
             return;
         }
