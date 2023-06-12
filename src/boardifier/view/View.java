@@ -36,7 +36,8 @@ public class View {
      * It MUST BE created in the createMenuBar() method, which by default does nothing.
      * Thus, dev. must create a subclass of View to override createMenuBar().
      */
-    protected MenuBar menuBar;
+    protected MenuBar
+            menuBar;
 
     /**
      * The primary stage.

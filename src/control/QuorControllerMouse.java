@@ -32,13 +32,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     int tailleMur = 5;
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
-        view.getRootPane().setOnMouseMoved(event -> { //adding the mouse moved event not present in the original ControllerMouse class
-            if (detectWall(event)!=null) {
-                System.out.println("Wall");
-            } else {
-                System.out.println("Not wall");
-            }
-        });
+
     }
 
     /**
@@ -60,10 +54,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     }
 
     public void handle(MouseEvent event) {
-        if (detectWall(event)!=null) {
-            System.out.println("Wall");
-            return;
-        }
         // if mouse event capture is disabled in the model, just return
         if (!model.isCaptureMouseEvent()) return;
         QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
@@ -71,9 +61,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
         System.out.println("Mouse clicked at " + event.getSceneX() + " " + event.getSceneY());
         List<GameElement> list = control.elementsAt(clic);
-
-
-
 
         QuorBoard board = stageModel.getBoard();
 

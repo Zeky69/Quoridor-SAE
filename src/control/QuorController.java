@@ -17,7 +17,7 @@ import java.util.List;
 import static model.Wall.isBorder;
 
 public class QuorController extends Controller {
-
+    int mode;
     BufferedReader consoleIn;
     boolean firstPlayer;
 
@@ -31,13 +31,30 @@ public class QuorController extends Controller {
      * @param model
      * @param view
      */
-    public QuorController(Model model , View view) {
+    public QuorController(Model model , View view, int mode) {
         super(model, view);
         setControlAction (new QuorControllerAction(model, view, this));
         setControlMouse(new QuorControllerMouse(model, view, this));
-
+        this.mode = mode;
 
         firstPlayer = true;
+    }
+
+    public void initPlayers(int mode){
+        String computerName = "computer";
+        String playerName = "player";
+        if (mode == 0) {
+            model.addHumanPlayer(playerName +"1");
+            model.addHumanPlayer(playerName+"2");
+        }
+        else if (mode == 1) {
+            model.addHumanPlayer(playerName +" 1" );
+            model.addComputerPlayer(computerName +" 2" );
+        }
+        else {
+            model.addComputerPlayer(computerName+" 1" );
+            model.addComputerPlayer(computerName+" 2" );
+        }
     }
 
     /**
@@ -64,7 +81,7 @@ public class QuorController extends Controller {
      */
     @Override
     public void nextPlayer() {
-
+        System.out.println(model.getPlayers().size());
         model.setNextPlayer();
         // get the new player
         Player p = model.getCurrentPlayer();

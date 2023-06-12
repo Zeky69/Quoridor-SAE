@@ -201,10 +201,7 @@ public class Model {
     public Player getCurrentPlayer() {
         return players.get(idPlayer);
     }
-    public void setNextPlayer() {
-        idPlayer = (idPlayer+1)%players.size();
-    }
-
+    public void setNextPlayer() {idPlayer = (idPlayer+1)%players.size();}
     public int getIdWinner() {
         return idWinner;
     }
