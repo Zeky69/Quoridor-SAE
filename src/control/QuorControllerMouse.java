@@ -40,7 +40,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
         System.out.println("Mouse clicked at " + event.getSceneX() + " " + event.getSceneY());
         List<GameElement> list = control.elementsAt(clic);
-        if ((clic.getX()%70>65 || clic.getX()%70<5) != ((clic.getY()-25)%70>65 || (clic.getY()-25)%70<5)) {
+        if ((clic.getX()%70>65 || clic.getX()%70<5) != ((clic.getY())%70>65 || (clic.getY())%70<5)) {
             System.out.println("Mur");
         }
         QuorBoard board = stageModel.getBoard();
