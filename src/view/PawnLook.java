@@ -2,7 +2,6 @@ package view;
 
 import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
-import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
@@ -18,7 +17,7 @@ public class PawnLook extends ElementLook {
     Circle circle;
 
     Color color;
-    Color lightColor;
+    Color selectedColor;
     public PawnLook(GameElement element , int radius){
         super(element);
         Pawn pawn = (Pawn)element;
@@ -26,12 +25,12 @@ public class PawnLook extends ElementLook {
         circle.setRadius(radius);
         if(pawn.getPlayer() == 1){
             color = Color.LIGHTSKYBLUE;
-            lightColor = Color.DEEPSKYBLUE;
+            selectedColor = Color.valueOf("0x2e86c1");
 
         }
         else {
             color =Color.PINK;
-            lightColor = Color.LIGHTCORAL;
+            selectedColor = Color.LIGHTCORAL;
         }
         circle.setFill(color);
 
@@ -48,7 +47,7 @@ public class PawnLook extends ElementLook {
             circle.setStrokeWidth(8);
             circle.setStrokeMiterLimit(10);
             circle.setStrokeType(StrokeType.CENTERED);
-            circle.setStroke(lightColor);
+            circle.setStroke(selectedColor);
         }
         else {
             circle.setStrokeWidth(0);

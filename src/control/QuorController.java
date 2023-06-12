@@ -3,25 +3,17 @@ package control;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.model.GameElement;
-import boardifier.model.GameStageModel;
 import boardifier.model.Model;
 import boardifier.model.Player;
-import boardifier.model.action.ActionList;
-import boardifier.model.action.GameAction;
-import boardifier.model.action.MoveAction;
 import boardifier.view.View;
 import graph.Graph;
 import model.Pawn;
 import model.QuorStageModel;
 import model.Wall;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import static model.Wall.isBorder;
 
 public class QuorController extends Controller {
@@ -302,18 +294,13 @@ public class QuorController extends Controller {
      * @return
      */
     public Wall.Direction charToDirection(char direction){
-        switch (direction){
-            case 'H' :
-                return Wall.Direction.UP;
-            case 'B' :
-                return Wall.Direction.DOWN;
-            case 'D' :
-                return Wall.Direction.RIGHT;
-            case 'G' :
-                return Wall.Direction.LEFT;
-            default :
-                return null;
-        }
+        return switch (direction) {
+            case 'H' -> Wall.Direction.UP;
+            case 'B' -> Wall.Direction.DOWN;
+            case 'D' -> Wall.Direction.RIGHT;
+            case 'G' -> Wall.Direction.LEFT;
+            default -> null;
+        };
     }
 
     /**
@@ -331,17 +318,17 @@ public class QuorController extends Controller {
 
     /**
      * Convert the given coord to an orientation (for the walls)
-     * @param coord1
-     * @param coord2
+     * @param pos1
+     * @param pos2
      * @return
      */
-    public orientation coordsToOrientation(int[] coord1, int[] coord2){
-        if (coord1[0] == coord2[0]){
-            if (coord1[1] == coord2[1] + 1 || coord1[1] == coord2[1] - 1){
+    public orientation coordsToOrientation(int[] pos1, int[] pos2){
+        if (pos1[0] == pos2[0]){
+            if (pos1[1] == pos2[1] + 1 || pos1[1] == pos2[1] - 1){
                  return orientation.VERTICAL;
             }
         }
-        else if (coord1[1] == coord2[1] && (coord1[0] == coord2[0] + 1 || coord1[0] == coord2[0] - 1)){
+        else if (pos1[1] == pos2[1] && (pos1[0] == pos2[0] + 1 || pos1[0] == pos2[0] - 1)){
             return orientation.HORIZONTAL;
         }
         return null;

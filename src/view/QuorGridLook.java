@@ -83,11 +83,7 @@ public class QuorGridLook extends GridLook {
         for(int i=0;i<9;i++) {
             for(int j=0;j<9;j++) {
                 if (reach[i][j] && selected) {
-//                    cells[i][j].setStrokeWidth(3);
-//                    cells[i][j].setStrokeMiterLimit(10);
-//                    cells[i][j].setStrokeType(StrokeType.CENTERED);
-//                    cells[i][j].setStroke(Color.valueOf("0xFF3333"));
-                    Circle c = new Circle(10, Color.valueOf("0xFF3333"));
+                    Circle c = new Circle(10, Color.valueOf("0xe8daef"));
                     c.setCenterX(cells[i][j].getX()+cellWidth/2);
                     c.setCenterY(cells[i][j].getY()+cellHeight/2);
                     addShape(c);
@@ -98,7 +94,7 @@ public class QuorGridLook extends GridLook {
                     cells[i][j].setFill(javafx.scene.paint.Color.valueOf("0xFFFFFF"));
                     cells[i][j].setX(j*cellWidth+borderWidth);
                     cells[i][j].setY(i*cellHeight+borderWidth);
-                    cells[i][j].setStyle("-fx-stroke: black; -fx-stroke-width: 10;");
+                    cells[i][j].setStyle("-fx-stroke: #2c2830; -fx-stroke-width: 10;");
 
                     addShape(cells[i][j]);
                 }
