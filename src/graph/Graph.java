@@ -35,18 +35,19 @@ public class Graph {
         for (int i = 0; i < walls.length; i++) {
             for (int j = 0; j < walls[i].length; j++) {
                 addNoeud(new int[]{j, i});
-                if (wallIsBorder(new int[]{j, i}, Wall.Direction.UP) && !(walls[i][j].getWall(Wall.Direction.UP) || walls[i - 1][j].getWall(Wall.Direction.DOWN))) {
+                int[] coord = new int[]{j, i};
+                if (wallIsBorder(coord, Wall.Direction.UP) && !(walls[i][j].getWall(Wall.Direction.UP) || walls[i - 1][j].getWall(Wall.Direction.DOWN))) {
                     addArete(new int[]{j, i}, new int[]{j, i - 1});
                 }
-                if (wallIsBorder(new int[]{j, i}, Wall.Direction.DOWN) && !(walls[i][j].getWall(Wall.Direction.DOWN) || walls[i + 1][j].getWall(Wall.Direction.UP))) {
+                if (wallIsBorder(coord, Wall.Direction.DOWN) && !(walls[i][j].getWall(Wall.Direction.DOWN) || walls[i + 1][j].getWall(Wall.Direction.UP))) {
                     addArete(new int[]{j, i}, new int[]{j, i + 1});
 
                 }
-                if (wallIsBorder(new int[]{j, i}, Wall.Direction.LEFT) && !(walls[i][j].getWall(Wall.Direction.LEFT) || walls[i][j - 1].getWall(Wall.Direction.RIGHT))) {
+                if (wallIsBorder(coord, Wall.Direction.LEFT) && !(walls[i][j].getWall(Wall.Direction.LEFT) || walls[i][j - 1].getWall(Wall.Direction.RIGHT))) {
                     addArete(new int[]{j, i}, new int[]{j - 1, i});
 
                 }
-                if (wallIsBorder(new int[]{j, i}, Wall.Direction.RIGHT) && !(walls[i][j].getWall(Wall.Direction.RIGHT) || walls[i][j + 1].getWall(Wall.Direction.LEFT))) {
+                if (wallIsBorder(coord, Wall.Direction.RIGHT) && !(walls[i][j].getWall(Wall.Direction.RIGHT) || walls[i][j + 1].getWall(Wall.Direction.LEFT))) {
                     addArete(new int[]{j, i}, new int[]{j + 1, i});
 
 

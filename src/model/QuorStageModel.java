@@ -25,6 +25,8 @@ public class QuorStageModel extends GameStageModel {
     public QuorStageModel(String name, Model model) {
         super(name , model);
         state = STATE_SELECTPAWN;
+        setupCallbacks();
+
 
     }
 
@@ -96,6 +98,13 @@ public class QuorStageModel extends GameStageModel {
         this.walls = walls;
     }
 
+
+    private void setupCallbacks() {
+        onMoveInGrid( (element, gridDest, rowDest, colDst) -> {
+            hasWon();
+        });
+    }
+
     /**
      * Set the second wall pot
      * @param wallPot2
@@ -143,7 +152,7 @@ public class QuorStageModel extends GameStageModel {
         for(int i=0;i<pawns.length;i++){
             if(pawns[i].getWinY() == pawns[i].getPawnY()){
                 model.setIdWinner(i);
-                model.stopStage();
+                model.stopGame();
             }
         }
     }

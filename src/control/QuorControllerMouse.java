@@ -13,14 +13,18 @@ import boardifier.model.action.MoveAction;
 import boardifier.model.animation.AnimationTypes;
 import boardifier.view.GridLook;
 import boardifier.view.View;
+import graph.Graph;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import model.Pawn;
 import model.QuorBoard;
 import model.QuorStageModel;
+import model.Wall;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static model.Wall.isBorder;
 
 /**
  * A basic mouse controller that just grabs the mouse clicks and prints out some informations.
@@ -32,7 +36,13 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     int tailleMur = 5;
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
-
+        view.getRootPane().setOnMouseMoved(event -> { //adding the mouse moved event not present in the original ControllerMouse class
+            if (detectWall(event)!=null) {
+                System.out.println("Wall");
+            } else {
+                System.out.println("Not wall");
+            }
+        });
     }
 
     /**
@@ -40,20 +50,29 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
      * @param event
      * @return
      */
-    public boolean[] detectWall(MouseEvent event) {
+    public Wall.Direction detectWall(MouseEvent event) {
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
         boolean[] direction = new boolean[4]; //0 = bas, 1 = haut, 2 = droite, 3 = gauche (normalement)
-        direction[0] = clic.getX()%tailleCase>tailleCase-tailleMur;
-        direction[1] = clic.getX()%tailleCase<tailleMur;
-        direction[2] = (clic.getY()-25)%tailleCase>tailleCase-tailleMur;
-        direction[3] = (clic.getY()-25)%tailleCase<tailleMur;
+        direction[0] = (clic.getX() ) % tailleCase > (tailleCase-tailleMur);
+        direction[1] = (clic.getX() ) %tailleCase<tailleMur;
+        direction[2] = (clic.getY()-30)%tailleCase>(tailleCase-tailleMur);
+        direction[3] = (clic.getY()-30)%tailleCase<tailleMur;
         if ((direction[0] || direction[1]) != (direction[2] || direction[3])){
-            return direction;
+            if(direction[0])
+                return Wall.Direction.RIGHT;
+            if(direction[1])
+                return Wall.Direction.LEFT;
+            if(direction[2])
+                return Wall.Direction.DOWN;
+            if(direction[3])
+                return Wall.Direction.UP;
+
         }
         return null;
     }
 
     public void handle(MouseEvent event) {
+
         // if mouse event capture is disabled in the model, just return
         if (!model.isCaptureMouseEvent()) return;
         QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
@@ -61,6 +80,9 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
         System.out.println("Mouse clicked at " + event.getSceneX() + " " + event.getSceneY());
         List<GameElement> list = control.elementsAt(clic);
+
+
+
 
         QuorBoard board = stageModel.getBoard();
 
@@ -77,6 +99,17 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                         return; // do not allow another element to be selected
                     }
                 }
+            }
+            if (detectWall(event)!=null) {
+                int[] dest = new int[]{(int) (clic.getY()-30)/tailleCase,(int)clic.getX()/tailleCase};
+                QuorController control = (QuorController) this.control;
+                Wall.Direction direction = detectWall(event);
+                if (direction != null && dest != null){
+                    if( control.analyseSecondStepW(dest[1],dest[0],direction)){
+                        control.nextPlayer();
+                    }
+                }
+                return;
             }
         }else if (stageModel.getState() == QuorStageModel.STATE_SELECTDEST) {
             // first check if the click is on the current selected pawn. In this case, unselect it
@@ -97,12 +130,10 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
             int[] dest = lookBoard.getCellFromSceneLocation(clic);
 
 
-            System.out.println(Arrays.toString(dest));
 
 
             if (dest!= null && stageModel.getBoard().canReachCell(dest[0],dest[1])){
                 GameElement pawn = stageModel.getPawns()[model.getIdPlayer()];
-                System.out.println("can reach");
                 ActionList actions = new ActionList(true);
                 //GameAction move = new MoveAction(model, pawn, "QuorBoard", dest[0], dest[1]);
                 stageModel.unselectAll();
@@ -129,44 +160,8 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
 
 
 
-
-
-//
-//
-//
-//        System.out.println(Arrays.toString(list.toArray()));
-//        System.out.println("click in "+event.getSceneX()+","+event.getSceneY());
-//        int[] coordCase = new int[]{(int)event.getSceneX()/70, (int)event.getSceneY()/70};
-//        System.out.println("case:" + coordCase[0] + "," + coordCase[1]);
-//
-//
-//
-//
-
-
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
+
+
+
 }
