@@ -11,54 +11,42 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class QuorView extends View {
-    private Menu menuStart;
+    private MenuItem menuItemStart;
     private MenuItem menuIntro;
     private MenuItem menuQuit;
-    private MenuItem subMenuHvH;
-    private MenuItem subMenuHvC;
-    private MenuItem subMenuCvC;
+    public int mode;
+    private QuorRootPane rootPane;
 
-    public QuorView(Model model, Stage stage, RootPane rootPane) {
+    public QuorView(Model model, Stage stage, RootPane rootPane, int mode) {
         super(model, stage, rootPane);
+        this.mode = mode;
+        this.rootPane = (QuorRootPane)rootPane;
     }
 
     @Override
     protected void createMenuBar() {
         menuBar = new MenuBar();
         Menu menu1 = new Menu("Game");
-        menuStart = new Menu("New game");
+        menuItemStart = new MenuItem("New game");
         menuIntro = new MenuItem("Intro");
         menuQuit = new MenuItem("Quit");
-        menu1.getItems().addAll(menuStart,menuIntro,menuQuit);
-
-        subMenuHvH = new MenuItem("Human vs Human");
-        subMenuHvC = new MenuItem("Human vs Computer");
-        subMenuCvC = new MenuItem("Computer vs Computer");
-        menuStart.getItems().addAll(subMenuHvH, subMenuHvC, subMenuCvC);
-
-
+        menu1.getItems().addAll(menuItemStart,menuIntro,menuQuit);
         menuBar.getMenus().add(menu1);
     }
 
+    public MenuItem getMenuItemStart() {return menuItemStart;}
 
+    public Button getButtonModeHvH() {return rootPane.buttonModeHvH;}
 
-    public Menu getMenuStart() {
-        return menuStart;
-    }
+    public Button getButtonModeHvC() {return rootPane.buttonModeHvC;}
 
-    public MenuItem getSubMenuHvH() {return subMenuHvH; }
-
-    public MenuItem getSubMenuHvC() {return subMenuHvC; }
-
-    public MenuItem getSubMenuCvC() {return subMenuCvC; }
+    public Button getButtonModeCvC() {return rootPane.buttonModeCvC;}
 
     public MenuItem getMenuIntro() {
         return menuIntro;
     }
 
-    public MenuItem getMenuQuit() {
-        return menuQuit;
-    }
+    public MenuItem getMenuQuit() {return menuQuit;}
 }
 
 

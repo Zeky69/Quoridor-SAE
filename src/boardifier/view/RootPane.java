@@ -12,6 +12,7 @@ public class RootPane extends Pane {
 
     protected GameStageView gameStageView;
     protected Group group; // the group that contains all game elements of the current stage
+    int mode;
 
     public RootPane() {
         this.gameStageView = null;

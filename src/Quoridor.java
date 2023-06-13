@@ -24,6 +24,9 @@ public class Quoridor extends Application {
             catch(NumberFormatException e) {
                 Quoridor.mode = 0;
             }
+        } else if (args.length == 0){
+            System.out.println("Check 1");
+            Quoridor.mode = -1;
         }
         launch(args);
 
@@ -35,10 +38,12 @@ public class Quoridor extends Application {
 
         Model model = new Model();
         StageFactory.registerModelAndView("Quoridor", "model.QuorStageModel", "view.QuorStageView");
-        QuorRootPane rootPane = new QuorRootPane();
-        QuorView view = new QuorView(model, stage, rootPane);
 
-        QuorController control = new QuorController(model,view,mode);
+        QuorRootPane rootPane = new QuorRootPane(Quoridor.mode);
+
+        QuorView view = new QuorView(model, stage, rootPane, Quoridor.mode);
+
+        QuorController control = new QuorController(model,view,Quoridor.mode);
         control.setFirstStageName("Quoridor");
         stage.setTitle("Quoridor");
         stage.show();

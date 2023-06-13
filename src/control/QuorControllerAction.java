@@ -9,13 +9,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import view.QuorView;
 
+import javax.swing.plaf.synth.SynthDesktopIconUI;
+
 
 public class QuorControllerAction extends ControllerAction implements EventHandler<ActionEvent> {
 
         private QuorView quorView;
+        private QuorController quorControl;
         public QuorControllerAction(Model model, View view, Controller control) {
             super(model, view, control);
             quorView = (QuorView)view;
+            quorControl = (QuorController)control;
 
             // set handlers dedicated to menu items
             setMenuHandlers();
@@ -24,40 +28,9 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
         }
 
         private void setMenuHandlers(){
-            QuorController quorControl = (QuorController)this.control;
-            quorView.getMenuStart().setOnAction(e -> {
+            quorView.getMenuItemStart().setOnAction(e -> {
                 try {
-                    quorControl.initPlayers(quorControl.mode);
-                    control.startGame();
-                }
-                catch(GameException err) {
-                    System.err.println(err.getMessage());
-                    System.exit(1);
-                }
-            });
-            quorView.getSubMenuHvH().setOnAction(e -> {
-                try {
-                    quorControl.initPlayers(0);
-                    control.startGame();
-                }
-                catch(GameException err) {
-                    System.err.println(err.getMessage());
-                    System.exit(1);
-                }
-            });
-            quorView.getSubMenuHvC().setOnAction(e -> {
-                try {
-                    quorControl.initPlayers(1);
-                    control.startGame();
-                }
-                catch(GameException err) {
-                    System.err.println(err.getMessage());
-                    System.exit(1);
-                }
-            });
-            quorView.getSubMenuCvC().setOnAction(e -> {
-                try {
-                    quorControl.initPlayers(2);
+                    quorControl.initPlayers(quorView.mode);
                     control.startGame();
                 }
                 catch(GameException err) {
@@ -76,6 +49,38 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
             });
 
         }
+
+    private void setButtonHandlers(){
+        quorView.getButtonModeHvH().setOnAction(e -> {
+            try {
+                quorControl.initPlayers(0);
+                control.startGame();
+            } catch (GameException err) {
+                System.err.println(err.getMessage());
+                System.exit(1);
+            }
+        });
+        quorView.getButtonModeHvC().setOnAction(e -> {
+            try {
+                quorControl.initPlayers(1);
+                control.startGame();
+            } catch (GameException err) {
+                System.err.println(err.getMessage());
+                System.exit(1);
+            }
+        });
+        quorView.getButtonModeCvC().setOnAction(e -> {
+            try {
+                quorControl.initPlayers(2);
+                control.startGame();
+            } catch (GameException err) {
+                System.err.println(err.getMessage());
+                System.exit(1);
+            }
+        });
+    }
+
+
 
         @Override
         public void handle(ActionEvent event) {
