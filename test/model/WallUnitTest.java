@@ -15,7 +15,7 @@ public class WallUnitTest {
     private Wall wall;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         boolean[] wallArray = {true, false, true, false};
         wall = new Wall(wallArray, null);
     }
@@ -36,6 +36,13 @@ public class WallUnitTest {
     }
 
     @Test
+    public void testIsEmpty() {
+        assertFalse(wall.isEmpty());
+        Wall emptyWall = new Wall(new boolean[4], null);
+        assertTrue(emptyWall.isEmpty());
+    }
+
+    @Test
     public void testSetWall() {
         wall.setWall(Direction.UP, false);
         assertFalse(wall.getWall(Direction.UP));
@@ -47,12 +54,7 @@ public class WallUnitTest {
         assertTrue(wall.getWall(Direction.RIGHT));
     }
 
-    @Test
-    public void testIsEmpty() {
-        assertFalse(wall.isEmpty());
-        wall.setWalls(new boolean[4]);
-        assertTrue(wall.isEmpty());
-    }
+
 
     @Test
     public void testCopy() {
@@ -91,6 +93,49 @@ public class WallUnitTest {
         assertTrue(Wall.isBorder(new int[]{8, 0}, Direction.RIGHT));
         assertTrue(Wall.isBorder(new int[]{8, 1}, Direction.RIGHT));
         assertFalse(Wall.isBorder(new int[]{7, 0}, Direction.RIGHT));
+    }
+
+    @Test
+    public void testToString() {
+        String expected = "[true, false, true, false]";
+        String actual = wall.toString();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGet2ndWallUp() {
+        int x1 = 0;
+        int y1 = 0;
+        int[] expected = {1, 0};
+        int[] result = Wall.get2ndWall(Direction.UP, x1, y1);
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    public void testGet2ndWallDown() {
+        int x1 = 0;
+        int y1 = 0;
+        int[] expected = {1, 0};
+        int[] result = Wall.get2ndWall(Direction.DOWN, x1, y1);
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    public void testGet2ndWallLeft() {
+        int x1 = 0;
+        int y1 = 0;
+        int[] expected = {0, 1};
+        int[] result = Wall.get2ndWall(Direction.LEFT, x1, y1);
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    public void testGet2ndWallRight() {
+        int x1 = 0;
+        int y1 = 0;
+        int[] expected = {0, 1};
+        int[] result = Wall.get2ndWall(Direction.RIGHT, x1, y1);
+        assertArrayEquals(expected, result);
     }
 
 }

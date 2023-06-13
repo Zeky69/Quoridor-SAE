@@ -1,73 +1,95 @@
 package graph;
 
-
-import graph.Graph;
 import model.Wall;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GraphUnitTest {
 
-    @Test
-    void testHasArete() {
-        Graph graph = new Graph();
-        graph.addNoeud(new int[]{0, 0});
-        graph.addNoeud(new int[]{1, 0});
-        graph.addArete(new int[]{0, 0}, new int[]{1, 0});
-        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
-        assertFalse(graph.hasArete(new int[]{0, 0}, new int[]{0, 1}));
+    private Graph graph;
+
+    @BeforeEach
+    public void setUp() {
+        Wall[][] walls = new Wall[9][9];
+        for (int i = 0; i < walls.length; i++) {
+            for (int j = 0; j < walls[i].length; j++) {
+                walls[i][j] = new Wall(new boolean[]{false,false,false,false},null);
+            }
+        }
+        graph = new Graph(walls);
     }
 
     @Test
-    void testRemoveArete() {
-        Graph graph = new Graph();
-        graph.addNoeud(new int[]{0, 0});
-        graph.addNoeud(new int[]{1, 0});
-        graph.addArete(new int[]{0, 0}, new int[]{1, 0});
-        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
-        graph.removeArete(new int[]{0, 0}, new int[]{1, 0});
-        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
+    public void testGetNoeud() {
+        int[] position = new int[]{2, 3};
+        Noeud noeud = graph.getNoeud(position);
+
+        assertNotNull(noeud);
+        assertArrayEquals(position, noeud.getPosition());
     }
 
     @Test
-    void testRemoveAreteWithDirection() {
-        Graph graph = new Graph();
-        graph.addNoeud(new int[]{0, 0});
-        graph.addNoeud(new int[]{1, 0});
-        graph.addArete(new int[]{0, 0}, new int[]{1, 0});
-        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
-        graph.removeArete(new int[]{0, 0}, new int[]{1, 0}, Wall.Direction.RIGHT);
-        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
+    public void testAddNoeud() {
+        int[] position = new int[]{4, 5};
+        graph.addNoeud(position);
+
+        Noeud noeud = graph.getNoeud(position);
+        assertNotNull(noeud);
+        assertArrayEquals(position, noeud.getPosition());
     }
 
     @Test
-    void testAddArete() {
-        Graph graph = new Graph();
-        graph.addNoeud(new int[]{0, 0});
-        graph.addNoeud(new int[]{1, 0});
-        assertFalse(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
-        graph.addArete(new int[]{0, 0}, new int[]{1, 0});
-        assertTrue(graph.hasArete(new int[]{0, 0}, new int[]{1, 0}));
+    public void testAddArete() {
+        int[] positionNoeud1 = new int[]{2, 3};
+        int[] positionNoeud2 = new int[]{2, 4};
+
+        graph.addArete(positionNoeud1, positionNoeud2);
+
+        Noeud noeud1 = graph.getNoeud(positionNoeud1);
+        Noeud noeud2 = graph.getNoeud(positionNoeud2);
+
+        assertNotNull(noeud1);
+        assertNotNull(noeud2);
+        assertTrue(noeud1.hasArete(noeud2));
+        assertTrue(noeud2.hasArete(noeud1));
     }
 
     @Test
-    void testShortestPath() {
-        Graph graph = new Graph();
-        graph.addNoeud(new int[]{0, 0});
-        graph.addNoeud(new int[]{1, 0});
-        graph.addNoeud(new int[]{2, 0});
-        graph.addNoeud(new int[]{3, 0});
-        graph.addNoeud(new int[]{3, 1});
-        graph.addNoeud(new int[]{3, 2});
-        graph.addNoeud(new int[]{3, 3});
-        graph.addArete(new int[]{0, 0}, new int[]{1, 0});
-        graph.addArete(new int[]{1, 0}, new int[]{2, 0});
-        graph.addArete(new int[]{2, 0}, new int[]{3, 0});
-        graph.addArete(new int[]{3, 0}, new int[]{3, 1});
-        graph.addArete(new int[]{3, 1}, new int[]{3, 2});
-        graph.addArete(new int[]{3, 2}, new int[]{3, 3});
-        assertEquals(6, graph.shortestPath(new int[]{0, 0}, 3));
+    public void testRemoveArete() {
+        int[] positionNoeud1 = new int[]{2, 3};
+        int[] positionNoeud2 = new int[]{2, 4};
+
+        graph.addArete(positionNoeud1, positionNoeud2);
+        graph.removeArete(positionNoeud1, positionNoeud2);
+
+        Noeud noeud1 = graph.getNoeud(positionNoeud1);
+        Noeud noeud2 = graph.getNoeud(positionNoeud2);
+
+        assertNotNull(noeud1);
+        assertNotNull(noeud2);
+        assertTrue(noeud1.hasArete(noeud2));
+        assertFalse(noeud2.hasArete(noeud1));
     }
 
+    @Test
+    public void testShortestPath() {
+        int[] positionInit = new int[]{0, 0};
+        int y = 8;
+
+        int shortestPath = graph.shortestPath(positionInit, y);
+
+        assertEquals(8, shortestPath);
+    }
+
+    @Test
+    public void testIsPathPossibleY() {
+        int[] positionInit = new int[]{0, 0};
+        int y = 8;
+
+        boolean isPathPossible = graph.isPathPossibleY(positionInit, y);
+
+        assertTrue(isPathPossible);
+    }
 }
