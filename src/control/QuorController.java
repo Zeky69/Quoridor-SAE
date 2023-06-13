@@ -81,7 +81,6 @@ public class QuorController extends Controller {
      */
     @Override
     public void nextPlayer() {
-        System.out.println(model.getPlayers().size());
         model.setNextPlayer();
         // get the new player
         Player p = model.getCurrentPlayer();
@@ -431,7 +430,6 @@ public class QuorController extends Controller {
         int x2 = coord2ndWall[0];
         int y2 = coord2ndWall[1];
 
-        System.out.println(x2 + " "+y2);
 
 
         if ( walls[y][x].getWall(dir)|| walls[y2][x2].getWall(dir)) {

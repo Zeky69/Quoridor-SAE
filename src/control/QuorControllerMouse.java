@@ -58,7 +58,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         direction[2] = (clic.getY()-30)%tailleCase>(tailleCase-tailleMur);
         direction[3] = (clic.getY()-30)%tailleCase<tailleMur;
         if ((direction[0] || direction[1]) != (direction[2] || direction[3])){
-            System.out.println(Arrays.toString(direction));
             if(direction[0])
                 return Wall.Direction.RIGHT;
             if(direction[1])
@@ -106,7 +105,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                 QuorController control = (QuorController) this.control;
                 Wall.Direction direction = detectWall(event);
                 if (direction != null && dest != null){
-                    System.out.println(Arrays.toString(dest)+" "+direction);
                     if( control.analyseSecondStepW(dest[1],dest[0],direction)){
                         control.nextPlayer();
                     }
@@ -132,12 +130,10 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
             int[] dest = lookBoard.getCellFromSceneLocation(clic);
 
 
-            System.out.println(Arrays.toString(dest));
 
 
             if (dest!= null && stageModel.getBoard().canReachCell(dest[0],dest[1])){
                 GameElement pawn = stageModel.getPawns()[model.getIdPlayer()];
-                System.out.println("can reach");
                 ActionList actions = new ActionList(true);
                 //GameAction move = new MoveAction(model, pawn, "QuorBoard", dest[0], dest[1]);
                 stageModel.unselectAll();
