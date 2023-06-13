@@ -51,6 +51,18 @@ public class Wall extends GameElement {
         return new int[]{0,0};
     }
 
+    public  static  int[] get2ndWall(Direction direction , int x1,int y1){
+        int x2 = x1;
+        int y2 = y1;
+        if(direction == Direction.UP || direction == Direction.DOWN ){
+            x2++;
+
+        }else{
+            y2++;
+        }
+        return new int[]{x2,y2};
+    }
+
     /**
      * Get the presence of a wall in a direction
      * @param direction

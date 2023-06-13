@@ -399,46 +399,37 @@ public class QuorController extends Controller {
      * @param line
      * @return
      */
-    public boolean analyseSecondStepW(String line){
+    public boolean analyseSecondStepW(int x , int y , Wall.Direction dir){
+
+
+
+        if(x==8 && ( dir != Wall.Direction.LEFT ) || (y==8 && dir != Wall.Direction.UP )|| x==0 && dir == Wall.Direction.LEFT || y==0 && dir == Wall.Direction.UP){
+            System.out.println("border");
+            return false;
+        }
+
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-        if (line.length() != 5) {return false;}
-        line = line.toUpperCase();
-        int[] coord = charToCoord(line.charAt(0), line.charAt(1));
-        char direction = line.charAt(2);
-        int[] coord2 = charToCoord(line.charAt(3), line.charAt(4));
-        orientation orien = coordsToOrientation(coord, coord2);
-        Wall.Direction dir = charToDirection(direction);
         Wall[][] walls = gameStage.getWalls();
+        int[] coord2ndWall = Wall.get2ndWall(dir , x , y);
+        int x2 = coord2ndWall[0];
+        int y2 = coord2ndWall[1];
 
-        if (coord[0] < 0 || coord[0] >= 9 || coord[1] < 0 || coord[1] >= 9 || coord2[0] < 0 || coord2[0] >= 9 || coord2[1] < 0 || coord2[1] >= 9 ||  dir==null  || orien == null) {
-            System.out.println("les coordonnées ne correspondent pas à un mur ou à une direction");
-            return false;}
-        if (orien  == orientation.HORIZONTAL && (direction != 'H' && direction != 'B')) {
-            System.out.println("les coordonnées ne correspondent pas à un mur horizontal");
-            return false;}
-        if (orien  == orientation.VERTICAL && (direction != 'G' && direction != 'D')) {
-            System.out.println("les coordonnées ne correspondent pas à un mur vertical");
-            return false;
-        }
+        System.out.println(x2 + " "+y2);
 
-        if (isBorder(coord,dir) || isBorder(coord2,dir)){
-            System.out.println("le mur est sur le bord");
-            return false;
-        }
 
-        else if ( walls[coord[1]][coord[0]].getWall(dir)|| walls[coord2[1]][coord2[0]].getWall(dir)) {
+        if ( walls[y][x].getWall(dir)|| walls[y2][x2].getWall(dir)) {
             System.out.println("le mur n'est pas libre");
             return false;
 
         }
 
-        if (isCross(coord,coord2,dir,walls)){
+        if (isCross(new int[]{x,y},coord2ndWall,dir,walls)){
             System.out.println("le mur croise un autre mur");
             return false;
         }
 
         Graph graph = new Graph(walls);
-        graph.removeArete(coord,coord2,dir);
+        graph.removeArete(new int[]{x,y},coord2ndWall,dir);
         Pawn[] pawns = gameStage.getPawns();
         if (!graph.isPathPossibleY(pawns[0].getPawnXY(),pawns[0].getWinY()) || !graph.isPathPossibleY(pawns[1].getPawnXY(),pawns[1].getWinY())){
             System.out.println("le mur bloque le chemin d'un joueur");
@@ -446,17 +437,13 @@ public class QuorController extends Controller {
         }
 
 
-        setWallcoord(coord,dir, walls);
-        setWallcoord(coord2,dir, walls);
-//        gameStage.getBoard().update();
-
+        setWallcoord(new int[]{x,y},dir, walls);
+        setWallcoord(new int[]{x2,y2},dir, walls);
         gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();
 
-        Wall[][] wallsShow = gameStage.getWallsShow();
-        gameStage.removeElement(wallsShow[model.getIdPlayer()][9-pawns[model.getIdPlayer()].getWallCount()]);
-
-
+//        Wall[][] wallsShow = gameStage.getWallsShow();
+//        gameStage.removeElement(wallsShow[model.getIdPlayer()][9-pawns[model.getIdPlayer()].getWallCount()]);
 
         gameStage.getGrid("QuorBoard").resetReachableCells(true);
         return true;

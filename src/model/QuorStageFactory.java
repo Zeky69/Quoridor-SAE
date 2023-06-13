@@ -3,6 +3,8 @@ package model;
 import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
 
+import java.util.Arrays;
+
 public class QuorStageFactory extends StageElementsFactory {
     private QuorStageModel stageModel;
 
@@ -44,6 +46,8 @@ public class QuorStageFactory extends StageElementsFactory {
      */
     @Override
         public void setup() {
+
+        stageModel.setWalls(initWalls());
         stageModel.setBoard(new QuorBoard(0, 0, stageModel));
         Pawn[] pawns = new Pawn[2];
         Pawn pawn1 = new Pawn(4, 0, 1, 8, stageModel);
@@ -68,7 +72,6 @@ public class QuorStageFactory extends StageElementsFactory {
         pawns[0] = pawn1;
         pawns[1] = pawn2;
         stageModel.setPawns(pawns);
-        stageModel.setWalls(initWalls());
         stageModel.getBoard().putElement(pawn1, pawn1.getPawnY(), pawn1.getPawnX());
         stageModel.getBoard().putElement(pawn2, pawn2.getPawnY(), pawn2.getPawnX());
         for (int i = 0; i < 10; i++) {
