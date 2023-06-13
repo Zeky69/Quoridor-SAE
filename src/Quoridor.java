@@ -32,28 +32,13 @@ public class Quoridor extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
-        String computerName = "computer";
-        String playerName = "player";
-        Model model = new Model();
-        if (mode == 0) {
-            model.addHumanPlayer(playerName +"1");
-            model.addHumanPlayer(playerName+" 2"  );
-        }
-        else if (mode == 1) {
-            model.addHumanPlayer(playerName +" 1" );
-            model.addComputerPlayer(computerName +" 2" );
-        }
-        else {
-            model.addComputerPlayer(computerName+" 1" );
-            model.addComputerPlayer(computerName+" 2" );
-        }
 
+        Model model = new Model();
         StageFactory.registerModelAndView("Quoridor", "model.QuorStageModel", "view.QuorStageView");
         QuorRootPane rootPane = new QuorRootPane();
         QuorView view = new QuorView(model, stage, rootPane);
 
-
-        QuorController control = new QuorController(model,view);
+        QuorController control = new QuorController(model,view,mode);
         control.setFirstStageName("Quoridor");
         stage.setTitle("Quoridor");
         stage.show();
