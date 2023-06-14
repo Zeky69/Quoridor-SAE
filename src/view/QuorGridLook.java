@@ -78,16 +78,71 @@ public class QuorGridLook extends GridLook {
         }
     }
 
+
+
+    public void showPreview(int x, int y , int player, boolean horizontal){
+        if( (x>8 || y>8 ) || ((x==8 || y==0 )&& !horizontal) || ((y==8 || x==0) && horizontal)){
+            unshowPreview();
+            return;
+        }
+        if(recPreview== null){
+            recPreview = new Rectangle(cellWidth, cellHeight);
+            recPreview.setFill(Color.valueOf("0xEFCF00"));
+            recPreview.setOpacity(0.5);
+            addShape(recPreview);
+        }
+        recPreview.setOpacity(0.5);
+
+        if(horizontal){
+            if(player==0){
+                recPreview.setFill(Color.LIGHTSKYBLUE);
+
+            } else if (player==1) {
+                recPreview.setFill(Color.PINK);
+
+
+            }else{
+                recPreview.setFill(Color.RED);
+
+            }
+
+            recPreview.setWidth(10);
+            recPreview.setHeight(cellHeight*2);
+            recPreview.setX(x*cellWidth-4);
+            recPreview.setY(y*cellHeight);
+        }else{
+            if(player==0){
+                recPreview.setFill(Color.LIGHTSKYBLUE);
+
+            } else if (player==1) {
+                recPreview.setFill(Color.PINK);
+
+
+            }else{
+                recPreview.setFill(Color.RED);
+
+            }
+            recPreview.setWidth(cellWidth*2);
+            recPreview.setHeight(10);
+            recPreview.setX(x*cellWidth+2);
+            recPreview.setY(y*cellHeight-5);
+        }
+    }
+
+
+    public void unshowPreview(){
+        if(recPreview!= null){
+            recPreview.setOpacity(0);
+        }
+    }
+
+
     @Override
     public void onChange() {
         // in a pawn is selected, reachableCells changes. Thus, the look of the board must also changes.
         QuorBoard board = (QuorBoard)element;
         if (walls == null) {
             walls = ((QuorStageModel)(element.getGameStage())).getWalls();
-            recPreview = new Rectangle(cellWidth, cellHeight);
-            recPreview.setFill(Color.valueOf("0xEFCF00"));
-            recPreview.setOpacity(0);
-            addShape(recPreview);
         }
         boolean[][] reach = board.getReachableCells();
         List<GameElement> selectedElement = board.getGameStage().getSelected();
@@ -95,6 +150,7 @@ public class QuorGridLook extends GridLook {
         for(int i=0;i<9;i++) {
             for(int j=0;j<9;j++) {
                 boolean[] wall =  walls[i][j].getWall();
+
 
                 if (reach[i][j] && selected) {
                     Circle c = new Circle(10, Color.valueOf("0xe8daef"));
@@ -113,7 +169,7 @@ public class QuorGridLook extends GridLook {
                         rectangles[0] = new Rectangle(cellWidth, 10);
                         rectangles[0].setX(cells[i][j].getX());
                         rectangles[0].setY(cells[i][j].getY()-5);
-                        rectangles[0].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[0].setFill(walls[i][j].getColorWall()[0] == 2 ? Color.PINK  : Color.LIGHTSKYBLUE);
                         rectangles[0].setArcWidth(20);
                         rectangles[0].setArcHeight(20);
                         addShape(rectangles[0]);
@@ -122,7 +178,7 @@ public class QuorGridLook extends GridLook {
                         rectangles[1] = new Rectangle(cellHeight, 10);
                         rectangles[1].setX(cells[i][j].getX());
                         rectangles[1].setY(cells[i][j].getY()+cellHeight-5);
-                        rectangles[1].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[1].setFill(walls[i][j].getColorWall()[1] == 2 ? Color.PINK  : Color.LIGHTSKYBLUE);
                         rectangles[1].setArcWidth(20);
                         rectangles[1].setArcHeight(20);
                         addShape(rectangles[1]);
@@ -133,7 +189,7 @@ public class QuorGridLook extends GridLook {
                         rectangles[2] = new Rectangle(10, cellWidth);
                         rectangles[2].setX(cells[i][j].getX()-5);
                         rectangles[2].setY(cells[i][j].getY());
-                        rectangles[2].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[2].setFill(walls[i][j].getColorWall()[2] == 2 ? Color.PINK  : Color.LIGHTSKYBLUE);
                         rectangles[2].setArcWidth(20);
                         rectangles[2].setArcHeight(20);
                         addShape(rectangles[2]);
@@ -144,7 +200,7 @@ public class QuorGridLook extends GridLook {
                         rectangles[3] = new Rectangle(10, cellHeight);
                         rectangles[3].setX(cells[i][j].getX()+cellWidth-5);
                         rectangles[3].setY(cells[i][j].getY());
-                        rectangles[3].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[3].setFill(walls[i][j].getColorWall()[3] == 2 ? Color.PINK  : Color.LIGHTSKYBLUE);
                         rectangles[3].setArcWidth(20);
                         rectangles[3].setArcHeight(20);
 

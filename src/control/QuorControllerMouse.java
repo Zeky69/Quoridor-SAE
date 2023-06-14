@@ -20,6 +20,7 @@ import model.Pawn;
 import model.QuorBoard;
 import model.QuorStageModel;
 import model.Wall;
+import view.QuorGridLook;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,18 +39,46 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     int tailleMur = 5;
 
 
+
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
         view.getRootPane().setOnMouseMoved(event -> { //adding the mouse moved event not present in the original ControllerMouse class
             //if mouse in grid area and not on a wall
             QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
-            if(stageModel== null || stageModel.getState() == QuorStageModel.STATE_SELECTDEST || (event.getSceneX() > tailleGrid+xGrid || event.getSceneX() < xGrid || event.getSceneY() > tailleGrid+yGrid+30 || event.getSceneY() < yGrid +25)){
+            if(stageModel== null || model.getCurrentPlayer().getType() != 1 ||stageModel.getState() == QuorStageModel.STATE_SELECTDEST || (event.getSceneX() > tailleGrid+xGrid || event.getSceneX() < xGrid || event.getSceneY() > tailleGrid+yGrid+30 || event.getSceneY() < yGrid +25)){
                 return;
             }
             else if (detectWall(event)!=null) {
-                System.out.println("Wall");
+
+
+                Wall.Direction direction = detectWall(event);
+                int x = (int) (event.getSceneX()-xGrid+10)/tailleCase;
+                int y = (int) (event.getSceneY()-yGrid-20)/tailleCase;
+                boolean horizontal = (direction == Wall.Direction.LEFT || direction == Wall.Direction.RIGHT);
+                List<int[]> wallpossible = ((QuorController)control).possibleWall(stageModel.getWalls() , stageModel.getPawns());
+
+                QuorBoard board = ((QuorStageModel) model.getGameStage()).getBoard();
+                QuorController ctrl = (QuorController) control;
+
+                QuorGridLook lookBoard = (QuorGridLook) control.getElementLook(board);
+                if((ctrl.analyseSecondStepW(x,y,horizontal))){
+                    lookBoard.showPreview( x, y,model.getIdPlayer(), horizontal);
+                    board.setLookChanged(true);
+                    return;
+                }
+
+                lookBoard.showPreview( x, y,3, horizontal);
+                board.setLookChanged(true);
+
+
+
+
             } else {
-                System.out.println("Not wall");
+                QuorBoard board = ((QuorStageModel) model.getGameStage()).getBoard();
+
+
+                QuorGridLook lookBoard = (QuorGridLook) control.getElementLook(board);
+                lookBoard.unshowPreview();
             }
         });
     }
@@ -113,8 +142,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
             Pawn pawn = stageModel.getPawns()[model.getIdPlayer()];
             if (pawn.getWallCount()>0 && detectWall(event)!=null) {
                 int[] dest = new int[]{(int) ((clic.getY()-30)-yGrid)/tailleCase,((int)clic.getX()-xGrid)/tailleCase};
-                System.out.println(((clic.getY()-30)-yGrid)/tailleCase +" , "+((int)clic.getX()-xGrid)/tailleCase);
-                System.out.println(Arrays.toString(dest));
                 QuorController control = (QuorController) this.control;
                 Wall.Direction direction = detectWall(event);
                 if (direction != null && dest != null){

@@ -243,7 +243,6 @@ public class QuorController extends Controller {
         List<int[]> possibleDest = possibleDest(((Pawn)pawn).getPawnX() , ((Pawn)pawn).getPawnY() , gameStage.getWalls(), gameStage.getPawns());
 
         for(int[] dest : possibleDest){
-            System.out.println("dest : " + dest[0] + " " + dest[1]);
             gameStage.getBoard().setvalidCell(dest[0],dest[1]);
         }
         return true;
@@ -303,16 +302,16 @@ public class QuorController extends Controller {
      * @param walls
      * @return
      */
-    public Wall[][] setWallcoord(int[] coord , Wall.Direction direction , Wall[][] walls){
-        walls[coord[1]][coord[0]].setWall(direction ,true);
+    public Wall[][] setWallcoord(int[] coord , Wall.Direction direction , Wall[][] walls,int idPlayer){
+        walls[coord[1]][coord[0]].setWall(direction ,true, idPlayer);
         if (direction == Wall.Direction.UP && coord[1]!=0){
-            walls[coord[1]-1][coord[0]].setWall(Wall.Direction.DOWN ,true);
+            walls[coord[1]-1][coord[0]].setWall(Wall.Direction.DOWN ,true, idPlayer);
         }else if (direction == Wall.Direction.DOWN && coord[1]!=8){
-            walls[coord[1]+1][coord[0]].setWall(Wall.Direction.UP ,true);
+            walls[coord[1]+1][coord[0]].setWall(Wall.Direction.UP ,true, idPlayer);
         }else if (direction == Wall.Direction.LEFT && coord[0]!=0){
-            walls[coord[1]][coord[0]-1].setWall(Wall.Direction.RIGHT ,true);
+            walls[coord[1]][coord[0]-1].setWall(Wall.Direction.RIGHT ,true, idPlayer);
         }else if (direction == Wall.Direction.RIGHT && coord[0]!=8){
-            walls[coord[1]][coord[0]+1].setWall(Wall.Direction.LEFT ,true);
+            walls[coord[1]][coord[0]+1].setWall(Wall.Direction.LEFT ,true, idPlayer);
         }
 
         return walls;
@@ -353,6 +352,48 @@ public class QuorController extends Controller {
 
         return false;
 
+    }
+
+
+    public boolean analyseSecondStepW(int x , int y , boolean horizontal){
+        Wall.Direction dir ;
+        if(horizontal) {
+            dir = Wall.Direction.LEFT;
+        }else{
+            dir = Wall.Direction.UP;
+        }
+
+        if(x==8 && ( dir != Wall.Direction.LEFT ) || (y==8 && dir != Wall.Direction.UP )|| x==0 && dir == Wall.Direction.LEFT || y==0 && dir == Wall.Direction.UP){
+            return false;
+        }
+
+        QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
+        Wall[][] walls = gameStage.getWalls();
+        int[] coord2ndWall = Wall.get2ndWall(dir , x , y);
+        int x2 = coord2ndWall[0];
+        int y2 = coord2ndWall[1];
+
+        if (x2 > 8 || x2 < 0 || y2 > 8 || y2 < 0  ){
+            return false;
+        }
+
+        if ( walls[y][x].getWall(dir)|| walls[y2][x2].getWall(dir)) {
+            return false;
+
+        }
+
+        if (isCross(new int[]{x,y},coord2ndWall,dir,walls)){
+            return false;
+        }
+
+        Graph graph = new Graph(walls);
+        graph.removeArete(new int[]{x,y},coord2ndWall,dir);
+        Pawn[] pawns = gameStage.getPawns();
+        if (!graph.isPathPossibleY(pawns[0].getPawnXY(),pawns[0].getWinY()) || !graph.isPathPossibleY(pawns[1].getPawnXY(),pawns[1].getWinY())){
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -400,13 +441,18 @@ public class QuorController extends Controller {
         }
 
 
-        setWallcoord(new int[]{x,y},dir, walls);
-        setWallcoord(new int[]{x2,y2},dir, walls);
+        setWallcoord(new int[]{x,y},dir, walls,model.getIdPlayer());
+        setWallcoord(new int[]{x2,y2},dir, walls,model.getIdPlayer());
         gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();
 
         Wall[][] wallsShow = gameStage.getWallsShow();
         gameStage.removeElement(wallsShow[model.getIdPlayer()][pawns[model.getIdPlayer()].getWallCount()]);
+
+
+        gameStage.getWallPots()[model.getIdPlayer()].removeWall();
+        gameStage.getWallPots()[model.getIdPlayer()].lookChangedTrue();
+
 
         gameStage.getGrid("QuorBoard").resetReachableCells(true);
         return true;

@@ -52,8 +52,8 @@ public class QuorStageFactory extends StageElementsFactory {
         Pawn[] pawns = new Pawn[2];
         Pawn pawn1 = new Pawn(4, 0, 1, 8, stageModel);
         Pawn pawn2 = new Pawn(4, 8, 2, 0, stageModel);
-        WallPot wallPot1 = new WallPot(700, 50, stageModel);
-        WallPot wallPot2 = new WallPot(700, 150, stageModel);
+        WallPot wallPot1 = new WallPot(720, 50, stageModel);
+        WallPot wallPot2 = new WallPot(720, 150, stageModel);
 
         Wall[] walls1 = new Wall[10];
         Wall[] walls2 = new Wall[10];

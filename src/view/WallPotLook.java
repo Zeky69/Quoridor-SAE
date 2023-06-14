@@ -1,10 +1,13 @@
 package view;
 
+import boardifier.model.GameElement;
 import boardifier.model.GridElement;
 import boardifier.view.GridLook;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
+import model.WallPot;
 
 public class WallPotLook extends GridLook {
 
@@ -16,6 +19,7 @@ public class WallPotLook extends GridLook {
      */
 
     private Rectangle[] cells;
+    Text text;
 
     public WallPotLook(int size, GridElement element) {
 
@@ -28,9 +32,27 @@ public class WallPotLook extends GridLook {
         }
     }
 
+
+    /**
+     * Change the look of the wallpot
+     */
+
     @Override
     public void onChange() {
         // number of walls
+        int nbWalls = ((WallPot)element).getNbWalls();
+        // display nnumber of walls
+        if(text == null) {
+            text = new Text(nbWalls+"x");
+            text.setX(-38);
+            text.setY(+20);
+            text.setFont(javafx.scene.text.Font.font ("Verdana", 20));
+            addShape(text);
+        }
+        else {
+            text.setText(nbWalls+"x");
+        }
+
 
     }
 

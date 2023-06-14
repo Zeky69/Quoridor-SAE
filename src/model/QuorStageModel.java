@@ -46,6 +46,10 @@ public class QuorStageModel extends GameStageModel {
         return this.wallPot1;
     }
 
+    public WallPot[] getWallPots() {
+        return new WallPot[]{this.wallPot1,this.wallPot2};
+    }
+
     /**
      * Get the walls to show
      * @return

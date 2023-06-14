@@ -137,13 +137,13 @@ public class QuorDecider extends Decider {
         if(pawnCurrent.getWallCount()>0){
             List<int[]> possibleWalls = ((QuorController)control).possibleWall(wallsCopy , pawns);
             for(int[] moveWall : possibleWalls){
-                wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),true);
-                wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),true);
+                wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),true,0);
+                wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),true,0);
                 pawnCurrent.decrementWallCount();
                 score = evaluateState(pawnCurrent,pawnOther,wallsCopy);
                 pawnCurrent.incrementWallCount();
-                wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),false);
-                wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),false);
+                wallsCopy[moveWall[1]][moveWall[0]].setWall(Wall.intToDirection(moveWall[4]),false,0);
+                wallsCopy[moveWall[3]][moveWall[2]].setWall(Wall.intToDirection(moveWall[4]),false,0);
                 if(score>bestScore){
                     bestScore = score;
                     bestMove =  moveWall;
@@ -302,10 +302,13 @@ public class QuorDecider extends Decider {
 
 
 
-            ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , intToDirection(moveIA[4]),walls);
-            ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , intToDirection(moveIA[4]),walls);
+            ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , intToDirection(moveIA[4]),walls, model.getIdPlayer());
+            ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , intToDirection(moveIA[4]),walls, model.getIdPlayer());
             board.setLookChanged(true);
             stage.removeElement(wallsShow[model.getIdPlayer()][pawn.getWallCount()-1]);
+            stage.getWallPots()[model.getIdPlayer()].removeWall();
+            stage.getWallPots()[model.getIdPlayer()].lookChangedTrue();
+
             pawn.setWallCount(pawn.getWallCount()-1);
 
 
@@ -340,12 +343,15 @@ public class QuorDecider extends Decider {
         }else{
             Wall[][] walls = stage.getWalls();
             Wall[][] wallsShow = stage.getWallsShow();
-            ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , Wall.intToDirection(moveIA[4]),walls);
-            ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , Wall.intToDirection(moveIA[4]),walls);
+            ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , Wall.intToDirection(moveIA[4]),walls, model.getIdPlayer());
+            ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , Wall.intToDirection(moveIA[4]),walls,model.getIdPlayer());
             board.setLookChanged(true);
 
 
            stage.removeElement(wallsShow[model.getIdPlayer()][pawn.getWallCount()-1]);
+           stage.getWallPots()[model.getIdPlayer()].removeWall();
+           stage.getWallPots()[model.getIdPlayer()].lookChangedTrue();
+
             pawn.setWallCount(pawn.getWallCount()-1);
 
 

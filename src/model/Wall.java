@@ -8,6 +8,8 @@ import java.util.Arrays;
 public class Wall extends GameElement {
     public enum Direction {UP, DOWN, LEFT, RIGHT}
     private boolean[] wall;
+
+    int[] colorWall;
     private GameStageModel gameStageModel;
 
     /**
@@ -28,6 +30,7 @@ public class Wall extends GameElement {
         super(gameStageModel);
         this.gameStageModel = gameStageModel;
         this.wall = wall;
+        this.colorWall = new int[4];
     }
 
     /**
@@ -121,20 +124,28 @@ public class Wall extends GameElement {
     }
 
 
+    public int[] getColorWall() {
+        return colorWall;
+    }
+
     /**
      * Set the presence of a wall in a direction
      * @param direction
      * @param bool
      */
-    public void setWall(Direction direction, boolean bool) {
+    public void setWall(Direction direction, boolean bool, int color) {
         if(Direction.UP == direction){
             this.wall[0] = bool;
+            this.colorWall[0] = color+1;
         } else if(Direction.DOWN == direction){
             this.wall[1] = bool;
+            this.colorWall[1] = color+1;
         } else if(Direction.LEFT == direction){
             this.wall[2] = bool;
+            this.colorWall[2] = color+1;
         } else if(Direction.RIGHT == direction){
             this.wall[3] = bool;
+            this.colorWall[3] = color+1;
         }
     }
 
