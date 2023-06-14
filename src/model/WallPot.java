@@ -12,7 +12,8 @@ public class WallPot extends GridElement {
      * @param gameStageModel
      */
     public WallPot(int x, int y, GameStageModel gameStageModel) {
-        super("wallpot", x, y, 10, 1, gameStageModel);
+        super("wallpot", x, y, 1, 10, gameStageModel);
+
     }
 
 }

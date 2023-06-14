@@ -17,6 +17,7 @@ import java.util.List;
 import static model.Wall.isBorder;
 
 public class QuorController extends Controller {
+    int mode;
     BufferedReader consoleIn;
     boolean firstPlayer;
 
@@ -35,6 +36,7 @@ public class QuorController extends Controller {
         setControlAction (new QuorControllerAction(model, view, this));
         setControlMouse(new QuorControllerMouse(model, view, this));
         firstPlayer = true;
+        this.mode = mode;
     }
 
     public void initPlayers(int mode){
@@ -49,7 +51,7 @@ public class QuorController extends Controller {
             model.addHumanPlayer(playerName +" 1" );
             model.addComputerPlayer(computerName +" 2" );
         }
-        else if (mode == 2){
+        else{
             model.addComputerPlayer(computerName+" 1" );
             model.addComputerPlayer(computerName+" 2" );
         }
@@ -92,61 +94,6 @@ public class QuorController extends Controller {
             play.start();
         }
 
-
-//
-//        if (!firstPlayer) {
-//            model.setNextPlayer();
-//        }
-//        else {
-//            firstPlayer = false;
-//        }
-//        Player p = model.getCurrentPlayer();
-//        if (p.getType() == Player.COMPUTER) {
-//            System.out.println("COMPUTER PLAYS");
-//            QuorDecider decider = new QuorDecider(model,this, model.getIdPlayer());
-//            ActionPlayer play = new ActionPlayer(model, this, decider, null);
-//            play.start();
-//        }
-//
-//        else {
-//            String choice="";
-//            boolean ok = false;
-//            while (!ok) {
-//                QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-//                try {
-//                    choice = consoleIn.readLine().toUpperCase();
-//                    if (choice.length() == 1) {
-//                        ok = analyseFirstStep(choice);
-//                    }
-//                    if (!ok) {
-//                        System.out.println("incorrect instruction. retry !");
-//                    }
-//                }
-//                catch(IOException e) {}
-//            }
-//            String moove;
-//            ok = false;
-//            while (!ok) {
-//                try {
-//
-//                    if (choice.equals("P")){
-//                        System.out.print("Enter the case you want to go >");
-//                        moove = consoleIn.readLine().toUpperCase();
-//                        ok = analyseSecondStepP(moove);
-//                    }
-//                    else if(choice.equals("W")) {
-//                            System.out.print("Enter the cases you want to put a wall >");
-//                            moove = consoleIn.readLine();
-//                            ok = analyseSecondStepW(moove);
-//                    }
-//
-//                    if (!ok) {
-//                        System.out.println("incorrect instruction. retry !");
-//                    }
-//                }
-//                catch(IOException e) {}
-//            }
-//        }
     }
 
     /**
@@ -241,10 +188,10 @@ public class QuorController extends Controller {
             if (x+1 < 8  && !walls[y][x + 1].getWall(Wall.Direction.RIGHT)) {
                 dest.add(new int[]{x + 2, y});
             }else {
-            if (y > 0 && x < 8 && !walls[y][x - 1].getWall(Wall.Direction.UP)) {
+            if (y > 0 && x < 8  && !walls[y][x + 1].getWall(Wall.Direction.UP)) {
                 dest.add(new int[]{x + 1, y-1});
             }
-            if (y < 8 && x < 8 && !walls[y][x - 1].getWall(Wall.Direction.DOWN)) {
+            if (y < 8 && x < 8 && !walls[y][x + 1].getWall(Wall.Direction.DOWN)) {
                 dest.add(new int[]{x + 1, y + 1});
             }
             }
@@ -428,7 +375,10 @@ public class QuorController extends Controller {
         int x2 = coord2ndWall[0];
         int y2 = coord2ndWall[1];
 
-
+        if (x2 > 8 || x2 < 0 || y2 > 8 || y2 < 0  ){
+            System.out.println("Hors grille");
+            return false;
+        }
 
         if ( walls[y][x].getWall(dir)|| walls[y2][x2].getWall(dir)) {
             System.out.println("le mur n'est pas libre");
@@ -455,8 +405,8 @@ public class QuorController extends Controller {
         gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();
 
-//        Wall[][] wallsShow = gameStage.getWallsShow();
-//        gameStage.removeElement(wallsShow[model.getIdPlayer()][9-pawns[model.getIdPlayer()].getWallCount()]);
+        Wall[][] wallsShow = gameStage.getWallsShow();
+        gameStage.removeElement(wallsShow[model.getIdPlayer()][pawns[model.getIdPlayer()].getWallCount()]);
 
         gameStage.getGrid("QuorBoard").resetReachableCells(true);
         return true;

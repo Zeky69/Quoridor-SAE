@@ -3,6 +3,7 @@ package view;
 
 import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.Pawn;
 
@@ -19,15 +20,13 @@ public class WallLook extends ElementLook {
         super(element);
         rectangle = new Rectangle();
         if(player == 0){
-            rectangle.setFill(javafx.scene.paint.Color.valueOf("0x000000"));
+            rectangle.setFill(Color.LIGHTSKYBLUE);
         }
-        else if(player == 1){
-            rectangle.setFill(javafx.scene.paint.Color.valueOf("0x0000FF"));
+        else {
+            rectangle.setFill(javafx.scene.paint.Color.valueOf("pink"));
         }
-        else if(player == 2){
-            rectangle.setFill(javafx.scene.paint.Color.valueOf("0xFF0000"));
-        }
-
+        rectangle.setWidth(15);
+        rectangle.setHeight(60);
         rectangle.setX(0);
         rectangle.setY(0);
         addShape(rectangle);

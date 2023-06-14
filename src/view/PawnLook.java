@@ -2,6 +2,7 @@ package view;
 
 import boardifier.model.GameElement;
 import boardifier.view.ElementLook;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
@@ -34,8 +35,15 @@ public class PawnLook extends ElementLook {
         }
         circle.setFill(color);
 
-        circle.setCenterX(radius);
-        circle.setCenterY(radius);
+        circle.setCenterX(radius+2);
+        circle.setCenterY(radius+2);
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.GRAY);
+        dropShadow.setOffsetX(2);
+        dropShadow.setOffsetY(2);
+        dropShadow.setRadius(4);
+        dropShadow.setSpread(0.5);
+        circle.setEffect(dropShadow);
         addShape(circle);
 
 

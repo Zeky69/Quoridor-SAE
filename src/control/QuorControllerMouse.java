@@ -32,12 +32,21 @@ import static model.Wall.isBorder;
  */
 public class QuorControllerMouse extends ControllerMouse implements EventHandler<MouseEvent> {
     int tailleGrid = 630;
+    int xGrid = 30;
+    int yGrid = 30;
     int tailleCase = (tailleGrid/9);
     int tailleMur = 5;
+
+
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
         view.getRootPane().setOnMouseMoved(event -> { //adding the mouse moved event not present in the original ControllerMouse class
-            if (detectWall(event)!=null) {
+            //if mouse in grid area and not on a wall
+            QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
+            if(stageModel== null || stageModel.getState() == QuorStageModel.STATE_SELECTDEST || (event.getSceneX() > tailleGrid+xGrid || event.getSceneX() < xGrid || event.getSceneY() > tailleGrid+yGrid+30 || event.getSceneY() < yGrid +25)){
+                return;
+            }
+            else if (detectWall(event)!=null) {
                 System.out.println("Wall");
             } else {
                 System.out.println("Not wall");
@@ -53,10 +62,10 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     public Wall.Direction detectWall(MouseEvent event) {
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
         boolean[] direction = new boolean[4]; //0 = bas, 1 = haut, 2 = droite, 3 = gauche (normalement)
-        direction[0] = (clic.getX() ) % tailleCase > (tailleCase-tailleMur);
-        direction[1] = (clic.getX() ) %tailleCase<tailleMur;
-        direction[2] = (clic.getY()-30)%tailleCase>(tailleCase-tailleMur);
-        direction[3] = (clic.getY()-30)%tailleCase<tailleMur;
+        direction[0] = (clic.getX()+10+xGrid ) % tailleCase > (tailleCase-tailleMur);
+        direction[1] = (clic.getX() +10+ xGrid) %tailleCase<tailleMur;
+        direction[2] = (clic.getY()-20 + yGrid)%tailleCase>(tailleCase-tailleMur);
+        direction[3] = (clic.getY()-20+ yGrid)%tailleCase<tailleMur;
         if ((direction[0] || direction[1]) != (direction[2] || direction[3])){
             if(direction[0])
                 return Wall.Direction.RIGHT;
@@ -72,6 +81,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     }
 
     public void handle(MouseEvent event) {
+
 
         // if mouse event capture is disabled in the model, just return
         if (!model.isCaptureMouseEvent()) return;
@@ -100,8 +110,11 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                     }
                 }
             }
-            if (detectWall(event)!=null) {
-                int[] dest = new int[]{(int) (clic.getY()-30)/tailleCase,(int)clic.getX()/tailleCase};
+            Pawn pawn = stageModel.getPawns()[model.getIdPlayer()];
+            if (pawn.getWallCount()>0 && detectWall(event)!=null) {
+                int[] dest = new int[]{(int) ((clic.getY()-30)-yGrid)/tailleCase,((int)clic.getX()-xGrid)/tailleCase};
+                System.out.println(((clic.getY()-30)-yGrid)/tailleCase +" , "+((int)clic.getX()-xGrid)/tailleCase);
+                System.out.println(Arrays.toString(dest));
                 QuorController control = (QuorController) this.control;
                 Wall.Direction direction = detectWall(event);
                 if (direction != null && dest != null){

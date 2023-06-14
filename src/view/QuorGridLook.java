@@ -4,6 +4,7 @@ import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.GridElement;
 import boardifier.view.GridLook;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -107,11 +108,14 @@ public class QuorGridLook extends GridLook {
                     Rectangle[] rectangles = new Rectangle[4];
 
 
+
                     if (wall[0]) {
                         rectangles[0] = new Rectangle(cellWidth, 10);
                         rectangles[0].setX(cells[i][j].getX());
                         rectangles[0].setY(cells[i][j].getY()-5);
                         rectangles[0].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[0].setArcWidth(20);
+                        rectangles[0].setArcHeight(20);
                         addShape(rectangles[0]);
                     }
                     if (wall[1]) {
@@ -119,6 +123,8 @@ public class QuorGridLook extends GridLook {
                         rectangles[1].setX(cells[i][j].getX());
                         rectangles[1].setY(cells[i][j].getY()+cellHeight-5);
                         rectangles[1].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[1].setArcWidth(20);
+                        rectangles[1].setArcHeight(20);
                         addShape(rectangles[1]);
 
 
@@ -128,6 +134,8 @@ public class QuorGridLook extends GridLook {
                         rectangles[2].setX(cells[i][j].getX()-5);
                         rectangles[2].setY(cells[i][j].getY());
                         rectangles[2].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[2].setArcWidth(20);
+                        rectangles[2].setArcHeight(20);
                         addShape(rectangles[2]);
 
 
@@ -137,6 +145,9 @@ public class QuorGridLook extends GridLook {
                         rectangles[3].setX(cells[i][j].getX()+cellWidth-5);
                         rectangles[3].setY(cells[i][j].getY());
                         rectangles[3].setFill(javafx.scene.paint.Color.valueOf("0xEFCF00"));
+                        rectangles[3].setArcWidth(20);
+                        rectangles[3].setArcHeight(20);
+
                         addShape(rectangles[3]);
 
 
