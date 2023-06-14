@@ -42,16 +42,26 @@ public class WallUnitTest {
         assertTrue(emptyWall.isEmpty());
     }
 
+
     @Test
     public void testSetWall() {
-        wall.setWall(Direction.UP, false);
+        wall.setWall(Direction.UP, false, 0);
         assertFalse(wall.getWall(Direction.UP));
-        wall.setWall(Direction.DOWN, true);
+        assertArrayEquals(new int[]{1, 0, 0, 0}, wall.getColorWall());
+
+        wall.setWall(Direction.DOWN, true, 1);
         assertTrue(wall.getWall(Direction.DOWN));
-        wall.setWall(Direction.LEFT, false);
+        assertArrayEquals(new int[]{1, 2, 0, 0}, wall.getColorWall());
+
+        wall.setWall(Direction.LEFT, false, 2);
         assertFalse(wall.getWall(Direction.LEFT));
-        wall.setWall(Direction.RIGHT, true);
+        assertArrayEquals(new int[]{1, 2, 3, 0}, wall.getColorWall());
+
+
+        wall.setWall(Direction.RIGHT, true, 3);
         assertTrue(wall.getWall(Direction.RIGHT));
+        assertArrayEquals(new int[]{1, 2, 3, 4}, wall.getColorWall());
+
     }
 
 

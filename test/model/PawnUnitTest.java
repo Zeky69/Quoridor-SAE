@@ -1,8 +1,6 @@
 package model;
 
-import boardifier.model.GameStageModel;
-import boardifier.model.animation.Animation;
-import boardifier.view.GridGeometry;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +57,7 @@ public class PawnUnitTest {
 
     @Test
     public void testGetWinY() {
-        assertEquals(5, pawn.getWinY());
+        assertEquals(8, pawn.getWinY());
     }
 
     @Test
