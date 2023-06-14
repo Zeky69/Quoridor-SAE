@@ -24,9 +24,6 @@ public class Quoridor extends Application {
             catch(NumberFormatException e) {
                 Quoridor.mode = 0;
             }
-        } else if (args.length == 0){
-            System.out.println("Check 1");
-            Quoridor.mode = -1;
         }
         launch(args);
 

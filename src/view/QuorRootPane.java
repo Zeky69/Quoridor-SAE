@@ -37,8 +37,4 @@ public class QuorRootPane extends RootPane {
         group.getChildren().clear();
         group.getChildren().addAll(frame,grid);
     }
-
-    public void createMenuButton() {
-
-    }
 }

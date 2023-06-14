@@ -23,6 +23,7 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
 
             // set handlers dedicated to menu items
             setMenuHandlers();
+            setButtonHandlers();
 
 
         }
@@ -30,7 +31,9 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
         private void setMenuHandlers(){
             quorView.getMenuItemStart().setOnAction(e -> {
                 try {
-                    quorControl.initPlayers(quorView.mode);
+                    if (model.getPlayers().size() == 0){
+                        quorControl.initPlayers(quorView.mode);
+                    }
                     control.startGame();
                 }
                 catch(GameException err) {
@@ -53,7 +56,8 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
     private void setButtonHandlers(){
         quorView.getButtonModeHvH().setOnAction(e -> {
             try {
-                quorControl.initPlayers(0);
+                quorView.mode = 0;
+                quorControl.initPlayers(quorView.mode);
                 control.startGame();
             } catch (GameException err) {
                 System.err.println(err.getMessage());
@@ -62,7 +66,8 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
         });
         quorView.getButtonModeHvC().setOnAction(e -> {
             try {
-                quorControl.initPlayers(1);
+                quorView.mode = 1;
+                quorControl.initPlayers(quorView.mode);
                 control.startGame();
             } catch (GameException err) {
                 System.err.println(err.getMessage());
@@ -71,7 +76,8 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
         });
         quorView.getButtonModeCvC().setOnAction(e -> {
             try {
-                quorControl.initPlayers(2);
+                quorView.mode = 2;
+                quorControl.initPlayers(quorView.mode);
                 control.startGame();
             } catch (GameException err) {
                 System.err.println(err.getMessage());
