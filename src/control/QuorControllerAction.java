@@ -59,6 +59,7 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
                 control.stopGame();
                 quorView.resetView();
                 this.setButtonHandlers();
+                model.getPlayers().clear();
             });
             // set event handler on the MenuQuit item
             quorView.getMenuQuit().setOnAction(e -> {
