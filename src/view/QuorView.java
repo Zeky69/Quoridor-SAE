@@ -11,6 +11,7 @@ public class QuorView extends View {
     private MenuItem menuItemStart;
     private MenuItem menuIntro;
     private MenuItem menuQuit;
+    private MenuItem menuItemRule;
     public int mode;
     private QuorRootPane rootPane;
 
@@ -25,35 +26,22 @@ public class QuorView extends View {
         menuBar = new MenuBar();
         Menu menu1 = new Menu("Game");
         menuItemStart = new MenuItem("New game");
+        menuItemRule = new MenuItem("Rules");
         menuIntro = new MenuItem("Intro");
         menuQuit = new MenuItem("Quit");
-        menu1.getItems().addAll(menuItemStart,menuIntro,menuQuit);
+        menu1.getItems().addAll(menuItemStart,menuItemRule,menuIntro,menuQuit);
         menuBar.getMenus().add(menu1);
     }
 
-    public MenuItem getMenuItemStart() {return menuItemStart;}
-
     public Button getButtonPlay() {return rootPane.buttonPlay;}
-
-    public String getPlayer1Name() {
-        if (rootPane.pseudo1 == null){
-            return "Player 1";
-        }
-        return rootPane.pseudo1.getText();
-    }
-
-    public String getPlayer2Name() {
-        if (rootPane.pseudo2 == null){
-            return "Player 2";
-        }
-        return rootPane.pseudo2.getText();
-    }
 
     public ComboBox<String> getComboBox() {return rootPane.comboBox;}
 
-    public MenuItem getMenuIntro() {
-        return menuIntro;
-    }
+    public MenuItem getMenuItemStart() {return menuItemStart;}
+
+    public MenuItem getMenuItemRule() {return menuItemRule;}
+
+    public MenuItem getMenuIntro() {return menuIntro;}
 
     public MenuItem getMenuQuit() {return menuQuit;}
 }

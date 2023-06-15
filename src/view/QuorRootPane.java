@@ -22,7 +22,6 @@ import javafx.scene.image.Image;
 public class QuorRootPane extends RootPane {
     public Button buttonPlay;
     public ComboBox<String> comboBox;
-    TextField pseudo1, pseudo2;
 
     public QuorRootPane() { super(); }
 
@@ -43,10 +42,6 @@ public class QuorRootPane extends RootPane {
         GridPane.setHalignment(text, javafx.geometry.HPos.CENTER);
         grid.setHgap(10);
         grid.setVgap(50);
-        Label label1 = new Label("Nickname of player 1 :");
-        Label label2 = new Label("Nickname of player 2 :");
-        pseudo1 = new TextField();
-        pseudo2 = new TextField();
 
         comboBox = new ComboBox<String>();
         ObservableList<String> list = FXCollections.observableArrayList("Human vs Human", "Human vs IA1", "Human vs IA2", "IA1 vs IA2");
