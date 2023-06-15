@@ -18,7 +18,7 @@ public class QuorView extends View {
     public QuorView(Model model, Stage stage, RootPane rootPane, int mode) {
         super(model, stage, rootPane);
         this.mode = mode;
-        this.rootPane = (QuorRootPane)rootPane;
+        this.rootPane = (QuorRootPane) rootPane;
     }
 
     @Override

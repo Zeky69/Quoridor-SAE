@@ -5,13 +5,12 @@ import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
 
-import java.util.Arrays;
-
 public class QuorStageFactory extends StageElementsFactory {
     private QuorStageModel stageModel;
 
     /**
      * Constructor
+     *
      * @param model
      */
     public QuorStageFactory(GameStageModel model) {
@@ -30,14 +29,15 @@ public class QuorStageFactory extends StageElementsFactory {
     /**
      * Create a grid of walls
      * The variable wallsAround is an array of boolean that tells if there are walls to the (north, south, west, est) of the wall
+     *
      * @return
      */
     public Wall[][] initWalls() {
         Wall[][] walls = new Wall[9][9];
-        for(int i=0;i<9;i++) {
-            for(int j=0;j<9;j++) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
                 boolean[] wallsAround = {false, false, false, false};
-                walls[i][j] = new Wall(wallsAround , stageModel);
+                walls[i][j] = new Wall(wallsAround, stageModel);
             }
         }
         return walls;
@@ -47,7 +47,7 @@ public class QuorStageFactory extends StageElementsFactory {
      * Set up the stage with all the elements needed for the game
      */
     @Override
-        public void setup() {
+    public void setup() {
 
         stageModel.setWalls(initWalls());
         stageModel.setBoard(new QuorBoard(30, 30, stageModel));
@@ -65,7 +65,7 @@ public class QuorStageFactory extends StageElementsFactory {
             walls2[i] = new Wall(stageModel);
         }
 
-        Wall[][] wallsShow = new Wall[][]{walls1,walls2};
+        Wall[][] wallsShow = new Wall[][]{walls1, walls2};
         stageModel.setWallsShow(wallsShow);
 
 
@@ -79,7 +79,7 @@ public class QuorStageFactory extends StageElementsFactory {
         stageModel.addGrid(wallPot1);
         stageModel.addGrid(wallPot2);
         for (int i = 0; i < 10; i++) {
-            wallPot1.putElement(walls1[i], 0,i);
+            wallPot1.putElement(walls1[i], 0, i);
             wallPot2.putElement(walls2[i], 0, i);
             stageModel.addElement(walls1[i]);
             stageModel.addElement(walls2[i]);
@@ -88,19 +88,14 @@ public class QuorStageFactory extends StageElementsFactory {
 
 
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(750,320);
+        text.setLocation(750, 320);
         text.setLocationType(GameElement.LOCATION_TOPLEFT);
         stageModel.setPlayerName(text);
 
         TextElement textTurn = new TextElement("\nit's your turn.", stageModel);
-        textTurn.setLocation(750,320);
+        textTurn.setLocation(750, 320);
         textTurn.setLocationType(GameElement.LOCATION_TOPLEFT);
         stageModel.setTextTurn(textTurn);
-
-
-
-
-
 
 
     }

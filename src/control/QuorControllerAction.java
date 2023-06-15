@@ -10,24 +10,23 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import view.QuorView;
 
-import javax.swing.plaf.synth.SynthDesktopIconUI;
-
 
 public class QuorControllerAction extends ControllerAction implements EventHandler<ActionEvent> {
 
-        private QuorView quorView;
-        private QuorController quorControl;
-        public QuorControllerAction(Model model, View view, Controller control) {
-            super(model, view, control);
-            quorView = (QuorView)view;
-            quorControl = (QuorController)control;
+    private QuorView quorView;
+    private QuorController quorControl;
 
-            // set handlers dedicated to menu items
-            setMenuHandlers();
-            setButtonHandlers();
+    public QuorControllerAction(Model model, View view, Controller control) {
+        super(model, view, control);
+        quorView = (QuorView) view;
+        quorControl = (QuorController) control;
+
+        // set handlers dedicated to menu items
+        setMenuHandlers();
+        setButtonHandlers();
 
 
-        }
+    }
 
         private void setMenuHandlers(){
             quorView.getMenuItemStart().setOnAction(e -> {
@@ -72,9 +71,9 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
                 System.exit(0);
             });
 
-        }
+    }
 
-    private void setButtonHandlers(){
+    private void setButtonHandlers() {
         quorView.getButtonPlay().setOnAction(e -> {
             try {
                 quorView.mode = quorView.getComboBox().getSelectionModel().getSelectedIndex();
@@ -88,10 +87,9 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
     }
 
 
-
-        @Override
-        public void handle(ActionEvent event) {
-            if (!model.isCaptureActionEvent()) return;
-        }
+    @Override
+    public void handle(ActionEvent event) {
+        if (!model.isCaptureActionEvent()) return;
+    }
 
 }
