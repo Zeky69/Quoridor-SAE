@@ -57,9 +57,10 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                 boolean horizontal = (direction == Wall.Direction.LEFT || direction == Wall.Direction.RIGHT);
                 QuorBoard board = ((QuorStageModel) model.getGameStage()).getBoard();
                 QuorController ctrl = (QuorController) control;
+                Pawn pawn = ((QuorStageModel) model.getGameStage()).getPawns()[model.getIdPlayer()];
 
                 QuorGridLook lookBoard = (QuorGridLook) control.getElementLook(board);
-                if((ctrl.analyseSecondStepW(x,y,horizontal))){
+                if(pawn.getWallCount()!=0 && (ctrl.analyseSecondStepW(x,y,horizontal))){
                     lookBoard.showPreview( x, y,model.getIdPlayer(), horizontal);
                     board.setLookChanged(true);
                     return;
@@ -115,7 +116,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
 
         Coord2D clic = new Coord2D(event.getSceneX(),event.getSceneY());
-        System.out.println("Mouse clicked at " + event.getSceneX() + " " + event.getSceneY());
         List<GameElement> list = control.elementsAt(clic);
 
 
