@@ -53,25 +53,28 @@ public class QuorController extends Controller {
         // Check if player 1 name was entered
         if (player1Result.isPresent()) {
             player1Name = player1Result.get();
-            if (player1Name.equals("")){
+            if (player1Name.equals("")) {
                 player1Name = "Player 1";
             }
-            if (mode == 0){
-                // Create a TextInputDialog for player 2 name
-                TextInputDialog player2Dialog = new TextInputDialog();
-                player2Dialog.setTitle("Player 2");
-                player2Dialog.setHeaderText("Enter Player 2 Name:");
-                Optional<String> player2Result = player2Dialog.showAndWait();
+        } else {
+            player1Name = "Player 1";
+        }
+        if (mode == 0) {
+            // Create a TextInputDialog for player 2 name
+            TextInputDialog player2Dialog = new TextInputDialog();
+            player2Dialog.setTitle("Player 2");
+            player2Dialog.setHeaderText("Enter Player 2 Name:");
+            Optional<String> player2Result = player2Dialog.showAndWait();
 
-                // Check if player 2 name was entered
-                if (player2Result.isPresent()) {
-                    player2Name = player2Result.get();
-                    if (player2Name.equals("")){
-                        player2Name = "Player 2";
-                    }
+            // Check if player 2 name was entered
+            if (player2Result.isPresent()) {
+                player2Name = player2Result.get();
+                if (player2Name.equals("")){
+                    player2Name = "Player 2";
                 }
+            } else {
+                player2Name = "Player 2";
             }
-
         }
     }
 
