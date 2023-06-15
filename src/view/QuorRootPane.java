@@ -1,8 +1,11 @@
 package view;
 
 import boardifier.view.RootPane;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -15,7 +18,9 @@ import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 
 public class QuorRootPane extends RootPane {
-    public Button buttonModeHvH,buttonModeHvC,buttonModeCvC;
+    public Button buttonPlay;
+    public ComboBox<String> comboBox;
+
     int mode;
 
     public QuorRootPane(int mode) { super(); }
@@ -37,26 +42,21 @@ public class QuorRootPane extends RootPane {
         GridPane.setHalignment(text, javafx.geometry.HPos.CENTER);
         grid.setHgap(10);
         grid.setVgap(50);
-        buttonModeHvH = new Button("Human vs Human");
-        buttonModeHvC = new Button("Human vs Computer");
-        buttonModeCvC = new Button("Computer vs Computer");
-        buttonModeHvH.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;");
-        buttonModeHvC.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;");
-        buttonModeCvC.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;");
-        buttonModeHvH.setOnMouseEntered(e -> {buttonModeHvH.setCursor(Cursor.HAND);
-            buttonModeHvH.setStyle("-fx-background-color: #A48F06FF;-fx-text-fill: white; -fx-font-size: 14px;");});
-        buttonModeHvC.setOnMouseEntered(e -> {buttonModeHvC.setCursor(Cursor.HAND);
-            buttonModeHvC.setStyle("-fx-background-color: #A48F06FF;-fx-text-fill: white; -fx-font-size: 14px;");});
-        buttonModeCvC.setOnMouseEntered(e -> {buttonModeCvC.setCursor(Cursor.HAND);
-            buttonModeCvC.setStyle("-fx-background-color: #A48F06FF;-fx-text-fill: white; -fx-font-size: 14px;");});
 
-        buttonModeHvH.setOnMouseExited(e -> buttonModeHvH.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;"));
-        buttonModeHvC.setOnMouseExited(e -> buttonModeHvC.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;"));
-        buttonModeCvC.setOnMouseExited(e -> buttonModeCvC.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;"));
+        comboBox = new ComboBox<String>();
+        ObservableList<String> list = FXCollections.observableArrayList("Human vs Human", "Human vs IA1", "Human vs IA2", "IA1 vs IA2");
+        comboBox.setItems(list);
+        comboBox.getSelectionModel().select(0);
 
-        grid.add(buttonModeHvH, 0, 1);
-        grid.add(buttonModeHvC, 1, 1);
-        grid.add(buttonModeCvC, 2, 1);
+        buttonPlay = new Button("Play");
+        buttonPlay.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;");
+        buttonPlay.setOnMouseEntered(e -> {buttonPlay.setCursor(Cursor.HAND);
+            buttonPlay.setStyle("-fx-background-color: #A48F06FF;-fx-text-fill: white; -fx-font-size: 14px;");});
+
+        buttonPlay.setOnMouseExited(e -> buttonPlay.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;"));
+
+        grid.add(comboBox, 0, 1);
+        grid.add(buttonPlay, 1, 1);
 
         flowPane.getChildren().add(grid);
         flowPane.setAlignment(javafx.geometry.Pos.CENTER);

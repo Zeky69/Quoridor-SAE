@@ -3,10 +3,7 @@ package view;
 import boardifier.model.Model;
 import boardifier.view.RootPane;
 import boardifier.view.View;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -36,11 +33,9 @@ public class QuorView extends View {
 
     public MenuItem getMenuItemStart() {return menuItemStart;}
 
-    public Button getButtonModeHvH() {return rootPane.buttonModeHvH;}
+    public Button getButtonPlay() {return rootPane.buttonPlay;}
 
-    public Button getButtonModeHvC() {return rootPane.buttonModeHvC;}
-
-    public Button getButtonModeCvC() {return rootPane.buttonModeCvC;}
+    public ComboBox<String> getComboBox() {return rootPane.comboBox;}
 
     public MenuItem getMenuIntro() {
         return menuIntro;

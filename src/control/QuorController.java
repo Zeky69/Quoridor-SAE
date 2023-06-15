@@ -51,6 +51,10 @@ public class QuorController extends Controller {
             model.addHumanPlayer(playerName +" 1" );
             model.addComputerPlayer(computerName +" 2" );
         }
+        else if (mode == 2) {
+            model.addComputerPlayer(computerName +" 1" );
+            model.addHumanPlayer(playerName +" 2" );
+        }
         else{
             model.addComputerPlayer(computerName+" 1" );
             model.addComputerPlayer(computerName+" 2" );
