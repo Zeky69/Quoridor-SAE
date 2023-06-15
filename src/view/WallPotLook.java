@@ -1,11 +1,9 @@
 package view;
 
-import boardifier.model.GameElement;
 import boardifier.model.GridElement;
 import boardifier.view.GridLook;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import model.WallPot;
 
@@ -13,6 +11,7 @@ public class WallPotLook extends GridLook {
 
     /**
      * Constructor
+     *
      * @param cellWidth
      * @param cellHeight
      * @param gridElement
@@ -23,10 +22,10 @@ public class WallPotLook extends GridLook {
 
     public WallPotLook(int size, GridElement element) {
 
-        super(size*10, size, size, size, 0, "0X000000", element);
+        super(size * 10, size, size, size, 0, "0X000000", element);
         cells = new Rectangle[10];
         // create the rectangles.
-        for(int i=0;i<10;i++) {
+        for (int i = 0; i < 10; i++) {
             cells[i] = new Rectangle(0, 0, Color.WHITE);
             addShape(cells[i]);
         }
@@ -40,21 +39,20 @@ public class WallPotLook extends GridLook {
     @Override
     public void onChange() {
         // number of walls
-        int nbWalls = ((WallPot)element).getNbWalls();
+        int nbWalls = ((WallPot) element).getNbWalls();
         // display nnumber of walls
-        if(text == null) {
-            text = new Text(nbWalls+"x");
+        if (text == null) {
+            text = new Text(nbWalls + "x");
             text.setX(-38);
             text.setY(+20);
-            text.setFont(javafx.scene.text.Font.font ("Verdana", 20));
+            text.setFont(javafx.scene.text.Font.font("Verdana", 20));
             addShape(text);
-        }
-        else {
-            text.setText(nbWalls+"x");
+        } else {
+            text.setText(nbWalls + "x");
         }
 
 
     }
 
 
-    }
+}

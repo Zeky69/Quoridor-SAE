@@ -8,8 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -17,18 +17,19 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.image.Image;
 
 public class QuorRootPane extends RootPane {
     public Button buttonPlay;
     public ComboBox<String> comboBox;
     TextField pseudo1, pseudo2;
 
-    public QuorRootPane() { super(); }
+    public QuorRootPane() {
+        super();
+    }
 
     @Override
     public void createDefaultGroup() {
-        Stop[] stops = new Stop[] { new Stop(0, Color.LIGHTSKYBLUE), new Stop(1, Color.PINK)};
+        Stop[] stops = new Stop[]{new Stop(0, Color.LIGHTSKYBLUE), new Stop(1, Color.PINK)};
         LinearGradient lg1 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops);
 
         Rectangle background = new Rectangle(0, 0, 500, 500);
@@ -55,8 +56,10 @@ public class QuorRootPane extends RootPane {
 
         buttonPlay = new Button("Play");
         buttonPlay.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;");
-        buttonPlay.setOnMouseEntered(e -> {buttonPlay.setCursor(Cursor.HAND);
-            buttonPlay.setStyle("-fx-background-color: #A48F06FF;-fx-text-fill: white; -fx-font-size: 14px;");});
+        buttonPlay.setOnMouseEntered(e -> {
+            buttonPlay.setCursor(Cursor.HAND);
+            buttonPlay.setStyle("-fx-background-color: #A48F06FF;-fx-text-fill: white; -fx-font-size: 14px;");
+        });
 
         buttonPlay.setOnMouseExited(e -> buttonPlay.setStyle("-fx-background-color: #d2b916; -fx-text-fill: white; -fx-font-size: 14px;"));
 
@@ -68,7 +71,7 @@ public class QuorRootPane extends RootPane {
         flowPane.setMinSize(500, 400);
         // put shapes in the group
         group.getChildren().clear();
-        group.getChildren().addAll(background,flowPane);
+        group.getChildren().addAll(background, flowPane);
     }
 
 
