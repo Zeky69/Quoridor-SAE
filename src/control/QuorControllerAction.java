@@ -57,13 +57,6 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
             // set event handler on the MenuIntro item
             quorView.getMenuIntro().setOnAction(e -> {
                 control.stopGame();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-                // Set the title and content text of the alert
-                alert.setTitle("Information");
-                alert.setContentText("L'objectif de \"Quoridor\" est d'être le premier joueur à atteindre la ligne opposée à sa ligne de départ. Les joueurs devront naviguer à travers un labyrinthe de barrières tout en planifiant leurs mouvements pour trouver le chemin le plus court vers la victoire.\n" +
-                        "Mécanique de jeu: \n" +
-                        "Les joueurs jouent à tour de rôle et ont deux actions possibles : avancer leur pion d'une case ou placer une barrière pour ralentir l'adversaire. L'adversaire est tenu de laisser au moins un passage libre. Les pions devront contourner les barrières, créant ainsi un labyrinthe qu'il faudra parcourir rapidement, car le premier joueur à atteindre la ligne opposée sera déclaré vainqueur.");
                 quorView.resetView();
             });
             // set event handler on the MenuQuit item
