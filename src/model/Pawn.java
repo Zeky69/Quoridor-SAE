@@ -5,6 +5,7 @@ import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.animation.AnimationStep;
 import boardifier.view.GridGeometry;
+import javafx.scene.paint.Color;
 
 public class Pawn extends GameElement {
 
@@ -160,6 +161,15 @@ public class Pawn extends GameElement {
      */
     public Pawn copy(){
         return new Pawn(this.x , this.y ,this.wallCount, this.player , this.winY , this.gameStageModel);
+    }
+
+    public Color getColor(){
+        if(this.player == 0){
+            return Color.LIGHTSKYBLUE;
+        }
+        else{
+            return Color.PINK;
+        }
     }
 
     public void update(double width, double height, GridGeometry gridGeometry) {

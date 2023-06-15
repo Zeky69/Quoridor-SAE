@@ -1,9 +1,6 @@
 package model;
 
-import boardifier.model.GameElement;
-import boardifier.model.GameStageModel;
-import boardifier.model.Model;
-import boardifier.model.StageElementsFactory;
+import boardifier.model.*;
 
 public class QuorStageModel extends GameStageModel {
 
@@ -16,6 +13,8 @@ public class QuorStageModel extends GameStageModel {
     Wall[][] wallsShow;
     WallPot wallPot1;
     WallPot wallPot2 ;
+    private TextElement playerName,textTurn;
+
 
     /**
      * Constructor
@@ -73,6 +72,23 @@ public class QuorStageModel extends GameStageModel {
     public WallPot getWallPot2() {
         return this.wallPot2;
     }
+
+
+
+    public TextElement getPlayerName() {
+        return playerName;
+    }
+    public void setPlayerName(TextElement playerName) {
+        this.playerName = playerName;
+        addElement(playerName);
+    } public TextElement getTextTurn() {
+        return textTurn;
+    }
+    public void setTextTurn(TextElement textTurn) {
+        this.textTurn = textTurn;
+        addElement(textTurn);
+    }
+
 
     /**
      * Set the board

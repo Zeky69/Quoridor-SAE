@@ -2,6 +2,8 @@ package view;
 
 import boardifier.model.GameStageModel;
 import boardifier.view.GameStageView;
+import boardifier.view.TextLook;
+import javafx.scene.paint.Color;
 import model.QuorStageModel;
 import model.Wall;
 
@@ -32,6 +34,11 @@ public class QuorStageView extends GameStageView{
             addLook(new WallLook(0,wallsShow[0][i]));
             addLook(new WallLook(1,wallsShow[1][i]));
         }
+        addLook(new QuorTextLook(40, "0x87cefa", ((QuorStageModel)gameStageModel).getPlayerName()));
+
+        addLook(new TextLook(30, "0x000000", ((QuorStageModel)gameStageModel).getTextTurn()));
+
+
     }
 }
 

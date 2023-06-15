@@ -40,12 +40,12 @@ public class QuorController extends Controller {
     }
 
     public void initPlayers(int mode){
-        String computerName = "computer";
-        String playerName = "player";
+        String computerName = "Computer";
+        String playerName = "Player";
 
         if (mode == 0) {
-            model.addHumanPlayer(playerName +"1");
-            model.addHumanPlayer(playerName+"2");
+            model.addHumanPlayer(playerName +" 1");
+            model.addHumanPlayer(playerName+" 2");
         }
         else if (mode == 1) {
             model.addHumanPlayer(playerName +" 1" );
@@ -86,7 +86,8 @@ public class QuorController extends Controller {
         Player p = model.getCurrentPlayer();
         // change the text of the TextElement
         QuorStageModel stageModel = (QuorStageModel) model.getGameStage();
-//        stageModel.getPlayerName().setText(p.getName());
+        stageModel.getPlayerName().setText(p.getName());
+        System.out.println("NEXT PLAYER: "+p.getName() + " ("+p.getType()+")" );
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
             QuorDecider decider = new QuorDecider(model,this, model.getIdPlayer());

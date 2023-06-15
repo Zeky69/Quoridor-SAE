@@ -55,8 +55,6 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
                 int x = (int) (event.getSceneX()-xGrid+10)/tailleCase;
                 int y = (int) (event.getSceneY()-yGrid-20)/tailleCase;
                 boolean horizontal = (direction == Wall.Direction.LEFT || direction == Wall.Direction.RIGHT);
-                List<int[]> wallpossible = ((QuorController)control).possibleWall(stageModel.getWalls() , stageModel.getPawns());
-
                 QuorBoard board = ((QuorStageModel) model.getGameStage()).getBoard();
                 QuorController ctrl = (QuorController) control;
 

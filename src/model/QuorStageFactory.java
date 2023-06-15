@@ -1,7 +1,9 @@
 package model;
 
+import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
+import boardifier.model.TextElement;
 
 import java.util.Arrays;
 
@@ -83,6 +85,17 @@ public class QuorStageFactory extends StageElementsFactory {
             stageModel.addElement(walls2[i]);
 
         }
+
+
+        TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
+        text.setLocation(750,320);
+        text.setLocationType(GameElement.LOCATION_TOPLEFT);
+        stageModel.setPlayerName(text);
+
+        TextElement textTurn = new TextElement("\nit's your turn.", stageModel);
+        textTurn.setLocation(750,320);
+        textTurn.setLocationType(GameElement.LOCATION_TOPLEFT);
+        stageModel.setTextTurn(textTurn);
 
 
 
