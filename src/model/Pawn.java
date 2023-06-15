@@ -11,7 +11,7 @@ public class Pawn extends GameElement {
 
     private int x;
     private int y;
-    private int player;
+    private final int player;
 
     private int winY;
 
@@ -192,6 +192,12 @@ public class Pawn extends GameElement {
         }
     }
 
+    /**
+     *  update the pawn
+     * @param width witdh
+     * @param height  height
+     * @param gridGeometry grid geometry
+     */
     public void update(double width, double height, GridGeometry gridGeometry) {
         // if must be animated, move the pawn
         if (animation != null) {

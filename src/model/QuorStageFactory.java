@@ -6,7 +6,7 @@ import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
 
 public class QuorStageFactory extends StageElementsFactory {
-    private QuorStageModel stageModel;
+    private final QuorStageModel stageModel;
 
     /**
      * Constructor

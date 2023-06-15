@@ -22,10 +22,16 @@ public class QuorRootPane extends RootPane {
     public Button buttonPlay;
     public ComboBox<String> comboBox;
 
+    /**
+     * Constructor
+     */
     public QuorRootPane() {
         super();
     }
 
+    /**
+     * Create the default group
+     */
     @Override
     public void createDefaultGroup() {
         Stop[] stops = new Stop[]{new Stop(0, Color.LIGHTSKYBLUE), new Stop(1, Color.PINK)};

@@ -16,10 +16,8 @@ public class QuorBoard extends GridElement {
     public void setInvalidCells() {
         resetReachableCells(false);
         List<Point> valid = computeValidCells();
-        if (valid != null) {
-            for (Point p : valid) {
-                reachableCells[p.y][p.x] = false;
-            }
+        for (Point p : valid) {
+            reachableCells[p.y][p.x] = false;
         }
         lookChanged = true;
 

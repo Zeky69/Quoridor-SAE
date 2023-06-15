@@ -37,9 +37,9 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     /**
      * Constructor of the QuorControllerMouse class
      *
-     * @param model
-     * @param view
-     * @param control
+     * @param model  the model
+     * @param view    the view
+     * @param control the controller
      */
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
@@ -83,8 +83,8 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     /**
      * Detect if the click is on a wall position
      *
-     * @param event
-     * @return
+     * @param event mouse event
+     * @return the direction of the wall if the click is on a wall position, null otherwise
      */
     public Wall.Direction detectWall(MouseEvent event) {
         Coord2D clic = new Coord2D(event.getSceneX(), event.getSceneY());
@@ -110,7 +110,7 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     /**
      * Handle the mouse event
      *
-     * @param event
+     * @param event mouse event
      */
     public void handle(MouseEvent event) {
 

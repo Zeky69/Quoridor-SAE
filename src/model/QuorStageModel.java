@@ -136,8 +136,8 @@ public class QuorStageModel extends GameStageModel {
      */
     public void setPawns(Pawn[] pawns) {
         this.pawns = pawns;
-        for (int i = 0; i < pawns.length; i++) {
-            addElement(pawns[i]);
+        for (Pawn pawn : pawns) {
+            addElement(pawn);
         }
     }
 
@@ -178,7 +178,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the list of walls
      *
-     * @return
+     * @return the list walls
      */
     public Wall[][] getWalls() {
         return walls;

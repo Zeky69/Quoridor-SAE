@@ -25,9 +25,9 @@ public class QuorDecider extends Decider {
     /**
      * Constructor
      *
-     * @param model
-     * @param control
-     * @param idPlayer
+     * @param model  the model
+     * @param control the controller
+     * @param idPlayer id of the player
      */
     public QuorDecider(Model model, Controller control, int idPlayer) {
         super(model, control);
@@ -37,7 +37,7 @@ public class QuorDecider extends Decider {
     /**
      * Make the AI decide for the player (each player has its own AI)
      *
-     * @return
+     * @return the action list
      */
     @Override
     public ActionList decide() {
@@ -53,7 +53,7 @@ public class QuorDecider extends Decider {
      * Copy the walls
      *
      * @param walls wall list
-     * @return
+     * @return the new wall list
      */
     public Wall[][] copyWalls(Wall[][] walls) {
         Wall[][] newWalls = new Wall[9][9];
@@ -68,8 +68,8 @@ public class QuorDecider extends Decider {
     /**
      * Copy a pawn
      *
-     * @param pawn
-     * @return
+     * @param pawn pawn to copy
+     * @return the new pawn
      */
     public Pawn copyPawn(Pawn pawn) {
         return pawn.copy();
@@ -79,7 +79,7 @@ public class QuorDecider extends Decider {
      * Copy the pawns
      *
      * @param pawns pawn list
-     * @return
+     * @return the new pawn list
      */
     public Pawn[] copyPawns(Pawn[] pawns) {
         Pawn[] newPawns = new Pawn[2];
@@ -89,12 +89,12 @@ public class QuorDecider extends Decider {
     }
 
     /**
-     * //TO DO
+     *  evaluate the state of the game for the game
      *
-     * @param pawn1
-     * @param pawn2
-     * @param walls
-     * @return
+     * @param pawn1 pawn 1
+     * @param pawn2 pawn 2
+     * @param walls wall list
+     * @return the value of the state
      */
     public int evaluateState(Pawn pawn1, Pawn pawn2, Wall[][] walls) {
         if (pawn1.getWinY() == pawn1.getPawnY()) {
@@ -212,14 +212,14 @@ public class QuorDecider extends Decider {
     /**
      * Test if a wall can be placed in the given positions and direction
      *
-     * @param direction
-     * @param decalage
-     * @param walls
-     * @param adversaire
-     * @param self
-     * @param graph
-     * @param shortestPath
-     * @return
+     * @param direction the direction of the wall
+     * @param decalage the decalage of the wall
+     * @param walls    the walls of the game
+     * @param adversaire the adversaire
+     * @param self      the player
+     * @param graph      the graph of the game
+     * @param shortestPath the shortest path of the adversaire
+     * @return true if the wall can be placed
      */
     public boolean goodWall(int direction, int[] decalage, Wall[][] walls, Pawn adversaire, Pawn self, Graph graph, int shortestPath) {
         int posAY = adversaire.getPawnY();
@@ -238,7 +238,7 @@ public class QuorDecider extends Decider {
     /**
      * Move the pawn to the nearest win position (using Dijsktra algorithm)
      *
-     * @return
+     * @return coordinates of the destination
      */
     public int[] makeMoove() {
         QuorStageModel stage = (QuorStageModel) model.getGameStage();
@@ -284,7 +284,7 @@ public class QuorDecider extends Decider {
      * Main method of the second AI :
      * make a move or place a wall depending on the given coordinates
      *
-     * @return
+     * @return the list of actions to do
      */
     private ActionList decidePlayer2() {
         int[] moveIA = choiceAI();
@@ -301,8 +301,6 @@ public class QuorDecider extends Decider {
 
             GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1], moveIA[0], AnimationTypes.MOVE_LINEARPROP, center.getX(), center.getY(), 10);
             actions.addSingleAction(move);
-//            GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1] , moveIA[0]);
-//            actions.addSingleAction(move);
         } else {
             Wall[][] walls = stage.getWalls();
             Wall[][] wallsShow = stage.getWallsShow();
@@ -326,7 +324,7 @@ public class QuorDecider extends Decider {
      * Main method of the first AI :
      * make a move or place a wall depending on the given coordinates
      *
-     * @return
+     * @return the list of actions to do
      */
     private ActionList decidePlayer1() {
         int[] moveIA = scoreAI();

@@ -5,7 +5,7 @@ import model.Wall;
 import java.util.*;
 
 public class Graph {
-    private List<Noeud> noeuds = new ArrayList<>();
+    private final List<Noeud> noeuds = new ArrayList<>();
 
     /**
      *
@@ -105,9 +105,9 @@ public class Graph {
 
     /**
      * Add a arrete between two nodes
-     * @param pos1
-     * @param pos2
-     * @param direction
+     * @param pos1 the first node
+     * @param pos2 the second node
+     * @param direction the direction of the wall
      */
     public void addArete(int[] pos1, int[] pos2, Wall.Direction direction) {
         if (pos1 == null || pos2 == null || direction == null) {

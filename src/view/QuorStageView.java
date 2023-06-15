@@ -10,6 +10,12 @@ import model.Wall;
 public class QuorStageView extends GameStageView {
     GameStageModel gameStageModel1;
 
+
+    /**
+     * Constructor
+     * @param name name of the stage
+     * @param gameStageModel model of the stage
+     */
     public QuorStageView(String name, GameStageModel gameStageModel) {
         super(name, gameStageModel);
         width = 1050;

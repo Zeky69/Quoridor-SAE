@@ -22,7 +22,8 @@ import static model.Wall.isBorder;
 
 public class QuorController extends Controller {
     int mode;
-    String player1Name, player2Name;
+    String player1Name;
+    String player2Name;
     BufferedReader consoleIn;
     boolean firstPlayer;
 
@@ -34,8 +35,8 @@ public class QuorController extends Controller {
     /**
      * Constructor
      *
-     * @param model
-     * @param view
+     * @param model The model
+     * @param view The view
      */
     public QuorController(Model model, View view, int mode) {
         super(model, view);
@@ -144,8 +145,8 @@ public class QuorController extends Controller {
     /**
      * Find the coordinates of every places a wall could be placed
      *
-     * @param walls
-     * @param pawns
+     * @param walls List of walls
+     * @param pawns List of pawns
      * @return List of coordinates
      */
     public List<int[]> possibleWall(Wall[][] walls, Pawn[] pawns) {
@@ -184,11 +185,11 @@ public class QuorController extends Controller {
     /**
      * Find the coordinates of every places a pawn could go
      *
-     * @param x
-     * @param y
-     * @param walls
-     * @param pawns
-     * @return
+     * @param x x coordinate of the pawn
+     * @param y y coordinate of the pawn
+     * @param walls List of the walls
+     * @param pawns List of the pawns
+     * @return List of coordinates
      */
     public List<int[]> possibleDest(int x, int y, Wall[][] walls, Pawn[] pawns) {
         List<int[]> dest = new ArrayList<>();
@@ -274,42 +275,13 @@ public class QuorController extends Controller {
         }
     }
 
-    /**
-     * Convert the given char to a direction
-     *
-     * @param direction
-     * @return
-     */
-    public Wall.Direction charToDirection(char direction) {
-        return switch (direction) {
-            case 'H' -> Wall.Direction.UP;
-            case 'B' -> Wall.Direction.DOWN;
-            case 'D' -> Wall.Direction.RIGHT;
-            case 'G' -> Wall.Direction.LEFT;
-            default -> null;
-        };
-    }
-
-    /**
-     * Convert the given char to a coord
-     *
-     * @param x
-     * @param y
-     * @return
-     */
-    public int[] charToCoord(char x, char y) {
-        int[] coord = new int[2];
-        coord[0] = x - 'A';
-        coord[1] = y - '0' - 1;
-        return coord;
-    }
 
     /**
      * Convert the given coord to an orientation (for the walls)
      *
-     * @param pos1
-     * @param pos2
-     * @return
+     * @param pos1 the coord of the wall
+     * @param pos2 the coord of the wall
+     * @return the orientation of the wall
      */
     public orientation coordsToOrientation(int[] pos1, int[] pos2) {
         if (pos1[0] == pos2[0]) {
@@ -326,9 +298,9 @@ public class QuorController extends Controller {
     /**
      * set the coord of the wall
      *
-     * @param coord
-     * @param direction
-     * @param walls
+     * @param coord    coord of the wall
+     * @param direction direction of the wall
+     * @param walls the walls of the game
      */
     public void setWallCoord(int[] coord, Wall.Direction direction, Wall[][] walls, int idPlayer) {
         walls[coord[1]][coord[0]].setWall(direction, true, idPlayer);
@@ -347,11 +319,11 @@ public class QuorController extends Controller {
     /**
      * Check if the wall cross another wall
      *
-     * @param coord
-     * @param coord2
-     * @param dir
-     * @param walls
-     * @return
+     * @param coord x y of the first wall
+     * @param coord2 x y of the second wall
+     * @param dir   direction of walls
+     * @param walls the walls of the game
+     * @return true if the wall cross another wall
      */
     public boolean isCross(int[] coord, int[] coord2, Wall.Direction dir, Wall[][] walls) {
         orientation orien = coordsToOrientation(coord, coord2);
@@ -383,6 +355,13 @@ public class QuorController extends Controller {
     }
 
 
+    /**
+     *  check if the wall is possible to place
+     * @param x x coord
+     * @param y y coord
+     * @param horizontal orientation of the wall
+     * @return true if the wall is possible to place
+     */
     public boolean analyseSecondStepW(int x, int y, boolean horizontal) {
         Wall.Direction dir;
         if (horizontal) {

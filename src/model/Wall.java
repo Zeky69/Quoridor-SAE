@@ -11,12 +11,12 @@ public class Wall extends GameElement {
     private boolean[] wall;
 
     int[] colorWall;
-    private GameStageModel gameStageModel;
+    private final GameStageModel gameStageModel;
 
     /**
      * Constructor
      *
-     * @param gameStageModel
+     * @param gameStageModel the game stage model
      */
     public Wall(GameStageModel gameStageModel) {
         super(gameStageModel);
@@ -26,8 +26,8 @@ public class Wall extends GameElement {
     /**
      * Copy constructor
      *
-     * @param wall
-     * @param gameStageModel
+     * @param wall the wall
+     * @param gameStageModel the game stage model
      */
     public Wall(boolean[] wall, GameStageModel gameStageModel) {
         super(gameStageModel);
@@ -39,7 +39,7 @@ public class Wall extends GameElement {
     /**
      * Get boolean array of wall representing the presence of a wall in each direction
      *
-     * @return
+     * @return boolean array of wall
      */
     public boolean[] getWall() {
         return this.wall;
@@ -73,8 +73,8 @@ public class Wall extends GameElement {
     /**
      * Get the presence of a wall in a direction
      *
-     * @param direction
-     * @return
+     * @param direction of the wall
+     * @return true if there is a wall in the direction
      */
     public boolean getWall(Direction direction) {
         if (Direction.UP == direction) {
@@ -120,9 +120,9 @@ public class Wall extends GameElement {
     /**
      * Check if the wall is on the border of the board
      *
-     * @param coord
-     * @param direction
-     * @return
+     * @param coord    of the wall
+     * @param direction of the wall
+     * @return true if the wall is on the border
      */
     public static boolean isBorder(int[] coord, Wall.Direction direction) {
         return direction == Direction.UP && coord[1] == 0
@@ -139,8 +139,8 @@ public class Wall extends GameElement {
     /**
      * Set the presence of a wall in a direction
      *
-     * @param direction
-     * @param bool
+     * @param direction of the wall
+     * @param bool     true if there is a wall
      */
     public void setWall(Direction direction, boolean bool, int color) {
         if (Direction.UP == direction) {
@@ -168,7 +168,7 @@ public class Wall extends GameElement {
     /**
      * Copy the wall
      *
-     * @return
+     * @return the copy of the wall
      */
     public Wall copy() {
         boolean[] wallBool = this.getWall().clone();

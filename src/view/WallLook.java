@@ -14,8 +14,8 @@ public class WallLook extends ElementLook {
     /**
      * Constructor
      *
-     * @param player
-     * @param element
+     * @param player player id
+     * @param element the element
      */
     public WallLook(int player, GameElement element) {
         super(element);

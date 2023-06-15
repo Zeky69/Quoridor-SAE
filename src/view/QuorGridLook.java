@@ -20,8 +20,8 @@ public class QuorGridLook extends GridLook {
     /**
      * Constructor
      *
-     * @param cellWidth
-     * @param cellHeight
+     * @param cellWidth the width of a cell
+     * @param cellHeight the height of a cell
      */
     public QuorGridLook(int cellWidth, int cellHeight, GameElement element) {
         // 10 = taille des murs
@@ -43,7 +43,11 @@ public class QuorGridLook extends GridLook {
 
     }
 
-
+    /**
+     *  Constructor
+     * @param size the size of the board
+     * @param element the element
+     */
     public QuorGridLook(int size, GameElement element) {
         // NB: To have more liberty in the design, GridLook does not compute the cell size from the dimension of the element parameter.
         // If we create the 3x3 board by adding a border of 10 pixels, with cells occupying all the available surface,
@@ -72,7 +76,13 @@ public class QuorGridLook extends GridLook {
         }
     }
 
-
+    /**
+     *  show the wall
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param player the player
+     * @param horizontal true if the wall is horizontal
+     */
     public void showPreview(int x, int y, int player, boolean horizontal) {
         if ((x > 8 || y > 8) || ((x == 8 || y == 0) && !horizontal) || ((y == 8 || x == 0) && horizontal)) {
             unshowPreview();
@@ -122,7 +132,9 @@ public class QuorGridLook extends GridLook {
         }
     }
 
-
+    /**
+     * unshow the preview of the wall
+     */
     public void unshowPreview() {
         if (recPreview != null) {
             recPreview.setOpacity(0);

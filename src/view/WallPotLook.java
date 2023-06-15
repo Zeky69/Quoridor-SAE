@@ -9,17 +9,14 @@ import model.WallPot;
 
 public class WallPotLook extends GridLook {
 
-    /**
-     * Constructor
-     *
-     * @param cellWidth
-     * @param cellHeight
-     * @param gridElement
-     */
-
     private Rectangle[] cells;
     Text text;
 
+    /**
+     * Constructor
+     * @param size size of the wallpot
+     * @param element the element
+     */
     public WallPotLook(int size, GridElement element) {
 
         super(size * 10, size, size, size, 0, "0X000000", element);

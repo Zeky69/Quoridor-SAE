@@ -13,9 +13,15 @@ import view.QuorView;
 
 public class QuorControllerAction extends ControllerAction implements EventHandler<ActionEvent> {
 
-    private QuorView quorView;
-    private QuorController quorControl;
+    private final QuorView quorView;
+    private final QuorController quorControl;
 
+    /**
+     * Constructor
+     * @param model model
+     * @param view view
+     * @param control control
+     */
     public QuorControllerAction(Model model, View view, Controller control) {
         super(model, view, control);
         quorView = (QuorView) view;
@@ -28,6 +34,9 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
 
     }
 
+    /**
+     * set button handlers
+     */
     private void setMenuHandlers() {
         quorView.getMenuItemStart().setOnAction(e -> {
             try {
@@ -67,6 +76,9 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
 
     }
 
+    /**
+     * set button handlers
+     */
     private void setButtonHandlers() {
         quorView.getButtonPlay().setOnAction(e -> {
             try {
@@ -81,6 +93,10 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
     }
 
 
+    /**
+     * handle event
+     * @param event event
+     */
     @Override
     public void handle(ActionEvent event) {
         if (!model.isCaptureActionEvent()) return;

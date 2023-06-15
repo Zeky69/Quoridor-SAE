@@ -6,6 +6,13 @@ import boardifier.view.TextLook;
 import javafx.scene.paint.Color;
 
 public class QuorTextLook extends TextLook {
+
+    /**
+     * Constructor
+     * @param size size of the text
+     * @param color color of the text
+     * @param textElement text element
+     */
     public QuorTextLook(int size, String color, TextElement textElement) {
         super(size, color, textElement);
         text.setFont(javafx.scene.text.Font.font("Helvetica", size));

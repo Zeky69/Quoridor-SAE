@@ -24,6 +24,12 @@ public class PawnLook extends ElementLook {
     Color color;
     Color selectedColor;
 
+
+    /**
+     * Constructor
+     * @param element the game element
+     * @param radius the radius of the circle
+     */
     public PawnLook(GameElement element, int radius) {
         super(element);
         Pawn pawn = (Pawn) element;
