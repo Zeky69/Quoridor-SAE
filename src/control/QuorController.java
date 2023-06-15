@@ -217,10 +217,10 @@ public class QuorController extends Controller {
                 dest.add(new int[]{x - 2, y});
             }else {
 
-            if (y != 0 && x != 0 && !walls[y][x - 1].getWall(Wall.Direction.UP)) {
+            if (y != 0 && !walls[y][x - 1].getWall(Wall.Direction.UP)) {
                 dest.add(new int[]{x - 1, y - 1});
             }
-            if (y != 8 && x != 0 && !walls[y][x - 1].getWall(Wall.Direction.DOWN)) {
+            if (y != 8 && !walls[y][x - 1].getWall(Wall.Direction.DOWN)) {
                 dest.add(new int[]{x - 1, y + 1});
             }
             }
@@ -229,7 +229,7 @@ public class QuorController extends Controller {
         // Verifie si le pion peut aller a droite ou sinon il doit traverser le pion adverse
         if (x!=8 && !walls[y][x].getWall(Wall.Direction.RIGHT) && !walls[y][x+1].getWall(Wall.Direction.LEFT) && !(pawns[0].getPawnX() == x+1 && pawns[0].getPawnY() == y  || pawns[1].getPawnX() == x+1 && pawns[1].getPawnY() == y)){
             dest.add(new int[]{x+1,y});
-        }else if ((x!=8 && !walls[y][x].getWall(Wall.Direction.RIGHT) && !walls[y][x+1].getWall(Wall.Direction.LEFT)) && (pawns[0].getPawnX() == x+1 && pawns[0].getPawnY() == y)  || (pawns[1].getPawnX() == x+1 && pawns[1].getPawnY() == y)){
+        }else if ((x!=8 && !walls[y][x].getWall(Wall.Direction.RIGHT) && !walls[y][x+1].getWall(Wall.Direction.LEFT)) && ((pawns[0].getPawnX() == x+1 && pawns[0].getPawnY() == y ) || (pawns[1].getPawnX() == x+1 && pawns[1].getPawnY() == y))){
             if (x+1 < 8  && !walls[y][x + 1].getWall(Wall.Direction.RIGHT)) {
                 dest.add(new int[]{x + 2, y});
             }else {
@@ -248,10 +248,10 @@ public class QuorController extends Controller {
             if(y-1 > 0 && !walls[y-1][x].getWall(Wall.Direction.UP)){
                 dest.add(new int[]{x,y-2});
             }else{
-            if (x != 0 && y != 0 && !walls[y-1][x].getWall(Wall.Direction.LEFT)) {
+            if (x != 0 && !walls[y - 1][x].getWall(Wall.Direction.LEFT)) {
                 dest.add(new int[]{x - 1, y - 1});
             }
-            if (x != 8 && y != 0 && !walls[y-1][x].getWall(Wall.Direction.RIGHT)) {
+            if (x != 8 && !walls[y - 1][x].getWall(Wall.Direction.RIGHT)) {
                 dest.add(new int[]{x + 1, y - 1});
             }
             }
@@ -265,10 +265,10 @@ public class QuorController extends Controller {
                 dest.add(new int[]{x,y+2});
             }
             else{
-            if (x != 0 && y != 8 && !walls[y+1][x].getWall(Wall.Direction.LEFT)) {
+            if (x != 0 && !walls[y + 1][x].getWall(Wall.Direction.LEFT)) {
                 dest.add(new int[]{x - 1, y + 1});
             }
-            if (x != 8 && y != 8 && !walls[y+1][x].getWall(Wall.Direction.RIGHT)) {
+            if (x != 8 && !walls[y + 1][x].getWall(Wall.Direction.RIGHT)) {
                 dest.add(new int[]{x + 1, y + 1});
             }
             }
@@ -278,9 +278,8 @@ public class QuorController extends Controller {
 
     /**
      * Analyse the second input of the player for the move of a pawn
-     * @return
      */
-    public boolean analyseSecondStepP(){
+    public void analyseSecondStepP(){
         QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
         GameElement pawn = gameStage.getPawns()[model.getIdPlayer()];
         gameStage.getBoard().setInvalidCells();
@@ -290,7 +289,6 @@ public class QuorController extends Controller {
         for(int[] dest : possibleDest){
             gameStage.getBoard().setvalidCell(dest[0],dest[1]);
         }
-        return true;
     }
 
     /**
@@ -342,12 +340,12 @@ public class QuorController extends Controller {
 
     /**
      * set the coord of the wall
+     *
      * @param coord
      * @param direction
      * @param walls
-     * @return
      */
-    public Wall[][] setWallcoord(int[] coord , Wall.Direction direction , Wall[][] walls,int idPlayer){
+    public void setWallCoord(int[] coord , Wall.Direction direction , Wall[][] walls, int idPlayer){
         walls[coord[1]][coord[0]].setWall(direction ,true, idPlayer);
         if (direction == Wall.Direction.UP && coord[1]!=0){
             walls[coord[1]-1][coord[0]].setWall(Wall.Direction.DOWN ,true, idPlayer);
@@ -359,7 +357,6 @@ public class QuorController extends Controller {
             walls[coord[1]][coord[0]+1].setWall(Wall.Direction.LEFT ,true, idPlayer);
         }
 
-        return walls;
     }
 
     /**
@@ -443,8 +440,10 @@ public class QuorController extends Controller {
 
     /**
      * Analyse the second input of the player for the wall placement
-     * @param line
-     * @return
+     * @param x the x coord of the wall
+     * @param y the y coord of the wall
+     * @param dir the direction of the wall
+     * @return true if the wall can be placed
      */
     public boolean analyseSecondStepW(int x , int y , Wall.Direction dir){
         if(x==8 && ( dir != Wall.Direction.LEFT ) || (y==8 && dir != Wall.Direction.UP )|| x==0 && dir == Wall.Direction.LEFT || y==0 && dir == Wall.Direction.UP){
@@ -483,8 +482,8 @@ public class QuorController extends Controller {
         }
 
 
-        setWallcoord(new int[]{x,y},dir, walls,model.getIdPlayer());
-        setWallcoord(new int[]{x2,y2},dir, walls,model.getIdPlayer());
+        setWallCoord(new int[]{x,y},dir, walls,model.getIdPlayer());
+        setWallCoord(new int[]{x2,y2},dir, walls,model.getIdPlayer());
         gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();
 

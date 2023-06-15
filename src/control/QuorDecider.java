@@ -3,8 +3,6 @@ package control;
 import boardifier.control.Controller;
 import boardifier.control.Decider;
 import boardifier.model.Coord2D;
-import boardifier.model.GameElement;
-import boardifier.model.GameStageModel;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import boardifier.model.action.GameAction;
@@ -17,9 +15,7 @@ import model.QuorBoard;
 import model.QuorStageModel;
 import model.Wall;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static model.Wall.intToDirection;
 
@@ -104,7 +100,7 @@ public class QuorDecider extends Decider {
         int diffDistance = distancePawn2*2 - distancePawn1*3 ;
         int wallPawn1 = pawn1.getWallCount();
         int wallPawn2 = pawn2.getWallCount();
-        int diffWall = wallPawn1*2 - wallPawn2;
+        int diffWall = wallPawn1*3 - wallPawn2;
         int pawn2MouvPossible = ((QuorController)control).possibleDest(pawn2.getPawnX() , pawn2.getPawnY() ,walls , copyPawns(((QuorStageModel)(model.getGameStage())).getPawns())).size();
         int pawn1MouvPossible = ((QuorController)control).possibleDest(pawn1.getPawnX() , pawn1.getPawnY() ,walls , copyPawns(((QuorStageModel)(model.getGameStage())).getPawns())).size();
         int diffMouvPossible = pawn1MouvPossible - pawn2MouvPossible*2;
@@ -302,8 +298,8 @@ public class QuorDecider extends Decider {
 
 
 
-            ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , intToDirection(moveIA[4]),walls, model.getIdPlayer());
-            ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , intToDirection(moveIA[4]),walls, model.getIdPlayer());
+            ((QuorController)control).setWallCoord(new int[]{moveIA[0],moveIA[1]} , intToDirection(moveIA[4]),walls, model.getIdPlayer());
+            ((QuorController)control).setWallCoord(new int[]{moveIA[2],moveIA[3]} , intToDirection(moveIA[4]),walls, model.getIdPlayer());
             board.setLookChanged(true);
             stage.removeElement(wallsShow[model.getIdPlayer()][pawn.getWallCount()-1]);
             stage.getWallPots()[model.getIdPlayer()].removeWall();
@@ -343,8 +339,8 @@ public class QuorDecider extends Decider {
         }else{
             Wall[][] walls = stage.getWalls();
             Wall[][] wallsShow = stage.getWallsShow();
-            ((QuorController)control).setWallcoord(new int[]{moveIA[0],moveIA[1]} , Wall.intToDirection(moveIA[4]),walls, model.getIdPlayer());
-            ((QuorController)control).setWallcoord(new int[]{moveIA[2],moveIA[3]} , Wall.intToDirection(moveIA[4]),walls,model.getIdPlayer());
+            ((QuorController)control).setWallCoord(new int[]{moveIA[0],moveIA[1]} , Wall.intToDirection(moveIA[4]),walls, model.getIdPlayer());
+            ((QuorController)control).setWallCoord(new int[]{moveIA[2],moveIA[3]} , Wall.intToDirection(moveIA[4]),walls,model.getIdPlayer());
             board.setLookChanged(true);
 
 

@@ -58,7 +58,7 @@ public class Noeud {
             return;
         }
         if (!node1.hasArete(this) || !this.hasArete(node1)) {
-            System.out.println("Ces deux nœuds ne sont pas connectés" + this + " " + node1);
+            System.out.println("Ces deux nœuds ne sont pas connectés");
             return;
         }
 

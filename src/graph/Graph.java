@@ -76,7 +76,6 @@ public class Graph {
         }
 
         if (!node1.hasArete(node2) || !node2.hasArete(node1)) {
-            System.out.println(node1 + " " + node2);
 
             System.out.println("Ces deux nœuds ne sont pas connectés");
             return;
