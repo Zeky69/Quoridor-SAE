@@ -7,8 +7,8 @@ import boardifier.model.TextElement;
 
 public class QuorStageModel extends GameStageModel {
 
-    public final static int STATE_SELECTPAWN = 1;
-    public final static int STATE_SELECTDEST = 2;
+    public static final int STATE_SELECTPAWN = 1;
+    public static final int STATE_SELECTDEST = 2;
     QuorBoard board;
     Pawn[] pawns;
     int[] nbWalls = {10, 10};
@@ -16,14 +16,15 @@ public class QuorStageModel extends GameStageModel {
     Wall[][] wallsShow;
     WallPot wallPot1;
     WallPot wallPot2;
-    private TextElement playerName, textTurn;
+    private TextElement playerName;
+    private TextElement textTurn;
 
 
     /**
      * Constructor
      *
-     * @param name
-     * @param model
+     * @param name the name of the stage
+     * @param model the model of the game
      */
     public QuorStageModel(String name, Model model) {
         super(name, model);
@@ -36,7 +37,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the board
      *
-     * @return
+     * @return the board
      */
     public QuorBoard getBoard() {
         return this.board;
@@ -45,7 +46,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the first wall pot
      *
-     * @return
+     * @return the first wall pot
      */
     public WallPot getWallPot1() {
         return this.wallPot1;
@@ -58,7 +59,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the walls to show
      *
-     * @return
+     * @return the walls to show
      */
     public Wall[][] getWallsShow() {
         return this.wallsShow;
@@ -67,7 +68,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Set the walls to show
      *
-     * @param wallsShow
+     * @param wallsShow the walls to show
      */
     public void setWallsShow(Wall[][] wallsShow) {
         this.wallsShow = wallsShow;
@@ -76,26 +77,42 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the second wall pot
      *
-     * @return
+     * @return the second wall pot
      */
     public WallPot getWallPot2() {
         return this.wallPot2;
     }
 
 
+    /**
+     * Get the list of pawns
+     * @return the list of pawns
+     */
     public TextElement getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Set the player name
+     * @param playerName the player name
+     */
     public void setPlayerName(TextElement playerName) {
         this.playerName = playerName;
         addElement(playerName);
     }
 
+    /**
+     * Get the text turn
+     * @return the text turn
+     */
     public TextElement getTextTurn() {
         return textTurn;
     }
 
+    /**
+     * Set the text turn
+     * @param textTurn the text turn
+     */
     public void setTextTurn(TextElement textTurn) {
         this.textTurn = textTurn;
         addElement(textTurn);
@@ -105,7 +122,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Set the board
      *
-     * @param board
+     * @param board the board
      */
     public void setBoard(QuorBoard board) {
         this.board = board;
@@ -115,7 +132,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Set the list of pawns
      *
-     * @param pawns
+     * @param pawns the list of pawns
      */
     public void setPawns(Pawn[] pawns) {
         this.pawns = pawns;
@@ -127,7 +144,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Set the list of walls
      *
-     * @param walls
+     * @param walls the list of walls
      */
     public void setWalls(Wall[][] walls) {
         this.walls = walls;
@@ -143,7 +160,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Set the second wall pot
      *
-     * @param wallPot2
+     * @param wallPot2 the second wall pot
      */
     public void setWallPot2(WallPot wallPot2) {
         this.wallPot2 = wallPot2;
@@ -152,7 +169,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Set the first wall pot
      *
-     * @param wallPot1
+     * @param wallPot1 the first wall pot
      */
     public void setWallPot1(WallPot wallPot1) {
         this.wallPot1 = wallPot1;
@@ -170,7 +187,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the list of pawns
      *
-     * @return
+     * @return the list pawn of pawns
      */
     public Pawn[] getPawns() {
         return this.pawns;
@@ -179,7 +196,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the number of walls
      *
-     * @return
+     * @return the list int of walls
      */
     public int[] getNbWalls() {
         return this.nbWalls;
@@ -200,7 +217,7 @@ public class QuorStageModel extends GameStageModel {
     /**
      * Get the default element factory
      *
-     * @return
+     * @return the default element factory
      */
     @Override
     public StageElementsFactory getDefaultElementFactory() {

@@ -344,8 +344,6 @@ public class QuorDecider extends Decider {
             GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1], moveIA[0], AnimationTypes.MOVE_LINEARPROP, center.getX(), center.getY(), 10);
             actions.addSingleAction(move);
 
-//            GameAction move = new MoveAction(model, pawn, "QuorBoard", moveIA[1] , moveIA[0]);
-//            actions.addSingleAction(move);
         } else {
             Wall[][] walls = stage.getWalls();
             Wall[][] wallsShow = stage.getWallsShow();

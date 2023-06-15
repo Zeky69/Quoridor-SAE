@@ -139,22 +139,7 @@ public class QuorController extends Controller {
 
     }
 
-    /**
-     * Analyse the first input of the player
-     *
-     * @param line
-     * @return
-     */
-    public boolean analyseFirstStep(String line) {
-        if (line.equals("P")) {
-            return true;
-        } else if (line.equals("W")) {
-            QuorStageModel gameStage = (QuorStageModel) model.getGameStage();
-            return gameStage.getNbWalls()[model.getIdPlayer()] > 0;
-        } else {
-            return false;
-        }
-    }
+
 
     /**
      * Find the coordinates of every places a wall could be placed
@@ -486,7 +471,6 @@ public class QuorController extends Controller {
 
         setWallCoord(new int[]{x, y}, dir, walls, model.getIdPlayer());
         setWallCoord(new int[]{x2, y2}, dir, walls, model.getIdPlayer());
-        gameStage.getNbWalls()[model.getIdPlayer()]--;
         pawns[model.getIdPlayer()].decrementWallCount();
 
         Wall[][] wallsShow = gameStage.getWallsShow();

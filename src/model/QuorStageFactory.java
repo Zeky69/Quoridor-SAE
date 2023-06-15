@@ -11,7 +11,7 @@ public class QuorStageFactory extends StageElementsFactory {
     /**
      * Constructor
      *
-     * @param model
+     * @param model the game stage model
      */
     public QuorStageFactory(GameStageModel model) {
         super(model);
@@ -30,7 +30,7 @@ public class QuorStageFactory extends StageElementsFactory {
      * Create a grid of walls
      * The variable wallsAround is an array of boolean that tells if there are walls to the (north, south, west, est) of the wall
      *
-     * @return
+     * @return a grid of walls
      */
     public Wall[][] initWalls() {
         Wall[][] walls = new Wall[9][9];

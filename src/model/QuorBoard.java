@@ -28,8 +28,8 @@ public class QuorBoard extends GridElement {
     /**
      * change the value of a cell to true (reachable)
      *
-     * @param x
-     * @param y
+     * @param x the coordinates of the cell
+     * @param y the coordinates of the cell
      */
     public void setvalidCell(int x, int y) {
         reachableCells[y][x] = true;
@@ -46,7 +46,7 @@ public class QuorBoard extends GridElement {
     /**
      * Create a list of all the valid cells
      *
-     * @return
+     * @return a list of all the valid cells
      */
     private List<Point> computeValidCells() {
         List<Point> lst = new ArrayList<>();
@@ -63,9 +63,9 @@ public class QuorBoard extends GridElement {
     /**
      * Constructor
      *
-     * @param x
-     * @param y
-     * @param model
+     * @param x   the coordinates of the board
+     * @param y    the coordinates of the board
+     * @param model the model of the game
      */
     public QuorBoard(int x, int y, GameStageModel model) {
         super("QuorBoard", x, y, 9, 9, model);

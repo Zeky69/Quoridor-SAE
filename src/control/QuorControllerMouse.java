@@ -34,7 +34,13 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
     int tailleCase = (tailleGrid / 9);
     int tailleMur = 5;
 
-
+    /**
+     * Constructor of the QuorControllerMouse class
+     *
+     * @param model
+     * @param view
+     * @param control
+     */
     public QuorControllerMouse(Model model, View view, Controller control) {
         super(model, view, control);
         view.getRootPane().setOnMouseMoved(event -> { //adding the mouse moved event not present in the original ControllerMouse class
@@ -101,6 +107,11 @@ public class QuorControllerMouse extends ControllerMouse implements EventHandler
         return null;
     }
 
+    /**
+     * Handle the mouse event
+     *
+     * @param event
+     */
     public void handle(MouseEvent event) {
 
 
