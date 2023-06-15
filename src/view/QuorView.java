@@ -35,6 +35,20 @@ public class QuorView extends View {
 
     public Button getButtonPlay() {return rootPane.buttonPlay;}
 
+    public String getPlayer1Name() {
+        if (rootPane.pseudo1 == null){
+            return "Player 1";
+        }
+        return rootPane.pseudo1.getText();
+    }
+
+    public String getPlayer2Name() {
+        if (rootPane.pseudo2 == null){
+            return "Player 2";
+        }
+        return rootPane.pseudo2.getText();
+    }
+
     public ComboBox<String> getComboBox() {return rootPane.comboBox;}
 
     public MenuItem getMenuIntro() {

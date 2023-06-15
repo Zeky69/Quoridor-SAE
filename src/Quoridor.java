@@ -36,7 +36,7 @@ public class Quoridor extends Application {
         Model model = new Model();
         StageFactory.registerModelAndView("Quoridor", "model.QuorStageModel", "view.QuorStageView");
 
-        QuorRootPane rootPane = new QuorRootPane(Quoridor.mode);
+        QuorRootPane rootPane = new QuorRootPane();
 
         QuorView view = new QuorView(model, stage, rootPane, Quoridor.mode);
 

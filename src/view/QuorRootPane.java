@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,10 +22,9 @@ import javafx.scene.image.Image;
 public class QuorRootPane extends RootPane {
     public Button buttonPlay;
     public ComboBox<String> comboBox;
+    TextField pseudo1, pseudo2;
 
-    int mode;
-
-    public QuorRootPane(int mode) { super(); }
+    public QuorRootPane() { super(); }
 
     @Override
     public void createDefaultGroup() {
@@ -42,6 +43,10 @@ public class QuorRootPane extends RootPane {
         GridPane.setHalignment(text, javafx.geometry.HPos.CENTER);
         grid.setHgap(10);
         grid.setVgap(50);
+        Label label1 = new Label("Nickname of player 1 :");
+        Label label2 = new Label("Nickname of player 2 :");
+        pseudo1 = new TextField();
+        pseudo2 = new TextField();
 
         comboBox = new ComboBox<String>();
         ObservableList<String> list = FXCollections.observableArrayList("Human vs Human", "Human vs IA1", "Human vs IA2", "IA1 vs IA2");
@@ -65,4 +70,6 @@ public class QuorRootPane extends RootPane {
         group.getChildren().clear();
         group.getChildren().addAll(background,flowPane);
     }
+
+
 }
