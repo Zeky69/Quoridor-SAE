@@ -54,29 +54,9 @@ public class QuorControllerAction extends ControllerAction implements EventHandl
         }
 
     private void setButtonHandlers(){
-        quorView.getButtonModeHvH().setOnAction(e -> {
+        quorView.getButtonPlay().setOnAction(e -> {
             try {
-                quorView.mode = 0;
-                quorControl.initPlayers(quorView.mode);
-                control.startGame();
-            } catch (GameException err) {
-                System.err.println(err.getMessage());
-                System.exit(1);
-            }
-        });
-        quorView.getButtonModeHvC().setOnAction(e -> {
-            try {
-                quorView.mode = 1;
-                quorControl.initPlayers(quorView.mode);
-                control.startGame();
-            } catch (GameException err) {
-                System.err.println(err.getMessage());
-                System.exit(1);
-            }
-        });
-        quorView.getButtonModeCvC().setOnAction(e -> {
-            try {
-                quorView.mode = 2;
+                quorView.mode = quorView.getComboBox().getSelectionModel().getSelectedIndex();
                 quorControl.initPlayers(quorView.mode);
                 control.startGame();
             } catch (GameException err) {

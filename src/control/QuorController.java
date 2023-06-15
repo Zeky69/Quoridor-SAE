@@ -7,6 +7,8 @@ import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.view.View;
 import graph.Graph;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import model.Pawn;
 import model.QuorStageModel;
 import model.Wall;
@@ -14,10 +16,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static model.Wall.isBorder;
 
 public class QuorController extends Controller {
     int mode;
+    String player1Name, player2Name;
     BufferedReader consoleIn;
     boolean firstPlayer;
 
@@ -39,21 +44,51 @@ public class QuorController extends Controller {
         this.mode = mode;
     }
 
+    public void showAlertName(int mode){
+        TextInputDialog player1Dialog = new TextInputDialog();
+        player1Dialog.setTitle("Player 1");
+        player1Dialog.setHeaderText("Enter Player 1 Name:");
+        Optional<String> player1Result = player1Dialog.showAndWait();
+
+        // Check if player 1 name was entered
+        if (player1Result.isPresent()) {
+            player1Name = player1Result.get();
+            if (mode == 0){
+                // Create a TextInputDialog for player 2 name
+                TextInputDialog player2Dialog = new TextInputDialog();
+                player2Dialog.setTitle("Player 2");
+                player2Dialog.setHeaderText("Enter Player 2 Name:");
+                Optional<String> player2Result = player2Dialog.showAndWait();
+
+                // Check if player 2 name was entered
+                if (player2Result.isPresent()) {
+                    player2Name = player2Result.get();
+                }
+            }
+
+        }
+    }
+
     public void initPlayers(int mode){
-        String computerName = "Computer";
-        String playerName = "Player";
 
         if (mode == 0) {
-            model.addHumanPlayer(playerName +" 1");
-            model.addHumanPlayer(playerName+" 2");
+            showAlertName(mode);
+            model.addHumanPlayer(player1Name);
+            model.addHumanPlayer(player2Name);
         }
         else if (mode == 1) {
-            model.addHumanPlayer(playerName +" 1" );
-            model.addComputerPlayer(computerName +" 2" );
+            showAlertName(mode);
+            model.addHumanPlayer(player1Name);
+            model.addComputerPlayer("IA 2");
         }
-        else{
-            model.addComputerPlayer(computerName+" 1" );
-            model.addComputerPlayer(computerName+" 2" );
+        else if (mode == 2) {
+            showAlertName(mode);
+            model.addComputerPlayer("IA 1");
+            model.addHumanPlayer(player1Name);
+        }
+        else {
+            model.addComputerPlayer("IA 1");
+            model.addComputerPlayer("IA 2");
         }
     }
 
@@ -403,9 +438,6 @@ public class QuorController extends Controller {
      * @return
      */
     public boolean analyseSecondStepW(int x , int y , Wall.Direction dir){
-
-
-
         if(x==8 && ( dir != Wall.Direction.LEFT ) || (y==8 && dir != Wall.Direction.UP )|| x==0 && dir == Wall.Direction.LEFT || y==0 && dir == Wall.Direction.UP){
             System.out.println("border");
             return false;
